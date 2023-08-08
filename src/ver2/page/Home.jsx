@@ -15,25 +15,11 @@ import ReactLoading from "react-loading";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Clock from "../components/clock";
-import {
-  getFullFaceDescription,
-  createMatcher,
-  loadModels,
-} from "../../api/face";
+
+import * as faceapi from "face-api.js";
 import "../css/AddEvent.css";
 import RenderRandomWaitImage from "../components/randomImages";
 
-const JSON_PROFILE = require("../../descriptors/bnk48.json");
-// Initial State
-const INIT_STATE = {
-  imageURL: null,
-  fullDesc: null,
-  detections: null,
-  descriptors: null,
-  match: null,
-};
-
-//
 function Home() {
   const Api_key = "892b947dfa3a2a18ccb9574d2c1fe14e";
   const server =
@@ -50,24 +36,24 @@ function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [faceMatcher, setFaceMatcher] = useState(null);
-  const [dataImg, setDataImg] = useState({ ...INIT_STATE, faceMatcher: null });
   const [showImg, setShowImg] = useState({ img1: null, img2: null });
   const [randomImages, setRandomImages] = useState(null);
   const [isModelWarning, setIsModelWarning] = useState(false);
 
   //
   useEffect(() => {
-    const initialize = async () => {
-      try {
-        await loadModels();
-        setFaceMatcher(await createMatcher(JSON_PROFILE));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    initialize();
+    loadModels();
   }, []);
+  const loadModels = () => {
+    Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+      faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+      faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+      faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+    ]).then(() => {
+      // faceDetection();
+    });
+  };
   const uploadImage = async (image, setImage) => {
     const formData = new FormData();
     formData.append("image", image);
@@ -105,21 +91,16 @@ function Home() {
   };
 
   const validImage = async (image) => {
-    const send = dataImg;
     try {
-      const fullDesc = await getFullFaceDescription(image);
-      if (!!fullDesc) {
-        send.fullDesc = fullDesc;
-        send.detections = fullDesc.map((fd) => fd.detection);
-        send.descriptors = fullDesc.map((fd) => fd.descriptor);
-      }
-      if (!!send.descriptors && !!send.faceMatcher) {
-        let match = await send.descriptors.map((descriptor) =>
-          send.faceMatcher.findBestMatch(descriptor)
-        );
-        send.match = match;
-      }
-      return fullDesc;
+      const imageElement = document.createElement("img");
+      imageElement.src = image;
+      const netInput = imageElement;
+      // console.log(netInput); // object img with src = blob:....
+      const detections = await faceapi
+        .detectAllFaces(netInput, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceExpressions();
+      return detections;
     } catch (error) {
       console.log(error);
     }
