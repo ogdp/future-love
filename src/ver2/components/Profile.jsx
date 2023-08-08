@@ -6,11 +6,7 @@ import Comments from "../components/comments";
 import useEventStore from "../../utils/store";
 
 import ReactLoading from "react-loading";
-import {
-  getFullFaceDescription,
-  createMatcher,
-  loadModels,
-} from "../../api/face";
+import * as faceapi from "face-api.js";
 import { toast } from "react-toastify";
 
 export default function () {
@@ -160,17 +156,20 @@ export default function () {
     }
   };
 
+  //
   useEffect(() => {
-    const initialize = async () => {
-      try {
-        await loadModels();
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    initialize();
+    loadModels();
   }, []);
+  const loadModels = () => {
+    Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+      faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+      faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+      faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+    ]).then(() => {
+      // faceDetection();
+    });
+  };
   const resetImgShow = () => {
     setImgSucces([]);
     setImgError([]);
@@ -212,27 +211,16 @@ export default function () {
   };
 
   const validImage = async (image) => {
-    const send = {
-      fullDesc: null,
-      detections: null,
-      descriptors: null,
-      faceMatcher: null,
-      match: null,
-    };
     try {
-      const fullDesc = await getFullFaceDescription(image);
-      if (!!fullDesc) {
-        send.fullDesc = fullDesc;
-        send.detections = fullDesc.map((fd) => fd.detection);
-        send.descriptors = fullDesc.map((fd) => fd.descriptor);
-      }
-      if (!!send.descriptors && !!send.faceMatcher) {
-        let match = await send.descriptors.map((descriptor) =>
-          send.faceMatcher.findBestMatch(descriptor)
-        );
-        send.match = match;
-      }
-      return fullDesc;
+      const imageElement = document.createElement("img");
+      imageElement.src = image;
+      const netInput = imageElement;
+      // console.log(netInput); // object img with src = blob:....
+      const detections = await faceapi
+        .detectAllFaces(netInput, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceExpressions();
+      return detections;
     } catch (error) {
       console.log(error);
     }
@@ -680,6 +668,19 @@ export default function () {
             </div>
           </div>
         )}
+        <div className="bg-amber-400 w-screen h-[50px] text-1xl sticky top-[400px] mb-8 -mt-20">
+          <div className="flex justify-center pt-6">
+            <div className="mt-2">You haven't finished the procedure yet</div>
+            <div className="mx-8">
+              <button
+                onClick={() => setShowModals22(true)}
+                className=" bg-white shadow-gray-500 rounded-full w-[150px] h-[25px]"
+              >
+                Complete your profile
+              </button>
+            </div>
+          </div>
+        </div>
         {showModals22 ? (
           <>
             <div className="justify-center items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none">
