@@ -44,12 +44,14 @@ export default function () {
       if (selectedImage) {
         const res = await uploadImage(selectedImage);
         if (res.success) {
-          console.log('Image uploaded:', res.success);
+          console.log("Image uploaded:", res.success);
           const user = JSON.parse(window.localStorage.getItem("user-info"));
           if (!user) return window.location.href("/");
 
           // Post the image URL to your server (you need to adjust the server URL and endpoint)
-          await axios.post(`${server}/saveimage/${user.user_name}`, { image: res.success });
+          await axios.post(`${server}/saveimage/${user.user_name}`, {
+            image: res.success,
+          });
 
           // Clear the selected image after successful upload
           setSelectedImage(null);
@@ -60,7 +62,7 @@ export default function () {
           toast.success("Upload and save data completed successfully");
           setShowModals(false);
         } else {
-          console.log('Image upload failed.');
+          console.log("Image upload failed.");
         }
       }
     } catch (error) {
@@ -76,15 +78,17 @@ export default function () {
     // Fetch data from the API
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://14.225.7.221:8989/saveimage/1`);
+        const response = await axios.get(
+          `http://14.225.7.221:8989/saveimage/1`
+        );
         const jsonData = response.data.list_img; // Adjust this based on the API response structure
         setImgData(jsonData);
-        console.log('jsonData', jsonData);
+        console.log("jsonData", jsonData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
-    console.log('user', user.id_user);
+    console.log("user", user.id_user);
     fetchData();
   }, []);
 
@@ -432,9 +436,16 @@ export default function () {
                                           </div>
                                           <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-auto h-[120px]">
                                             {imgdata.map((item, index) => (
-                                              <div key={index} className='w-[100px] h-[100px] border-2 border-indigo-600' >
+                                              <div
+                                                key={index}
+                                                className="w-[100px] h-[100px] border-2 border-indigo-600"
+                                              >
                                                 {/* <input type='file' className='w-[100px] h-[100px]'></input> */}
-                                                <img src={item} className='w-[100px] h-[100px]' type="file"  ></img>
+                                                <img
+                                                  src={item}
+                                                  className="w-[100px] h-[100px]"
+                                                  type="file"
+                                                ></img>
                                               </div>
                                             ))}
                                           </div>
@@ -449,17 +460,31 @@ export default function () {
                                             </div>
 
                                             <div>
-                                              <button onClick={UploadedAvatar} className="bg-white shadow-gray-500 rounded-full w-[50px] h-[30px]">
+                                              <button
+                                                onClick={UploadedAvatar}
+                                                className="bg-white shadow-gray-500 rounded-full w-[50px] h-[30px]"
+                                              >
                                                 ảnh
                                               </button>
-                                              <input type="file" onChange={handleImageChange} />
+                                              <input
+                                                type="file"
+                                                onChange={handleImageChange}
+                                              />
                                             </div>
                                           </div>
                                           <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-auto h-[120px]">
                                             {/* {
                                               selectedImage.map((item) => ( */}
                                             <div className="w-[100px] h-[100px] border-2 border-indigo-600">
-                                              {selectedImage && <img src={URL.createObjectURL(selectedImage)} className="w-[100px] h-[100px]" alt="Selected" />}
+                                              {selectedImage && (
+                                                <img
+                                                  src={URL.createObjectURL(
+                                                    selectedImage
+                                                  )}
+                                                  className="w-[100px] h-[100px]"
+                                                  alt="Selected"
+                                                />
+                                              )}
                                             </div>
                                             {/* ))
                                             } */}
@@ -476,8 +501,15 @@ export default function () {
                                           </div>
                                           <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-auto h-[120px]">
                                             {imgdata.map((item, index) => (
-                                              <div key={index} className='w-[100px] h-[100px] border-2 border-indigo-600'>
-                                                <img src={item} className='w-[100px] h-[100px]' type="file" />
+                                              <div
+                                                key={index}
+                                                className="w-[100px] h-[100px] border-2 border-indigo-600"
+                                              >
+                                                <img
+                                                  src={item}
+                                                  className="w-[100px] h-[100px]"
+                                                  type="file"
+                                                />
                                               </div>
                                             ))}
                                           </div>
