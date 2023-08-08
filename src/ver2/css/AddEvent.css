@@ -1,0 +1,25 @@
+@keyframes floating {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.image-container {
+  position: fixed;
+  animation: floating 3s ease-in-out infinite;
+}
+
+.image-container {
+  position: fixed;
+  animation: floating 3s ease-in-out infinite;
+}
+
+.image-container img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
