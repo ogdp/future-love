@@ -17,6 +17,7 @@ export default function () {
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const [showModals, setShowModals] = React.useState(false);
+  const [showModals22, setShowModals22] = React.useState(false);
   const user = JSON.parse(localStorage.getItem("user-info"));
   const [imgdata, setImgData] = useState([]);
 
@@ -44,12 +45,14 @@ export default function () {
       if (selectedImage) {
         const res = await uploadImage(selectedImage);
         if (res.success) {
-          console.log('Image uploaded:', res.success);
+          console.log("Image uploaded:", res.success);
           const user = JSON.parse(window.localStorage.getItem("user-info"));
           if (!user) return window.location.href("/");
 
           // Post the image URL to your server (you need to adjust the server URL and endpoint)
-          await axios.post(`${server}/saveimage/${user.user_name}`, { image: res.success });
+          await axios.post(`${server}/saveimage/${user.user_name}`, {
+            image: res.success,
+          });
 
           // Clear the selected image after successful upload
           setSelectedImage(null);
@@ -60,15 +63,42 @@ export default function () {
           toast.success("Upload and save data completed successfully");
           setShowModals(false);
         } else {
-          console.log('Image upload failed.');
+          console.log("Image upload failed.");
         }
       }
     } catch (error) {
       console.log(error);
     }
   };
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
+    setIsLoading(true);
+    // console.log(document.querySelector("#imgUploadedAvatar"));
+    if (!event.target.files[0]) {
+      setSelectedImage(false);
+      if (document.querySelector("#imgUploadedAvatar").querySelector("img")) {
+        document.querySelector("#imgUploadedAvatar").querySelector("img").src =
+          null;
+      }
+      setIsLoading(false);
+      return false;
+    }
+
+    const res = await validImage(URL.createObjectURL(event.target.files[0]));
+    if (!res || res.length === 0) {
+      setIsLoading(false);
+      setSelectedImage(false);
+      if (document.querySelector("#imgUploadedAvatar").querySelector("img")) {
+        document.querySelector("#imgUploadedAvatar").querySelector("img").src =
+          null;
+      }
+      return setNotiImage({
+        status: true,
+        value: "The picture is not in the correct format",
+      });
+    }
+    console.log(res);
     setSelectedImage(event.target.files[0]);
+    setIsLoading(false);
   };
 
   //hiện thị ảnh
@@ -76,15 +106,18 @@ export default function () {
     // Fetch data from the API
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://14.225.7.221:8989/saveimage/1`);
-        const jsonData = response.data.list_img; // Adjust this based on the API response structure
-        setImgData(jsonData);
-        console.log('jsonData', jsonData);
+        const { data } = await axios.get(`${server}/saveimage/${user.id_user}`);
+
+        // console.log(data.list_img);
+
+        // const jsonData = response.data.list_img; // Adjust this based on the API response structure
+        setImgData(data.list_img);
+        // console.log("jsonData", jsonData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
-    console.log('user', user.id_user);
+    // console.log("user", user.id_user);
     fetchData();
   }, []);
 
@@ -99,8 +132,6 @@ export default function () {
       }
       const jsonData = await response.json();
       setData(jsonData);
-      console.log("hehee", jsonData);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -116,9 +147,11 @@ export default function () {
 
   const closeModals = () => {
     setShowModals(false);
+    closeModal();
   };
 
   const openModal = () => {
+    // console.log("open");
     setShowModal(true);
   };
 
@@ -139,9 +172,9 @@ export default function () {
       );
       setDatas(res.data.comment);
       setEvent(res.data);
-      console.log(res);
-      const ipAddress = data.dia_chi_ip; // Lấy địa chỉ IP từ dữ liệu response
-      console.log(`Địa chỉ IP của bạn là: ${ipAddress}`);
+      // console.log(res);
+      // const ipAddress = data.dia_chi_ip; // Lấy địa chỉ IP từ dữ liệu response
+      // console.log(`Địa chỉ IP của bạn là: ${ipAddress}`);
     } catch (error) {
       console.log(error);
     }
@@ -182,13 +215,14 @@ export default function () {
       const user = JSON.parse(window.localStorage.getItem("user-info"));
       if (!user) return window.location.href("/");
       const res = await axios.post(
-        `${server}/saveimage/${user.user_name}`,
+        `${server}/saveimage/${user.id_user}`,
         list_img
       );
       setIsLoading(false);
       resetImgShow();
       toast.success("Upload and save data completed successfully");
       setShowModals(false);
+      setShowModals22(false);
       setImgSucces(["https://i.ibb.co/qmpDk2W/Man-Big-Shoes-Avatar.png"]);
       setImgError([
         "https://i.ibb.co/vBNPH32/Not-Face-Girl-Big-Shoes-Avatar.png",
@@ -297,7 +331,7 @@ export default function () {
   const renderLoading = () => {
     if (isLoading) {
       return (
-        <div className="fixed top-0 min-w-[100%] h-[100vh] z-30">
+        <div className="fixed top-0 min-w-[100%] h-[100vh] z-[999]">
           <div className="absolute top-0 min-w-[100%] h-[100vh] bg-black opacity-70 z-10"></div>
           <div
             style={{
@@ -321,7 +355,7 @@ export default function () {
     <div className="bg-slate-300 w-[100%] h-full">
       {notiImage.status ? (
         <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-[1000] outline-none focus:outline-none">
             <div className="relative w-96 my-6 mx-auto max-w-3xl">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="relative p-6 flex-auto">
@@ -354,16 +388,18 @@ export default function () {
           <Header />
         </div>
         {setIsLoading ? renderLoading() : null}
-        <div className="lg:flex lg:justify-around ">
+        {/* <div className="lg:flex lg:justify-around "> */}
+        <div className="md:flex md:justify-around">
           <div className="relative -top-28 left-16 rounded-3xl lg:w-[450px] lg:h-[200px] w-[330px] h-[250px] bg-gradient-to-r from-violet-500 to-fuchsia-400">
-            <div className="mt-4 ml-8 ">
-              <img
-                src={data.link_avatar}
-                className="lg:ml-1 ml-40 lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] border border-white rounded-full "
-              ></img>
-              <h1 className="lg:ml-1 ml-36 text-5xl text-white">Username</h1>
-              <div className="lg:relative -top-52 left-56 mt-2">
-                <div className="flex justify-around lg:w-[300px]">
+            <div className="md:flex max-md:flex-col md:justify-around py-3 px-3">
+              <div>
+                <img
+                  src={data.link_avatar}
+                  className="lg:ml-1 ml-40 lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] border border-white rounded-full "
+                />
+              </div>
+              <div className="md:py-5">
+                <div className="flex justify-around lg:w-[300px] text-center">
                   <div className="text-3xl text-white">
                     <h1 className="ml-8">{data.count_sukien}</h1>
                     <p>Events</p>
@@ -377,16 +413,24 @@ export default function () {
                     <p>Comments</p>
                   </div>
                 </div>
-                <button className=" lg:ml-36 ml-40 mt-10 bg-white shadow-gray-500 rounded-full w-[100px] h-[30px]">
-                  View Events
-                </button>
+                <div className="flex justify-center items-center py-4 gap-3">
+                  <button className=" bg-white shadow-gray-500 rounded-full py-2 px-5">
+                    View Events
+                  </button>
+                  <button
+                    onClick={() => openModal()}
+                    className="md:hidden bg-white shadow-gray-500 rounded-full py-2 px-5"
+                  >
+                    Edit your profile
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-          <div>
+          <div className="">
             <button
               onClick={() => openModal()}
-              className="lg:mt-20 ml-48 -mt-60 my-2 bg-white shadow-gray-500 rounded-full w-[150px] h-[25px]"
+              className="max-lg:hidden lg:mt-20 max-lg:fixed ml-48 -mt-60 my-2 bg-white shadow-gray-500 rounded-full md:w-[150px] md:h-[25px]"
             >
               Edit your profile
             </button>
@@ -416,68 +460,88 @@ export default function () {
                             >
                               edit
                             </button>
-                            {/* ---- */}
                             {showModals ? (
                               <>
                                 <div className="justify-center items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                                  <div className="relative w-[1000px] h-[600px]  max-w-3xl">
-                                    <div className="lg:-ml-16 ml-6 lg:w-[700px] w-[400px] border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
-                                      <div className="relative p-6 flex-auto  lg:h-[800px] h-[700px]">
+                                  <div className="">
+                                    <div className="max-lg:ml-0 max-lg:w-full lg:-ml-16 ml-6 lg:w-[700px] w-[400px] border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
+                                      <div className="relative p-6 flex-auto lg:h-[800px] h-[700px]">
                                         <p className=" text-center text-black-500 slab text-3xl leading-relaxed text-black">
                                           Update Avatar
                                         </p>
                                         <div className="mt-10 text-3xl text-black">
                                           <div>
-                                            <h1>Suggestion</h1>
+                                            <h1 className="py-3">Suggestion</h1>
                                           </div>
-                                          <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-auto h-[120px]">
+                                          <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 h-[120px] overflow-x-hidden">
                                             {imgdata.map((item, index) => (
-                                              <div key={index} className='w-[100px] h-[100px] border-2 border-indigo-600' >
-                                                {/* <input type='file' className='w-[100px] h-[100px]'></input> */}
-                                                <img src={item} className='w-[100px] h-[100px]' type="file"  ></img>
+                                              <div
+                                                key={index}
+                                                className="w-[100px] h-[100px] border-2 "
+                                              >
+                                                <img
+                                                  src={item}
+                                                  className="w-[100px] h-[100px]"
+                                                  type="file"
+                                                ></img>
                                               </div>
                                             ))}
                                           </div>
-                                          <h1 className="text-center mt-6">
-                                            View More
-                                          </h1>
+                                          <div className="border-t bg-slate-700 min-w-full my-4"></div>
                                         </div>
-                                        <div className="mt-10">
-                                          <div className="flex justify-between mt-10 text-3xl text-black">
+                                        <div className="md:mt-10 md:my-10">
+                                          <div className="flex md:justify-between flex-col text-3xl text-black">
                                             <div>
-                                              <h1>Uploaded Avatar</h1>
+                                              <h1 className="my-1">
+                                                Uploaded Avatar
+                                              </h1>
                                             </div>
 
-                                            <div>
-                                              <button onClick={UploadedAvatar} className="bg-white shadow-gray-500 rounded-full w-[50px] h-[30px]">
-                                                ảnh
-                                              </button>
-                                              <input type="file" onChange={handleImageChange} />
+                                            <div className="max-sm:py-2">
+                                              <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleImageChange}
+                                              />
                                             </div>
                                           </div>
-                                          <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-auto h-[120px]">
-                                            {/* {
-                                              selectedImage.map((item) => ( */}
-                                            <div className="w-[100px] h-[100px] border-2 border-indigo-600">
-                                              {selectedImage && <img src={URL.createObjectURL(selectedImage)} className="w-[100px] h-[100px]" alt="Selected" />}
+                                          <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-x-hidden h-[120px]">
+                                            <div
+                                              className="w-[100px] h-[100px] border-2"
+                                              id="imgUploadedAvatar"
+                                            >
+                                              {selectedImage && (
+                                                <img
+                                                  src={URL.createObjectURL(
+                                                    selectedImage
+                                                  )}
+                                                  className="w-[100px] h-[100px]"
+                                                  alt="Selected"
+                                                />
+                                              )}
                                             </div>
-                                            {/* ))
-                                            } */}
                                           </div>
-                                          <h1 className="text-center mt-6">
-                                            View More
-                                          </h1>
+                                          <div className="border-t bg-slate-700 min-w-full my-4"></div>
                                         </div>
-                                        <div className="mt-10">
-                                          <div className="flex justify-between mt-10 text-3xl text-black">
+                                        <div className="md:mt-10">
+                                          <div className="flex justify-between text-3xl text-black">
                                             <div>
-                                              <h1>Your Gallery</h1>
+                                              <h1 className="py-3">
+                                                Your Gallery
+                                              </h1>
                                             </div>
                                           </div>
-                                          <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-auto h-[120px]">
+                                          <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-x-hidden h-[120px]">
                                             {imgdata.map((item, index) => (
-                                              <div key={index} className='w-[100px] h-[100px] border-2 border-indigo-600'>
-                                                <img src={item} className='w-[100px] h-[100px]' type="file" />
+                                              <div
+                                                key={index}
+                                                className="w-[100px] h-[100px] border-2"
+                                              >
+                                                <img
+                                                  src={item}
+                                                  className="w-[100px] h-[100px]"
+                                                  type="file"
+                                                />
                                               </div>
                                             ))}
                                           </div>
@@ -487,7 +551,7 @@ export default function () {
                                             Access Your Gallery
                                           </h1>
                                           <div className="flex justify-between mt-10 text-3xl text-black">
-                                            <button className="lg:ml-80 ml-20 text-white bg-gray-500 shadow-white rounded-full w-[250px] h-[30px]">
+                                            <button className="hover:scale-105 hover:bg-gray-700 lg:ml-80 ml-20 text-white bg-gray-500 shadow-white rounded-full w-[250px] h-[30px]">
                                               Update Avatar
                                             </button>
                                           </div>
@@ -508,7 +572,6 @@ export default function () {
                                 <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                               </>
                             ) : null}
-                            {/* -----end--- */}
                           </div>
                         </div>
                         <div className="flex lg:justify-around justify-evenly mt-10 text-3xl text-black">
@@ -550,12 +613,12 @@ export default function () {
             <div className="mt-2">You haven't finished the procedure yet</div>
             <div className="mx-8">
               <button
-                onClick={() => openModals()}
+                onClick={() => setShowModals22(true)}
                 className=" bg-white shadow-gray-500 rounded-full w-[150px] h-[25px]"
               >
                 Complete your profile
               </button>
-              {showModals ? (
+              {showModals22 ? (
                 <>
                   <div className="justify-center items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none">
                     <div className="relative w-[1000px]  max-w-3xl">
@@ -716,7 +779,7 @@ export default function () {
                           <button
                             className="text-[#FF2C61] slab hover:bg-[#ED709D] hover:text-white font-bold uppercase px-6 py-3 rounded-xl text-2xl outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                             type="button"
-                            onClick={() => closeModals()}
+                            onClick={() => setShowModals22(false)}
                           >
                             *
                           </button>
