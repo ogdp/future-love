@@ -29,7 +29,7 @@ function FirstDate() {
             console.log(response.data.sukien[1])
             setTemplate("Template"+response.data.sukien[1].id_template)
             console.log("Template"+response.data.sukien[1].id_template)
-            // console.log(data)
+            console.log("data", response.data.sukien[1])
         } catch (err) {
             console.log(err)
         }

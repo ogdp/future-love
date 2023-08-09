@@ -28,7 +28,7 @@ function BeingInLove() {
             console.log(response.data.sukien[2])
             setTemplate("Template"+response.data.sukien[2].id_template)
             console.log("Template"+response.data.sukien[2].id_template)
-            // console.log(data)
+            console.log(data)
         } catch (err) {
             console.log(err)
         }
