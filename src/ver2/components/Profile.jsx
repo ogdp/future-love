@@ -668,19 +668,6 @@ export default function () {
             </div>
           </div>
         )}
-        <div className="bg-amber-400 w-screen h-[50px] text-1xl sticky top-[400px] mb-8 -mt-20">
-          <div className="flex justify-center pt-6">
-            <div className="mt-2">You haven't finished the procedure yet</div>
-            <div className="mx-8">
-              <button
-                onClick={() => setShowModals22(true)}
-                className=" bg-white shadow-gray-500 rounded-full w-[150px] h-[25px]"
-              >
-                Complete your profile
-              </button>
-            </div>
-          </div>
-        </div>
         {showModals22 ? (
           <>
             <div className="justify-center items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none">
