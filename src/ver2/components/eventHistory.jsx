@@ -49,7 +49,7 @@ function EventHistory(props) {
       }
       const jsonData = await response.json();
       console.log(jsonData.list_sukien);
-      console.log("absjadaskdkahdkashdkjashdkjashdkashdkakdj")
+      // console.log("absjadaskdkahdkashdkjashdkjashdkashdkakdj")
       setData(jsonData.list_sukien);
       setIsLoading(false);
     } catch (error) {
