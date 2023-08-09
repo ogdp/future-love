@@ -129,7 +129,7 @@ function EventHistory(props) {
   return (
     <div className="">
       <div className="cursor-pointer">
-        {props.data && props.search ? (
+        {props.data  ? (
           <div>
             {props.data.map((array, index) => (
               <div
