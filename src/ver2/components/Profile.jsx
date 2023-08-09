@@ -6,19 +6,16 @@ import Comments from "../components/comments";
 import useEventStore from "../../utils/store";
 
 import ReactLoading from "react-loading";
-import {
-  getFullFaceDescription,
-  createMatcher,
-  loadModels,
-} from "../../api/face";
+import * as faceapi from "face-api.js";
 import { toast } from "react-toastify";
 
 export default function () {
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const [showModals, setShowModals] = React.useState(false);
+  const [showModals22, setShowModals22] = React.useState(false);
   const user = JSON.parse(localStorage.getItem("user-info"));
-  const [imgdata, setImgData] = useState([]);
+  const [imgdata, setImgData] = useState(false);
 
   const api_key = "892b947dfa3a2a18ccb9574d2c1fe14e";
   const server = "http://14.225.7.221:8989";
@@ -37,58 +34,18 @@ export default function () {
 
   const [selectedImage, setSelectedImage] = useState(null);
 
-  //UploadedAvatar
-  const UploadedAvatar = async () => {
-    const list_img = {};
-    try {
-      if (selectedImage) {
-        const res = await uploadImage(selectedImage);
-        if (res.success) {
-          console.log("Image uploaded:", res.success);
-          const user = JSON.parse(window.localStorage.getItem("user-info"));
-          if (!user) return window.location.href("/");
-
-          // Post the image URL to your server (you need to adjust the server URL and endpoint)
-          await axios.post(`${server}/saveimage/${user.user_name}`, {
-            image: res.success,
-          });
-
-          // Clear the selected image after successful upload
-          setSelectedImage(null);
-
-          // Other actions after successful upload
-          setIsLoading(false);
-          resetImgShow();
-          toast.success("Upload and save data completed successfully");
-          setShowModals(false);
-        } else {
-          console.log("Image upload failed.");
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleImageChange = (event) => {
-    setSelectedImage(event.target.files[0]);
-  };
-
   //hiện thị ảnh
   useEffect(() => {
     // Fetch data from the API
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://14.225.7.221:8989/saveimage/1`
-        );
-        const jsonData = response.data.list_img; // Adjust this based on the API response structure
-        setImgData(jsonData);
-        console.log("jsonData", jsonData);
+        const { data } = await axios.get(`${server}/saveimage/${user.id_user}`);
+        setImgData(data.list_img);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    console.log("user", user.id_user);
+    // console.log("user", user.id_user);
     fetchData();
   }, []);
 
@@ -103,8 +60,6 @@ export default function () {
       }
       const jsonData = await response.json();
       setData(jsonData);
-      console.log("hehee", jsonData);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -120,9 +75,11 @@ export default function () {
 
   const closeModals = () => {
     setShowModals(false);
+    closeModal();
   };
 
   const openModal = () => {
+    // console.log("open");
     setShowModal(true);
   };
 
@@ -143,9 +100,9 @@ export default function () {
       );
       setDatas(res.data.comment);
       setEvent(res.data);
-      console.log(res);
-      const ipAddress = data.dia_chi_ip; // Lấy địa chỉ IP từ dữ liệu response
-      console.log(`Địa chỉ IP của bạn là: ${ipAddress}`);
+      // console.log(res);
+      // const ipAddress = data.dia_chi_ip; // Lấy địa chỉ IP từ dữ liệu response
+      // console.log(`Địa chỉ IP của bạn là: ${ipAddress}`);
     } catch (error) {
       console.log(error);
     }
@@ -155,14 +112,9 @@ export default function () {
     fetchDatas();
   }, []);
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
   const dataSort = datas.sort((a, b) => {
     const dateA = new Date(a.thoi_gian_release);
     const dateB = new Date(b.thoi_gian_release);
-
     return dateB - dateA;
   });
 
@@ -186,33 +138,38 @@ export default function () {
       const user = JSON.parse(window.localStorage.getItem("user-info"));
       if (!user) return window.location.href("/");
       const res = await axios.post(
-        `${server}/saveimage/${user.user_name}`,
+        `${server}/saveimage/${user.id_user}`,
         list_img
       );
       setIsLoading(false);
       resetImgShow();
-      toast.success("Upload and save data completed successfully");
+      await toast.success("Upload and save data completed successfully");
       setShowModals(false);
+      setShowModals22(false);
       setImgSucces(["https://i.ibb.co/qmpDk2W/Man-Big-Shoes-Avatar.png"]);
       setImgError([
         "https://i.ibb.co/vBNPH32/Not-Face-Girl-Big-Shoes-Avatar.png",
       ]);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
   };
 
+  //
   useEffect(() => {
-    const initialize = async () => {
-      try {
-        await loadModels();
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    initialize();
+    loadModels();
   }, []);
+  const loadModels = () => {
+    Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+      faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+      faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+      faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+    ]).then(() => {
+      // faceDetection();
+    });
+  };
   const resetImgShow = () => {
     setImgSucces([]);
     setImgError([]);
@@ -254,27 +211,16 @@ export default function () {
   };
 
   const validImage = async (image) => {
-    const send = {
-      fullDesc: null,
-      detections: null,
-      descriptors: null,
-      faceMatcher: null,
-      match: null,
-    };
     try {
-      const fullDesc = await getFullFaceDescription(image);
-      if (!!fullDesc) {
-        send.fullDesc = fullDesc;
-        send.detections = fullDesc.map((fd) => fd.detection);
-        send.descriptors = fullDesc.map((fd) => fd.descriptor);
-      }
-      if (!!send.descriptors && !!send.faceMatcher) {
-        let match = await send.descriptors.map((descriptor) =>
-          send.faceMatcher.findBestMatch(descriptor)
-        );
-        send.match = match;
-      }
-      return fullDesc;
+      const imageElement = document.createElement("img");
+      imageElement.src = image;
+      const netInput = imageElement;
+      // console.log(netInput); // object img with src = blob:....
+      const detections = await faceapi
+        .detectAllFaces(netInput, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceExpressions();
+      return detections;
     } catch (error) {
       console.log(error);
     }
@@ -301,7 +247,7 @@ export default function () {
   const renderLoading = () => {
     if (isLoading) {
       return (
-        <div className="fixed top-0 min-w-[100%] h-[100vh] z-30">
+        <div className="fixed top-0 min-w-[100%] h-[100vh] z-[999]">
           <div className="absolute top-0 min-w-[100%] h-[100vh] bg-black opacity-70 z-10"></div>
           <div
             style={{
@@ -321,11 +267,92 @@ export default function () {
 
   // --- End
 
+  // UPLOAD AVT
+
+  const handleImageChange = async (event) => {
+    setIsLoading(true);
+    if (!event.target.files[0]) {
+      setSelectedImage(false);
+      if (document.querySelector("#imgUploadedAvatar").querySelector("img")) {
+        document.querySelector("#imgUploadedAvatar").querySelector("img").src =
+          null;
+      }
+      setIsLoading(false);
+      return false;
+    }
+    const res = await validImage(URL.createObjectURL(event.target.files[0]));
+    if (!res || res.length === 0) {
+      setIsLoading(false);
+      setSelectedImage(false);
+      if (document.querySelector("#imgUploadedAvatar").querySelector("img")) {
+        document.querySelector("#imgUploadedAvatar").querySelector("img").src =
+          null;
+      }
+      return setNotiImage({
+        status: true,
+        value: "The picture is not in the correct format",
+      });
+    }
+    setSelectedImage(event.target.files[0]);
+    setIsLoading(false);
+  };
+
+  const handleUploadAvatar = async () => {
+    if (!selectedImage) return;
+    setIsLoading(true);
+    try {
+      const imageUrl = await uploadImage(selectedImage);
+      let data = new FormData();
+      data.append("link_img", imageUrl.success);
+      data.append("check_img ", "upload");
+      const res = await axios.post(
+        `${server}/changeavatar/${user.id_user}`,
+        data
+      );
+      if (!res) {
+        setIsLoading(false);
+        return alert("API errors");
+      }
+      setIsLoading(false);
+      await toast.success("Upload and save avatar completed successfully");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
+  // onHandlePickAvatar
+  const handlePickAvatar = async (url) => {
+    setIsLoading(true);
+    try {
+      let data = new FormData();
+      data.append("link_img", url);
+      data.append("check_img ", "upload");
+      const res = await axios.post(
+        `${server}/changeavatar/${user.id_user}`,
+        data
+      );
+      if (!res) {
+        setIsLoading(false);
+        return alert("API errors");
+      }
+      setIsLoading(false);
+      await toast.success("Upload and save avatar completed successfully");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
+  // ---- END
+
   return (
     <div className="bg-slate-300 w-[100%] h-full">
       {notiImage.status ? (
         <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-[1000] outline-none focus:outline-none">
             <div className="relative w-96 my-6 mx-auto max-w-3xl">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="relative p-6 flex-auto">
@@ -358,16 +385,21 @@ export default function () {
           <Header />
         </div>
         {setIsLoading ? renderLoading() : null}
-        <div className="lg:flex lg:justify-around ">
+        <div className="md:flex md:justify-around">
           <div className="relative -top-28 left-16 rounded-3xl lg:w-[450px] lg:h-[200px] w-[330px] h-[250px] bg-gradient-to-r from-violet-500 to-fuchsia-400">
-            <div className="mt-4 ml-8 ">
-              <img
-                src={data.link_avatar}
-                className="lg:ml-1 ml-40 lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] border border-white rounded-full "
-              ></img>
-              <h1 className="lg:ml-1 ml-36 text-5xl text-white">Username</h1>
-              <div className="lg:relative -top-52 left-56 mt-2">
-                <div className="flex justify-around lg:w-[300px]">
+            <div className="md:flex max-md:flex-col md:justify-around py-3 px-3">
+              <div>
+                <img
+                  src={
+                    data.link_avatar == "1"
+                      ? "https://i.ibb.co/WHmrzPt/106287976-917734608745320-4594528301123064306-n.jpg"
+                      : data.link_avatar
+                  }
+                  className="lg:ml-1 ml-40 lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] border border-white rounded-full object-cover"
+                />
+              </div>
+              <div className="md:py-5">
+                <div className="flex justify-around lg:w-[300px] text-center">
                   <div className="text-3xl text-white">
                     <h1 className="ml-8">{data.count_sukien}</h1>
                     <p>Events</p>
@@ -381,18 +413,56 @@ export default function () {
                     <p>Comments</p>
                   </div>
                 </div>
-                <button className=" lg:ml-36 ml-40 mt-10 bg-white shadow-gray-500 rounded-full w-[100px] h-[30px]">
-                  View Events
-                </button>
+                <div className="flex justify-center items-center py-4 gap-3 md:my-8">
+                  <button className=" bg-white shadow-gray-500 rounded-full py-2 px-5 text-[14px]">
+                    View Events
+                  </button>
+                  <button
+                    onClick={() => openModal()}
+                    className="md:hidden bg-white shadow-gray-500 rounded-full py-2 px-5 text-[14px]"
+                  >
+                    <div className="flex justify-center items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={24}
+                        height={24}
+                        viewBox="0 0 24 24"
+                        style={{
+                          fill: "rgba(0, 0, 0, 1)",
+                          transform: "",
+                          msfilter: "",
+                        }}
+                      >
+                        <path d="M11.587 6.999H7.702a2 2 0 0 0-1.88 1.316l-3.76 10.342c-.133.365-.042.774.232 1.049l.293.293 6.422-6.422c-.001-.026-.008-.052-.008-.078a1.5 1.5 0 1 1 1.5 1.5c-.026 0-.052-.007-.078-.008l-6.422 6.422.293.293a.997.997 0 0 0 1.049.232l10.342-3.761a2 2 0 0 0 1.316-1.88v-3.885L19 10.414 13.586 5l-1.999 1.999zm8.353 2.062-5-5 2.12-2.121 5 5z" />
+                      </svg>
+                      <span> Edit </span>
+                    </div>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-          <div>
+          <div className="">
             <button
               onClick={() => openModal()}
-              className="lg:mt-20 ml-48 -mt-60 my-2 bg-white shadow-gray-500 rounded-full w-[150px] h-[25px]"
+              className="max-lg:hidden bg-white shadow-gray-500 rounded-full py-2 px-5 text-[14px] my-8 mx-7"
             >
-              Edit your profile
+              <div className="flex justify-center items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width={24}
+                  height={24}
+                  viewBox="0 0 24 24"
+                  style={{
+                    fill: "rgba(0, 0, 0, 1)",
+                    transform: "",
+                    msfilter: "",
+                  }}
+                >
+                  <path d="M11.587 6.999H7.702a2 2 0 0 0-1.88 1.316l-3.76 10.342c-.133.365-.042.774.232 1.049l.293.293 6.422-6.422c-.001-.026-.008-.052-.008-.078a1.5 1.5 0 1 1 1.5 1.5c-.026 0-.052-.007-.078-.008l-6.422 6.422.293.293a.997.997 0 0 0 1.049.232l10.342-3.761a2 2 0 0 0 1.316-1.88v-3.885L19 10.414 13.586 5l-1.999 1.999zm8.353 2.062-5-5 2.12-2.121 5 5z" />{" "}
+                </svg>
+                <span> Edit your profile</span>
+              </div>
             </button>
             {showModal ? (
               <>
@@ -409,7 +479,11 @@ export default function () {
                           </div>
                           <div className="mt-10 ">
                             <img
-                              src={data.link_avatar}
+                              src={
+                                data.link_avatar == "1"
+                                  ? "https://i.ibb.co/WHmrzPt/106287976-917734608745320-4594528301123064306-n.jpg"
+                                  : data.link_avatar
+                              }
                               className="lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] border border-white rounded-full"
                             ></img>
                           </div>
@@ -420,27 +494,28 @@ export default function () {
                             >
                               edit
                             </button>
-                            {/* ---- */}
                             {showModals ? (
                               <>
                                 <div className="justify-center items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                                  <div className="relative w-[1000px] h-[600px]  max-w-3xl">
-                                    <div className="lg:-ml-16 ml-6 lg:w-[700px] w-[400px] border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
-                                      <div className="relative p-6 flex-auto  lg:h-[800px] h-[700px]">
+                                  <div className="">
+                                    <div className="max-lg:ml-0 max-lg:w-full lg:-ml-16 ml-6 lg:w-[700px] w-[400px] border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
+                                      <div className="relative p-6 flex-auto lg:h-[800px] h-[700px]">
                                         <p className=" text-center text-black-500 slab text-3xl leading-relaxed text-black">
                                           Update Avatar
                                         </p>
                                         <div className="mt-10 text-3xl text-black">
                                           <div>
-                                            <h1>Suggestion</h1>
+                                            <h1 className="py-3">Suggestion</h1>
                                           </div>
-                                          <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-auto h-[120px]">
+                                          <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 h-[120px] overflow-x-hidden">
                                             {imgdata.map((item, index) => (
                                               <div
                                                 key={index}
-                                                className="w-[100px] h-[100px] border-2 border-indigo-600"
+                                                className="w-[100px] h-[100px] border-2 "
+                                                onClick={() =>
+                                                  handlePickAvatar(item)
+                                                }
                                               >
-                                                {/* <input type='file' className='w-[100px] h-[100px]'></input> */}
                                                 <img
                                                   src={item}
                                                   className="w-[100px] h-[100px]"
@@ -449,33 +524,29 @@ export default function () {
                                               </div>
                                             ))}
                                           </div>
-                                          <h1 className="text-center mt-6">
-                                            View More
-                                          </h1>
+                                          <div className="border-t bg-slate-700 min-w-full my-4"></div>
                                         </div>
-                                        <div className="mt-10">
-                                          <div className="flex justify-between mt-10 text-3xl text-black">
+                                        <div className="md:mt-10 md:my-10">
+                                          <div className="flex md:justify-between flex-col text-3xl text-black">
                                             <div>
-                                              <h1>Uploaded Avatar</h1>
+                                              <h1 className="my-1">
+                                                Uploaded Avatar
+                                              </h1>
                                             </div>
 
-                                            <div>
-                                              <button
-                                                onClick={UploadedAvatar}
-                                                className="bg-white shadow-gray-500 rounded-full w-[50px] h-[30px]"
-                                              >
-                                                ảnh
-                                              </button>
+                                            <div className="max-sm:py-2">
                                               <input
                                                 type="file"
+                                                accept="image/*"
                                                 onChange={handleImageChange}
                                               />
                                             </div>
                                           </div>
-                                          <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-auto h-[120px]">
-                                            {/* {
-                                              selectedImage.map((item) => ( */}
-                                            <div className="w-[100px] h-[100px] border-2 border-indigo-600">
+                                          <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-x-hidden h-[120px]">
+                                            <div
+                                              className="w-[100px] h-[100px] border-2"
+                                              id="imgUploadedAvatar"
+                                            >
                                               {selectedImage && (
                                                 <img
                                                   src={URL.createObjectURL(
@@ -486,24 +557,25 @@ export default function () {
                                                 />
                                               )}
                                             </div>
-                                            {/* ))
-                                            } */}
                                           </div>
-                                          <h1 className="text-center mt-6">
-                                            View More
-                                          </h1>
+                                          <div className="border-t bg-slate-700 min-w-full my-4"></div>
                                         </div>
-                                        <div className="mt-10">
-                                          <div className="flex justify-between mt-10 text-3xl text-black">
+                                        <div className="md:mt-10">
+                                          <div className="flex justify-between text-3xl text-black">
                                             <div>
-                                              <h1>Your Gallery</h1>
+                                              <h1 className="py-3">
+                                                Your Gallery
+                                              </h1>
                                             </div>
                                           </div>
-                                          <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-auto h-[120px]">
+                                          <div className="grid lg:grid-cols-6 gap-x-8 gap-y-4 grid-cols-3 overflow-x-hidden h-[120px]">
                                             {imgdata.map((item, index) => (
                                               <div
                                                 key={index}
-                                                className="w-[100px] h-[100px] border-2 border-indigo-600"
+                                                className="w-[100px] h-[100px] border-2"
+                                                onClick={() =>
+                                                  handlePickAvatar(item)
+                                                }
                                               >
                                                 <img
                                                   src={item}
@@ -519,7 +591,12 @@ export default function () {
                                             Access Your Gallery
                                           </h1>
                                           <div className="flex justify-between mt-10 text-3xl text-black">
-                                            <button className="lg:ml-80 ml-20 text-white bg-gray-500 shadow-white rounded-full w-[250px] h-[30px]">
+                                            <button
+                                              onClick={() =>
+                                                handleUploadAvatar()
+                                              }
+                                              className="hover:scale-105 hover:bg-gray-700 lg:ml-80 ml-20 text-white bg-gray-500 shadow-white rounded-full w-[250px] h-[30px]"
+                                            >
                                               Update Avatar
                                             </button>
                                           </div>
@@ -540,7 +617,6 @@ export default function () {
                                 <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                               </>
                             ) : null}
-                            {/* -----end--- */}
                           </div>
                         </div>
                         <div className="flex lg:justify-around justify-evenly mt-10 text-3xl text-black">
@@ -577,191 +653,193 @@ export default function () {
             ) : null}
           </div>
         </div>
-        <div className="bg-amber-400 w-screen h-[50px] text-1xl sticky top-[400px] mb-8 -mt-20">
-          <div className="flex justify-center pt-6">
-            <div className="mt-2">You haven't finished the procedure yet</div>
-            <div className="mx-8">
-              <button
-                onClick={() => openModals()}
-                className=" bg-white shadow-gray-500 rounded-full w-[150px] h-[25px]"
-              >
-                Complete your profile
-              </button>
-              {showModals ? (
-                <>
-                  <div className="justify-center items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                    <div className="relative w-[1000px]  max-w-3xl">
-                      <div className="lg:-ml-16 ml-6 lg:w-[680px] lg:py-4 lg:px-8 w-[400px] border-0 rounded-lg shadow-lg relative flex flex-col bg-black outline-none focus:outline-none">
-                        <div className="relative px-10 flex-auto  lg:h-[700px] h-[600px] text-white">
-                          <h1 className=" text-center text-black-500 slab max-lg:pt-8 text-4xl md:text-[32px] leading-relaxed text-white">
-                            Complete profile
-                          </h1>
-                          <p className=" text-black-500 slab text-4xl leading-relaxed text-white max-lg:text-3xl">
-                            Pick 8-12 photos of yourself
-                          </p>
-                          <div className="md:mt-10 text-3xl text-white">
-                            <div className="my-8">
-                              <h1 className="text-4xl text-green-600 flex md:py-1">
-                                <img
-                                  className="h-[30px]"
-                                  src="https://png.pngtree.com/png-vector/20221215/ourmid/pngtree-green-check-mark-png-image_6525691.png"
-                                  alt=""
-                                />{" "}
-                                Good photos
-                              </h1>
-                              <p className="w-[350px] max-lg:text-2xl">
-                                close-up selfies, same subject, variety of
-                                background, expressions and face angles
-                              </p>
-                            </div>
+        {imgdata.length === 0 && (
+          <div className="bg-amber-400 w-screen h-[50px] text-1xl sticky top-[400px] mb-8 -mt-20">
+            <div className="flex justify-center pt-6">
+              <div className="mt-2">You haven't finished the procedure yet</div>
+              <div className="mx-8">
+                <button
+                  onClick={() => setShowModals22(true)}
+                  className=" bg-white shadow-gray-500 rounded-full w-[150px] h-[25px]"
+                >
+                  Complete your profile
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {showModals22 ? (
+          <>
+            <div className="justify-center items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none">
+              <div className="relative w-[1000px]  max-w-3xl">
+                <div className="lg:-ml-16 ml-6 lg:w-[680px] lg:py-4 lg:px-8 w-[400px] border-0 rounded-lg shadow-lg relative flex flex-col bg-black outline-none focus:outline-none">
+                  <div className="relative px-10 flex-auto  lg:h-[700px] h-[600px] text-white">
+                    <h1 className=" text-center text-black-500 slab max-lg:pt-8 text-4xl md:text-[32px] leading-relaxed text-white">
+                      Complete profile
+                    </h1>
+                    <p className=" text-black-500 slab text-4xl leading-relaxed text-white max-lg:text-3xl">
+                      Pick 8-12 photos of yourself
+                    </p>
+                    <div className="md:mt-10 text-3xl text-white">
+                      <div className="my-8">
+                        <h1 className="text-4xl text-green-600 flex md:py-1">
+                          <img
+                            className="h-[30px]"
+                            src="https://png.pngtree.com/png-vector/20221215/ourmid/pngtree-green-check-mark-png-image_6525691.png"
+                            alt=""
+                          />{" "}
+                          Good photos
+                        </h1>
+                        <p className="w-[350px] max-lg:text-2xl">
+                          close-up selfies, same subject, variety of background,
+                          expressions and face angles
+                        </p>
+                      </div>
 
-                            <div className="flex gap-3 overflow-x-scroll">
-                              {imgSucess?.map((item, index) => (
-                                <div
-                                  key={index}
-                                  className="relative lg:w-[90px] lg:h-[90px] w-[60px] h-[60px] rounded-lg overflow-hidden"
-                                >
-                                  <img
-                                    src={item}
-                                    alt=""
-                                    className="lg:w-[90px] lg:h-[90px] w-[60px] h-[60px] object-cover"
-                                  />
-                                  <img
-                                    src="https://png.pngtree.com/png-vector/20221215/ourmid/pngtree-green-check-mark-png-image_6525691.png"
-                                    className="absolute h-[25px] bottom-0 right-3"
-                                    alt=""
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                          <div className="md:mt-10 text-3xl text-white">
-                            <div className="my-8">
-                              <h1 className="text-4xl text-red-600 flex md:py-1">
-                                <img
-                                  className="h-[30px]"
-                                  src="https://i.ibb.co/bJ517B1/close-removebg-preview.png"
-                                  alt=""
-                                />{" "}
-                                Bad photos
-                              </h1>
-                              <p className="w-[350px] max-lg:text-2xl">
-                                Group pics, face small or not visible, sunglass,
-                                animal
-                              </p>
-                            </div>
-                            <div className="flex gap-3 overflow-x-scroll">
-                              {imgError?.map((item, index) => (
-                                <div
-                                  key={index}
-                                  className="relative lg:w-[90px] lg:h-[90px] w-[60px] h-[60px] rounded-lg overflow-hidden"
-                                >
-                                  <img
-                                    src={item}
-                                    alt=""
-                                    className="lg:w-[90px] lg:h-[90px] w-[60px] h-[60px] object-cover"
-                                  />
-                                  <img
-                                    src="https://i.ibb.co/bJ517B1/close-removebg-preview.png"
-                                    className="absolute h-[25px] bottom-0 right-3"
-                                    alt=""
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                          <div className="mt-10">
-                            <div className="text-3xl text-white">
-                              <div>
-                                <h1 className="lg:w-[550px] w-[300px] max-lg:text-2xl">
-                                  Your photos will be deleted permanetly from
-                                  our servers within 24h, and won’t be used for
-                                  any other purpose
-                                </h1>
-                              </div>
-                            </div>
-                          </div>
-
-                          {imgSucess?.length >= 8 ? (
-                            <div className="mt-10 py-3">
-                              <div className="flex justify-between mt-10 text-3xl text-black">
-                                <div className="flex items-center justify-center w-full max-md:py-4 text-gray-300 hover:text-gray-100">
-                                  <button
-                                    onClick={() => onHandleUploadImage()}
-                                    className="mb-2 text-sm  dark:text-gray-400 bg-slate-200 text-black rounded-full py-3 px-20 hover:scale-110 hover:bg-slate-100"
-                                  >
-                                    <span className="font-semibold text-4xl">
-                                      Upload
-                                    </span>
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="mt-10">
-                              <div className="flex justify-between mt-10 text-3xl text-black">
-                                <div className="flex items-center justify-center w-full max-md:py-4 text-gray-300 hover:text-gray-100">
-                                  <label
-                                    htmlFor="dropzone-file"
-                                    className="flex flex-col items-center justify-center w-full cursor-pointer"
-                                  >
-                                    <div className="flex flex-col items-center justify-center pt-5 pb-1">
-                                      <svg
-                                        className="w-8 h-8  dark:text-gray-400"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 20 16"
-                                      >
-                                        <path
-                                          stroke="currentColor"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                                        />
-                                      </svg>
-                                      <p className="mb-2 text-sm  dark:text-gray-400">
-                                        <span className="font-semibold text-4xl">
-                                          Select 8-12 Photos
-                                        </span>
-                                      </p>
-                                      <p className="text-xs  dark:text-gray-400">
-                                        PNG, JPG
-                                      </p>
-                                    </div>
-                                    <input
-                                      id="dropzone-file"
-                                      type="file"
-                                      className="hidden"
-                                      multiple
-                                      accept="image/*"
-                                      onChange={(e) => onChangeImage(e)}
-                                    />
-                                  </label>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        <div className="relative lg:left-[540px] lg:-top-[700px] left-[340px] -top-[610px] w-[50px] flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                          <button
-                            className="text-[#FF2C61] slab hover:bg-[#ED709D] hover:text-white font-bold uppercase px-6 py-3 rounded-xl text-2xl outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                            type="button"
-                            onClick={() => closeModals()}
+                      <div className="flex gap-3 overflow-x-scroll">
+                        {imgSucess?.map((item, index) => (
+                          <div
+                            key={index}
+                            className="relative lg:w-[90px] lg:h-[90px] w-[60px] h-[60px] rounded-lg overflow-hidden"
                           >
-                            *
-                          </button>
+                            <img
+                              src={item}
+                              alt=""
+                              className="lg:w-[90px] lg:h-[90px] w-[60px] h-[60px] object-cover"
+                            />
+                            <img
+                              src="https://png.pngtree.com/png-vector/20221215/ourmid/pngtree-green-check-mark-png-image_6525691.png"
+                              className="absolute h-[25px] bottom-0 right-3"
+                              alt=""
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="md:mt-10 text-3xl text-white">
+                      <div className="my-8">
+                        <h1 className="text-4xl text-red-600 flex md:py-1">
+                          <img
+                            className="h-[30px]"
+                            src="https://i.ibb.co/bJ517B1/close-removebg-preview.png"
+                            alt=""
+                          />{" "}
+                          Bad photos
+                        </h1>
+                        <p className="w-[350px] max-lg:text-2xl">
+                          Group pics, face small or not visible, sunglass,
+                          animal
+                        </p>
+                      </div>
+                      <div className="flex gap-3 overflow-x-scroll">
+                        {imgError?.map((item, index) => (
+                          <div
+                            key={index}
+                            className="relative lg:w-[90px] lg:h-[90px] w-[60px] h-[60px] rounded-lg overflow-hidden"
+                          >
+                            <img
+                              src={item}
+                              alt=""
+                              className="lg:w-[90px] lg:h-[90px] w-[60px] h-[60px] object-cover"
+                            />
+                            <img
+                              src="https://i.ibb.co/bJ517B1/close-removebg-preview.png"
+                              className="absolute h-[25px] bottom-0 right-3"
+                              alt=""
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mt-10">
+                      <div className="text-3xl text-white">
+                        <div>
+                          <h1 className="lg:w-[550px] w-[300px] max-lg:text-2xl">
+                            Your photos will be deleted permanetly from our
+                            servers within 24h, and won’t be used for any other
+                            purpose
+                          </h1>
                         </div>
                       </div>
                     </div>
+
+                    {imgSucess?.length >= 8 ? (
+                      <div className="mt-10 py-3">
+                        <div className="flex justify-between mt-10 text-3xl text-black">
+                          <div className="flex items-center justify-center w-full max-md:py-4 text-gray-300 hover:text-gray-100">
+                            <button
+                              onClick={() => onHandleUploadImage()}
+                              className="mb-2 text-sm  dark:text-gray-400 bg-slate-200 text-black rounded-full py-3 px-20 hover:scale-110 hover:bg-slate-100"
+                            >
+                              <span className="font-semibold text-4xl">
+                                Upload
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="mt-10">
+                        <div className="flex justify-between mt-10 text-3xl text-black">
+                          <div className="flex items-center justify-center w-full max-md:py-4 text-gray-300 hover:text-gray-100">
+                            <label
+                              htmlFor="dropzone-file"
+                              className="flex flex-col items-center justify-center w-full cursor-pointer"
+                            >
+                              <div className="flex flex-col items-center justify-center pt-5 pb-1">
+                                <svg
+                                  className="w-8 h-8  dark:text-gray-400"
+                                  aria-hidden="true"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 20 16"
+                                >
+                                  <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                                  />
+                                </svg>
+                                <p className="mb-2 text-sm  dark:text-gray-400">
+                                  <span className="font-semibold text-4xl">
+                                    Select 8-12 Photos
+                                  </span>
+                                </p>
+                                <p className="text-xs  dark:text-gray-400">
+                                  PNG, JPG
+                                </p>
+                              </div>
+                              <input
+                                id="dropzone-file"
+                                type="file"
+                                className="hidden"
+                                multiple
+                                accept="image/*"
+                                onChange={(e) => onChangeImage(e)}
+                              />
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-                </>
-              ) : null}
+                  <div className="relative lg:left-[540px] lg:-top-[700px] left-[340px] -top-[610px] w-[50px] flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                    <button
+                      className="text-[#FF2C61] slab hover:bg-[#ED709D] hover:text-white font-bold uppercase px-6 py-3 rounded-xl text-2xl outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      type="button"
+                      onClick={() => setShowModals22(false)}
+                    >
+                      *
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          </>
+        ) : null}
         <div className="flex justify-center ">
           <div className="my-16 lg:w-[1000px] w-[350px] mt-8 lg:mt-0 h-fit bg-white rounded-[36px] text-center font-[Montserrat] items-center content-center">
             <ul className="p-8">

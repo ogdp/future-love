@@ -42,7 +42,11 @@ const RenderRandomWaitImage = ({ images1 }) => {
     <div>
       {images.map((image, index) => (
         <div key={index} className="image-container" style={image.position}>
-          <img src={image.url} alt={`Image ${index + 1}`} />
+          <img
+            src={image.url}
+            className="max-lg:w-5 max-lg:h-5"
+            alt={`Image ${index + 1}`}
+          />
         </div>
       ))}
     </div>
