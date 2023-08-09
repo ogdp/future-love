@@ -42,7 +42,7 @@ function FirstMeet() {
 
     return (
         <div className="flex items-center justify-center h-full">
-            { data ?  < TemplateComponent data={data} stt={1} /> : <Empty/> }
+            { data ?  <TemplateComponent data={data} stt={1} /> : <Empty/> }
         </div>
     );
 }
