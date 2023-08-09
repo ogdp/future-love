@@ -34,10 +34,10 @@ function Home() {
   const [image2, setImage2] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [faceMatcher, setFaceMatcher] = useState(null);
   const [showImg, setShowImg] = useState({ img1: null, img2: null });
   const [randomImages, setRandomImages] = useState(null);
   const [isModelWarning, setIsModelWarning] = useState(false);
+  const [modelAlert, setModelAlert] = useState({ status: false, message: "" });
 
   //
   useEffect(() => {
@@ -105,6 +105,72 @@ function Home() {
     }
   };
 
+  const validateImgage = (res) => {
+    if (!res || res == null || res.length > 1 || res.length == 0)
+      return setModelAlert({
+        status: true,
+        message: "Ảnh chỉ được chứa 1 khuôn mặt",
+      });
+
+    const face_height = res[0].detection._box._height;
+    const face_width = res[0].detection._box._width;
+    const img_height = res[0].detection._imageDims._height;
+    const img_width = res[0].detection._imageDims._width;
+    if (img_width < 416 || img_height < 416) {
+      return setModelAlert({
+        status: true,
+        message: "Kích thước hình ảnh quá nhỏ",
+      });
+    }
+
+    if (img_height / img_width < 0.6 || img_width / img_height < 0.6) {
+      return setModelAlert({
+        status: true,
+        message: "Ảnh không được quá dài hay quá rộng",
+      });
+    }
+
+    if (img_width < 1000 && img_height < 1000) {
+      if (416 < img_width && 416 < img_height) {
+        if (
+          ((face_height * face_width) / (img_height * img_width)) * 100 >
+          50
+        ) {
+          return setModelAlert({
+            status: true,
+            message: "Tỉ lệ khuôn mặt chiếm quá lớn khung hình",
+          });
+        }
+
+        if (
+          ((face_height * face_width) / (img_height * img_width)) * 100 <
+          15
+        ) {
+          return setModelAlert({
+            status: true,
+            message: `Tỉ lệ khuôn mặt quá bé`,
+          });
+        }
+      }
+    } else if (img_width > 1000 && img_height > 1000) {
+      if (((face_height * face_width) / (img_height * img_width)) * 100 > 50) {
+        return setModelAlert({
+          status: true,
+          message: "Tỉ lệ khuôn mặt chiếm quá lớn khung hình",
+        });
+      }
+
+      if (((face_height * face_width) / (img_height * img_width)) * 100 < 10) {
+        return setModelAlert({
+          status: true,
+          message: `Tỉ lệ khuôn mặt quá bé`,
+        });
+      }
+    }
+
+    return true;
+  };
+
   const handleChangeImage = async (event, setImage, atImg) => {
     let file = event.target.files[0];
     if (!file) {
@@ -115,8 +181,8 @@ function Home() {
       if (!URL.createObjectURL(file)) return setShowModal(true);
       const res = await validImage(URL.createObjectURL(file));
       // console.log(res);
-      if (!res || res == null || res.length == 0) return setShowModal(true);
       setIsLoading(false);
+      if (validateImgage(res) == undefined) return;
       // console.log("hợp lê ::", res);
       if (atImg == "img1") {
         let send = showImg;
@@ -214,6 +280,38 @@ function Home() {
     return null;
   };
 
+  const funcModelAlert = () => {
+    if (modelAlert.status) {
+      return (
+        <>
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-96 my-6 mx-auto max-w-3xl">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div className="relative p-6 flex-auto">
+                  <p className="my-4 text-slate-500 slab text-3xl leading-relaxed">
+                    {modelAlert.message}
+                  </p>
+                </div>
+                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                  <button
+                    className="text-[#FF2C61] slab hover:bg-[#ED709D] hover:text-white font-bold uppercase px-6 py-3 rounded-xl text-2xl outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => {
+                      setModelAlert({ status: false, message: "" });
+                    }}
+                  >
+                    Đóng
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      );
+    }
+  };
+
   return (
     <div
       style={{ backgroundImage: `url(${imgBg})` }}
@@ -227,6 +325,7 @@ function Home() {
         <RenderRandomWaitImage images1={randomImages} />
       )}
       {isLoading ? renderLoading() : ""}
+      {modelAlert.status ? funcModelAlert() : ""}
       <div className="lg:block hidden">
         <div className="flex justify-between lg:mx-52 pb-32">
           <div>
