@@ -15,7 +15,7 @@ function Template2(props) {
     link_nu_goc,
     count_view,
     count_comment,
-    ten_su_kien
+    ten_su_kien,
   } = data;
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
@@ -57,16 +57,16 @@ function Template2(props) {
             <p className="max-w-[400px]">{noi_dung_su_kien}</p>
           </div>
         </div>
-      {isOpenPopup && (
-        <div className="z-20">
-          <CmtPopup
-            setIsOpenPopup={setIsOpenPopup}
-            data={data}
-            TemplateCmt="TemplateCmt2"
-            stt={props.stt}
-          />
-        </div>
-      )}
+        {isOpenPopup && (
+          <div className="z-20">
+            <CmtPopup
+              setIsOpenPopup={setIsOpenPopup}
+              data={data}
+              TemplateCmt="TemplateCmt2"
+              stt={props.stt}
+            />
+          </div>
+        )}
       </div>
       {/* <img src={data.link_nu_chua_swap} /> */}
     </div>
