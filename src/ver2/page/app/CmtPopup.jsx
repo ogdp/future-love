@@ -19,6 +19,8 @@ function CmtPopup(props) {
   const [dataCmt, setDataCmt] = useState([]);
   const [dataUser, setDataUser] = useState(null);
   const [dataSend, setDataSend] = useState({});
+  const [imgSrc, setImgSrc] = useState('');
+  const [isImgPopup, setIsImgPopup] = useState(false)
   const user = JSON.parse(localStorage.getItem("user-info"));
   console.log(user);
   const idUser = user.id_user;
@@ -28,9 +30,6 @@ function CmtPopup(props) {
 
   const closePopup = () => {
     props.setIsOpenPopup(false);
-    console.log("====================================");
-    console.log(props);
-    console.log("====================================");
   };
 
   const data = props.data;
