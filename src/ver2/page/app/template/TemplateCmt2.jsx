@@ -15,6 +15,7 @@ function TemplateCmt2(props) {
   const {
     id,
     link_nu_goc,
+    
     count_comment,
     count_view,
     real_time,
