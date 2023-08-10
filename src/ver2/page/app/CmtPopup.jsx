@@ -30,8 +30,6 @@ function CmtPopup(props) {
 
   const closePopup = () => {
     props.setIsOpenPopup(false);
-    setImgSrc(props.data.link_nu_goc);
-    setIsImgPopup()
   };
 
   const data = props.data;

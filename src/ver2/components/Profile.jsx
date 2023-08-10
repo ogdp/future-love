@@ -8,6 +8,8 @@ import useEventStore from "../../utils/store";
 import ReactLoading from "react-loading";
 import * as faceapi from "face-api.js";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import HistoryCommentList from "./HistoryCommentList";
 
 export default function () {
   const [data, setData] = useState([]);
@@ -52,9 +54,7 @@ export default function () {
   //hiện thị avatar
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        `http://14.225.7.221:8989/profile/${user.id_user}`
-      );
+      const response = await fetch(`${server}/profile/${user.id_user}`);
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
@@ -90,15 +90,15 @@ export default function () {
   //comments
   const [datas, setDatas] = useState([]);
   const setEvent = useEventStore((state) => state.setEvent);
-  const [currentPage, setCurrentPage] = useState(1);
-  const resultsPerPage = 10;
 
   const fetchDatas = async () => {
     try {
+      const user = JSON.parse(window.localStorage.getItem("user-info"));
       const res = await axios.get(
-        `http://14.225.7.221:8989/lovehistory/pageComment/1`
+        `${server}/lovehistory/comment/user/${user.id_user}`
       );
-      setDatas(res.data.comment);
+      console.log(res);
+      setDatas(res.data.comment_user);
       setEvent(res.data);
       // console.log(res);
       // const ipAddress = data.dia_chi_ip; // Lấy địa chỉ IP từ dữ liệu response
@@ -112,16 +112,6 @@ export default function () {
     fetchDatas();
   }, []);
 
-  const dataSort = datas.sort((a, b) => {
-    const dateA = new Date(a.thoi_gian_release);
-    const dateB = new Date(b.thoi_gian_release);
-    return dateB - dateA;
-  });
-
-  const indexOfLastResult = currentPage * resultsPerPage;
-  const indexOfFirstResult = indexOfLastResult - resultsPerPage;
-  const currentResults = dataSort.slice(indexOfFirstResult, indexOfLastResult);
-  const totalPages = Math.ceil(dataSort.length / resultsPerPage);
   // ---end commnets
 
   //   Upload from 8-> 12 images
@@ -293,6 +283,14 @@ export default function () {
         value: "The picture is not in the correct format",
       });
     }
+    if (res.length > 1) {
+      setIsLoading(false);
+      setSelectedImage(false);
+      return setNotiImage({
+        status: true,
+        value: "Hình ảnh chỉ được chứa duy nhất 1 khuôn mặt",
+      });
+    }
     setSelectedImage(event.target.files[0]);
     setIsLoading(false);
   };
@@ -349,7 +347,7 @@ export default function () {
   // ---- END
 
   return (
-    <div className="bg-slate-300 w-[100%] h-full">
+    <div className="bg-[#E9E9E9] w-[100%] h-full">
       {notiImage.status ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-[1000] outline-none focus:outline-none">
@@ -386,7 +384,7 @@ export default function () {
         </div>
         {setIsLoading ? renderLoading() : null}
         <div className="md:flex md:justify-around">
-          <div className="relative -top-28 left-16 rounded-3xl lg:w-[450px] lg:h-[200px] w-[330px] h-[250px] bg-gradient-to-r from-violet-500 to-fuchsia-400">
+          <div className="relative lg:-top-28 lg:left-16  max-lg:-top-28 max-lg:left-1/2 max-lg:translate-x-[-50%] rounded-3xl lg:w-[450px] lg:h-[200px] w-[330px] h-[250px] bg-gradient-to-r from-violet-500 to-fuchsia-400">
             <div className="md:flex max-md:flex-col md:justify-around py-3 px-3">
               <div>
                 <img
@@ -496,7 +494,7 @@ export default function () {
                             </button>
                             {showModals ? (
                               <>
-                                <div className="justify-center items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                                <div className="justify-center md:items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none">
                                   <div className="">
                                     <div className="max-lg:ml-0 max-lg:w-full lg:-ml-16 ml-6 lg:w-[700px] w-[400px] border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
                                       <div className="relative p-6 flex-auto lg:h-[800px] h-[700px]">
@@ -511,14 +509,14 @@ export default function () {
                                             {imgdata.map((item, index) => (
                                               <div
                                                 key={index}
-                                                className="w-[100px] h-[100px] border-2 "
+                                                className="w-[100px] h-[100px] border-2 flex justify-center items-center"
                                                 onClick={() =>
                                                   handlePickAvatar(item)
                                                 }
                                               >
                                                 <img
                                                   src={item}
-                                                  className="w-[100px] h-[100px]"
+                                                  className="w-[90px] h-[90px] hover:scale-105 transition-all cursor-pointer"
                                                   type="file"
                                                 ></img>
                                               </div>
@@ -572,14 +570,14 @@ export default function () {
                                             {imgdata.map((item, index) => (
                                               <div
                                                 key={index}
-                                                className="w-[100px] h-[100px] border-2"
+                                                className="w-[100px] h-[100px] border-2 flex justify-center items-center"
                                                 onClick={() =>
                                                   handlePickAvatar(item)
                                                 }
                                               >
                                                 <img
                                                   src={item}
-                                                  className="w-[100px] h-[100px]"
+                                                  className="w-[90px] h-[90px] hover:scale-105 transition-all cursor-pointer"
                                                   type="file"
                                                 />
                                               </div>
@@ -595,7 +593,7 @@ export default function () {
                                               onClick={() =>
                                                 handleUploadAvatar()
                                               }
-                                              className="hover:scale-105 hover:bg-gray-700 lg:ml-80 ml-20 text-white bg-gray-500 shadow-white rounded-full w-[250px] h-[30px]"
+                                              className="hover:scale-105 hover:bg-gray-700 hover:transition-all lg:ml-80 ml-20 text-white bg-gray-500 shadow-white rounded-full w-[250px] h-[30px]"
                                             >
                                               Update Avatar
                                             </button>
@@ -840,39 +838,7 @@ export default function () {
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         ) : null}
-        <div className="flex justify-center ">
-          <div className="my-16 lg:w-[1000px] w-[350px] mt-8 lg:mt-0 h-fit bg-white rounded-[36px] text-center font-[Montserrat] items-center content-center">
-            <ul className="p-8">
-              {currentResults.map((data, i) => (
-                <li
-                  className="flex flex-row w-full h-32 lg:justify-between justify-around"
-                  key={i}
-                >
-                  {data.imageattach === null &&
-                    data.imageattach === undefined && (
-                      <img
-                        src={data.avatar_user}
-                        alt=""
-                        className="w-20 h-20 rounded-[50%] "
-                      />
-                    )}
-
-                  <span className="text-[16px]"> {data.device_cmt}</span>
-                  <span className="text-[16px] max-w-xl">
-                    {data.noi_dung_cmt.length > 10
-                      ? data.noi_dung_cmt.slice(0, 50) + "..."
-                      : data.noi_dung_cmt}
-                  </span>
-                  <span className="text-[16px]">
-                    {data.dia_chi_ip.length > 15
-                      ? data.dia_chi_ip.slice(0, 15) + "..."
-                      : data.dia_chi_ip}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <HistoryCommentList datas={datas} />
       </div>
     </div>
   );
