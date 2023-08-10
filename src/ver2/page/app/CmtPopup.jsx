@@ -6,7 +6,7 @@ import TemplateCmt2 from "./template/TemplateCmt2";
 import TemplateCmt3 from "./template/TemplateCmt3";
 import TemplateCmt4 from "./template/TemplateCmt4";
 import { useParams } from "react-router-dom";
-
+import noAvatar from "../app/img/no-avatar.png";
 const templateComponents = {
   TemplateCmt1: TemplateCmt1,
   TemplateCmt2: TemplateCmt2,
@@ -17,7 +17,7 @@ const templateComponents = {
 function CmtPopup(props) {
   const { idsk } = useParams();
   const [dataCmt, setDataCmt] = useState([]);
-  const [dataUser, setDataUser] = useState([]);
+  const [dataUser, setDataUser] = useState(null);
   const [dataSend, setDataSend] = useState({});
   const user = JSON.parse(localStorage.getItem("user-info"));
   console.log(user);
@@ -28,6 +28,9 @@ function CmtPopup(props) {
 
   const closePopup = () => {
     props.setIsOpenPopup(false);
+    console.log("====================================");
+    console.log(props);
+    console.log("====================================");
   };
 
   const data = props.data;
@@ -37,9 +40,8 @@ function CmtPopup(props) {
       const response = await axios.get(
         `http://14.225.7.221:8989/lovehistory/comment/user/${idUser}`
       );
-      console.log("listcmt", response.data.comment_user);
       setDataCmt(response.data.comment_user);
-      // console.log(data)
+      console.log(response.data.comment_user);
     } catch (err) {
       console.log(err);
     }
@@ -50,15 +52,11 @@ function CmtPopup(props) {
 
   const fetchDataUser = async () => {
     try {
-      //   const response = await axios.get(
-      //     `http://14.225.7.221:8989/profile/${idUser}`
-      //   );
       const response = await axios.get(
         `http://14.225.7.221:8989/lovehistory/comment/1?id_toan_bo_su_kien=${idUser}`
       );
       console.log(response.data.comment[0]);
       setDataUser(response.data.comment[0]);
-      // console.log(data)
     } catch (err) {
       console.log(err);
     }
@@ -71,15 +69,11 @@ function CmtPopup(props) {
 
   const handleInputChange = (event) => {
     const newValue = event.target.value;
-    setInputValue(event.target.value);
-    setDataSend((prevData) => ({ ...prevData, key1: newValue }));
+    setInputValue(newValue);
   };
 
   const HandleSendCmt = () => {
     const url = "http://14.225.7.221:8989/lovehistory/comment";
-    console.log("====================================");
-    console.log(dataUser);
-    console.log("====================================");
     const {
       device_cmt,
       id_toan_bo_su_kien,
@@ -109,15 +103,14 @@ function CmtPopup(props) {
         console.log("Dữ liệu đã được gửi thành công:", response.data.comment);
         setDataCmt((prev) => [...prev, response.data.comment]);
         setInputValue("");
-        console.log("====================================");
-        console.log(dataCmt);
-        console.log("====================================");
       })
       .catch((error) => {
         console.error("Lỗi khi gửi dữ liệu:", error);
       });
   };
-
+  console.log("====================================");
+  console.log("Data user", dataUser);
+  console.log("====================================");
   const TemplateComponent = templateComponents[templateCmt];
 
   return (
@@ -130,103 +123,69 @@ function CmtPopup(props) {
         left: 0,
         right: 0,
         overflow: "auto",
-
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}
     >
       <div className="w-[15%] h-[100%]" onClick={closePopup}></div>
-      <div
-        style={{
-          marginTop: "100px",
-          background: "white",
-          borderRadius: "36px",
-          width: "1019px",
-          height: "auto",
-          overflow: "auto",
-          // display: 'flex',
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        className="mt-[50px]"
-      >
-        <div>
-          <div className="">
-            <TemplateComponent data={data} />
-          </div>
+      <div className=" bg-white rounded-lg rounded-t-[36px] flex flex-col gap-y-3 h-[95%] w-[65%] relative">
+        <div className="">
+          <TemplateComponent data={data} onClick={closePopup} />
         </div>
 
         {/* {comment} */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              marginTop: "5px",
-              background: "red",
-              borderRadius: "30px",
-              width: "90%",
-              height: "auto",
-              overflow: "auto",
-            }}
-          >
-            {dataCmt.length > 0 &&
-              dataCmt.map(
-                (cmt, index) =>
-                  cmt.so_thu_tu_su_kien == props.stt && (
-                    <div className="flex mt-[10px]">
-                      {/* {other-avt} */}
-                      <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
-                        <img
-                          src={cmt.imageattach}
-                          alt=""
-                          className="w-[100%] h-[100%] object-cover rounded-[50%]"
-                        />
-                      </div>
-
-                      {/* { Name + Content } */}
-                      <div className="ml-[10px]">
-                        <h1 className="text-2xl">{cmt.user_name}</h1>
-                        <p className="text-xl"> {cmt.noi_dung_cmt}</p>
-                        <p>{cmt.thoi_gian_release}</p>
-                      </div>
+        <div className="overflow-y-scroll">
+          {dataCmt.length > 0 &&
+            dataCmt.map(
+              (cmt, index) =>
+                cmt.so_thu_tu_su_kien === props.stt && (
+                  <div className="flex items-stretch gap-x-4">
+                    {/* {other-avt} */}
+                    <div
+                      className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]"
+                      // key={index}
+                    >
+                      <img
+                        src={cmt.imageattach ? cmt.imageattach : noAvatar}
+                        alt=""
+                        className="w-[100%] h-[100%] object-cover rounded-[50%]"
+                      />
                     </div>
-                  )
-              )}
-            <div className="flex align-center justify-center">
-              <div className="flex bg-[blue] rounded-[30px] w-[100%] mt-[10px] mb-[7px]">
-                {/* {other-avt} */}
-                <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px] mt-[5px]">
-                  <img
-                    src={dataUser.avatar_user}
-                    alt=""
-                    className="w-[100%] h-[100%] object-cover rounded-[50%]"
-                  />
-                </div>
 
-                {/* { Content } */}
-                <div className="ml-[20px] mt-[10px] w-[85%] h-[auto] flex mb-[10px] ">
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    className="w-[100%] h-[auto] rounded-[36px]"
-                  ></input>
-                </div>
-                {/* { Push } */}
-                <div
-                  className="mt-[10px] ml-[10px]"
-                  onClick={() => HandleSendCmt()}
-                >
-                  <img src={send} alt="" className="w-[80%] h-[80%] " />
-                </div>
-              </div>
-            </div>
+                    {/* { Name + Content } */}
+                    <div className="">
+                      <h1 className="text-lg font-semibold">{cmt.user_name}</h1>
+                      <p className="text-base"> {cmt.noi_dung_cmt}</p>
+                      <p className="text-sm">{cmt.thoi_gian_release}</p>
+                    </div>
+                  </div>
+                )
+            )}
+        </div>
+        <div className="flex items-center justify-around mx-3 gap-x-4 rounded-full shadow-sm shadow-slate-300">
+          <div className="overflow-hidden rounded-full w-[50px]">
+            <img
+              src={
+                dataUser?.avatar_user.split(":")[0] === "https"
+                  ? dataSend.avatar_user
+                  : noAvatar
+              }
+              alt=""
+              className="w-[100%] h-[100%] object-cover"
+            />
+          </div>
+
+          <div className="w-full py-1 px-3 border bg-gray-50 border-gray-500 rounded-full">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={handleInputChange}
+              className="w-full h-auto border-none outline-none"
+            ></input>
+          </div>
+          <div className="w-[30px]" onClick={() => HandleSendCmt()}>
+            <img src={send} alt="" className="w-[100%] h-[100%] object-cover" />
           </div>
         </div>
       </div>
