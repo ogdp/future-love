@@ -33,7 +33,7 @@ function Comments() {
   };
 
   const changeUp = () => {
-    if (countCM <= currentPage+1) {
+    if (countCM <= currentPage + 1) {
       setCountCM(countCM + 1);
       fetchData();
     }
@@ -98,14 +98,15 @@ function Comments() {
                 />
               )}
             </div>
-            <div className="flex flex-col lg:w-[70%] w-[60%]">
+            <div className="flex flex-col lg:w-[70%] w-[60%] gap-x-2">
               <span className="text-[18px] font-semibold">
                 {data.user_name}
               </span>
               <span className="text-[16px]">{data.noi_dung_cmt}</span>
+              <span className="text-base">{data.device_cmt}</span>
             </div>
 
-            <div className="lg:w-[15%] w-[20%] text-[13px]">
+            <div className="lg:w-[15%] w-[15%] text-[13px]">
               {data.thoi_gian_release}
             </div>
             <div className="lg:w-[15%] w-[20%] text-[13px]">

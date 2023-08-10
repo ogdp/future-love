@@ -23,6 +23,7 @@ function EventHistory(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const history = createBrowserHistory();
   const [count, setCount] = useState(1);
+  const seenIds = {};
 
   const resultsPerPage = 8;
 
@@ -48,7 +49,8 @@ function EventHistory(props) {
       }
       const jsonData = await response.json();
       console.log(jsonData.list_sukien);
-      setData(jsonData.list_sukien[0].sukien);
+      // console.log("absjadaskdkahdkashdkjashdkjashdkashdkakdj")
+      setData(jsonData.list_sukien);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -132,12 +134,13 @@ function EventHistory(props) {
         {props.data && props.search ? (
           <div>
             {props.data.map((array, index) => (
+
               <div
-                onClick={() => handleEventHistory(array.id_toan_bo_su_kien)}
+                onClick={() => handleEventHistory(array.sukien[array.sukien.length-1].id_toan_bo_su_kien)}
                 key={index}
                 className={`lg:w-[100vh] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
               >
-                {array.id_template === 1 && 4 ? (
+                {array.sukien[array.sukien.length-1].id_template === 1 && 4 ? (
                   <div
                     style={{ backgroundImage: `url(${bg1})` }}
                     className="bg-no-repeat lg:bg-contain bg-center lg:w-full lg:h-full"
@@ -146,21 +149,21 @@ function EventHistory(props) {
                       <div className="lg:w-[300px] flex flex-col justify-center lg:ml-28 ml-5 lg:mt-0 mt-20">
                         {/* image love */}
                         <span
-                          key={array.id}
-                          to={`/ array / ${array.id}`}
+                          key={array.sukien[array.sukien.length-1].id}
+                          to={`/ array / ${array.sukien[array.sukien.length-1].id}`}
                           className="lg:text-[24px] starborn"
                         >
-                          {array.ten_su_kien}
+                          {array.sukien[array.sukien.length-1].ten_su_kien}
                         </span>
                         <p className="slab font-semibold lg:text-[16px]">
-                          {array.noi_dung_su_kien}
+                          {array.sukien[array.sukien.length-1].noi_dung_su_kien}
                         </p>
                         <div className="my-4 slab font-semibold lg:text-[16px]">
                           <span
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
-                            {array.real_time}
+                            {array.sukien[array.sukien.length-1].real_time}
                           </span>
                         </div>
                       </div>
@@ -168,7 +171,7 @@ function EventHistory(props) {
                         {/* image swap */}
                         <div
                           style={{
-                            backgroundImage: `url(${array.link_da_swap})`,
+                            backgroundImage: `url(${array.sukien[array.sukien.length-1].link_da_swap})`,
                           }}
                           className=" lg:w-[295px] w-[100px] h-[100px] lg:h-[295px] rounded-full bg-no-repeat bg-cover mt-1"
                         />
@@ -180,7 +183,7 @@ function EventHistory(props) {
                     </div>
                     {/* first event */}
                   </div>
-                ) : array.id_template === 2 ? (
+                ) : array.sukien[array.sukien.length-1].id_template === 2 ? (
                   <div
                     style={{ backgroundImage: `url(${bg2})` }}
                     className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
@@ -195,15 +198,15 @@ function EventHistory(props) {
                       <div className="flex flex-col justify-center items-center mt-12">
                         {/* image love */}
                         <span
-                          key={array.id}
-                          to={`/ array / ${array.id}`}
+                          key={array.sukien[array.sukien.length-1].id}
+                          to={`/ array / ${array.sukien[array.sukien.length-1].id}`}
                           className="lg:text-[24px] starborn"
                         >
-                          {array.ten_su_kien}
+                          {array.sukien[array.sukien.length-1].ten_su_kien}
                         </span>
                         <div className="box lg:h-52 h-36 mt-3">
                           <p className="slab font-semibold lg:text-[16px]">
-                            {array.noi_dung_su_kien}
+                            {array.sukien[array.sukien.length-1].noi_dung_su_kien}
                           </p>
                         </div>
 
@@ -212,7 +215,7 @@ function EventHistory(props) {
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
-                            {array.real_time}
+                            {array.sukien[array.sukien.length-1].real_time}
                           </span>
                         </div>
                       </div>
@@ -233,15 +236,15 @@ function EventHistory(props) {
                       {/* image love */}
                       <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
                         <span
-                          key={array.id}
-                          to={`/ array / ${array.id}`}
+                          key={array.sukien[array.sukien.length-1].id}
+                          to={`/ array / ${array.sukien[array.sukien.length-1].id}`}
                           className="lg:text-[24px] starborn"
                         >
-                          {array.ten_su_kien}
+                          {array.sukien[array.sukien.length-1].ten_su_kien}
                         </span>
                         <div className="mt-3">
                           <p className="slab font-semibold lg:text-[16px]">
-                            {array.noi_dung_su_kien}
+                            {array.sukien[array.sukien.length-1].noi_dung_su_kien}
                           </p>
                         </div>
                       </div>
@@ -251,24 +254,26 @@ function EventHistory(props) {
                           style={{ fontStyle: "normal", marginTop: 100 }}
                           className="text-time"
                         >
-                          {array.real_time}
+                          {array.sukien[array.sukien.length-1].real_time}
                         </span>
                       </div>
                     </div>
                   </div>
                 )}
               </div>
+
             ))}
           </div>
         ) : (
           <div>
             {currentResults.map((array, index) => (
+
               <div
-                onClick={() => handleEventHistory(array.id_toan_bo_su_kien)}
+                onClick={() => handleEventHistory(array.sukien[array.sukien.length-1].id_toan_bo_su_kien)}
                 key={index}
                 className={`lg:w-[100vh] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
               >
-                {array.id_template === 1 && 4 ? (
+                {array.sukien[array.sukien.length-1].id_template === 1 && 4 ? (
                   <div
                     style={{ backgroundImage: `url(${bg1})` }}
                     className="bg-no-repeat lg:bg-contain bg-center lg:w-full lg:h-full"
@@ -277,21 +282,21 @@ function EventHistory(props) {
                       <div className="lg:w-[300px] flex flex-col justify-center lg:ml-28 ml-5 lg:mt-0 mt-20">
                         {/* image love */}
                         <span
-                          key={array.id}
-                          to={`/ array / ${array.id}`}
+                          key={array.sukien[array.sukien.length-1].id}
+                          to={`/ array / ${array.sukien[array.sukien.length-1].id}`}
                           className="lg:text-[24px] starborn"
                         >
-                          {array.ten_su_kien}
+                          {array.sukien[array.sukien.length-1].ten_su_kien}
                         </span>
                         <p className="slab font-semibold lg:text-[16px]">
-                          {array.noi_dung_su_kien}
+                          {array.sukien[array.sukien.length-1].noi_dung_su_kien}
                         </p>
                         <div className="my-4 slab font-semibold lg:text-[16px]">
                           <span
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
-                            {array.real_time}
+                            {array.sukien[array.sukien.length-1].real_time}
                           </span>
                         </div>
                       </div>
@@ -299,7 +304,7 @@ function EventHistory(props) {
                         {/* image swap */}
                         <div
                           style={{
-                            backgroundImage: `url(${array.link_da_swap})`,
+                            backgroundImage: `url(${array.sukien[array.sukien.length-1].link_da_swap})`,
                           }}
                           className=" lg:w-[295px] w-[100px] h-[100px] lg:h-[295px] rounded-full bg-no-repeat bg-cover mt-1"
                         />
@@ -311,7 +316,7 @@ function EventHistory(props) {
                     </div>
                     {/* first event */}
                   </div>
-                ) : array.id_template === 2 ? (
+                ) : array.sukien[array.sukien.length-1].id_template === 2 ? (
                   <div
                     style={{ backgroundImage: `url(${bg2})` }}
                     className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
@@ -326,15 +331,15 @@ function EventHistory(props) {
                       <div className="flex flex-col justify-center items-center mt-12">
                         {/* image love */}
                         <span
-                          key={array.id}
-                          to={`/ array / ${array.id}`}
+                          key={array.sukien[array.sukien.length-1].id}
+                          to={`/ array / ${array.sukien[array.sukien.length-1].id}`}
                           className="lg:text-[24px] starborn"
                         >
-                          {array.ten_su_kien}
+                          {array.sukien[array.sukien.length-1].ten_su_kien}
                         </span>
                         <div className="box lg:h-52 h-36 mt-3">
                           <p className="slab font-semibold lg:text-[16px]">
-                            {array.noi_dung_su_kien}
+                            {array.sukien[array.sukien.length-1].noi_dung_su_kien}
                           </p>
                         </div>
 
@@ -343,7 +348,7 @@ function EventHistory(props) {
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
-                            {array.real_time}
+                            {array.sukien[array.sukien.length-1].real_time}
                           </span>
                         </div>
                       </div>
@@ -364,15 +369,15 @@ function EventHistory(props) {
                       {/* image love */}
                       <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
                         <span
-                          key={array.id}
-                          to={`/ array / ${array.id}`}
+                          key={array.sukien[array.sukien.length-1].id}
+                          to={`/ array / ${array.sukien[array.sukien.length-1].id}`}
                           className="lg:text-[24px] starborn"
                         >
-                          {array.ten_su_kien}
+                          {array.sukien[array.sukien.length-1].ten_su_kien}
                         </span>
                         <div className="mt-3">
                           <p className="slab font-semibold lg:text-[16px]">
-                            {array.noi_dung_su_kien}
+                            {array.sukien[array.sukien.length-1].noi_dung_su_kien}
                           </p>
                         </div>
                       </div>
@@ -382,7 +387,7 @@ function EventHistory(props) {
                           style={{ fontStyle: "normal", marginTop: 100 }}
                           className="text-time"
                         >
-                          {array.real_time}
+                          {array.sukien[array.sukien.length-1].real_time}
                         </span>
                       </div>
                     </div>
