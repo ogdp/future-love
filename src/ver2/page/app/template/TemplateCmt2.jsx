@@ -29,7 +29,7 @@ function TemplateCmt2(props) {
     console.log("====================================");
     console.log(src);
     console.log("====================================");
-    onClick();
+    onClick(src);
   }
   return (
     <>
