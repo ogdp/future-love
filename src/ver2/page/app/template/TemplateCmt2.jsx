@@ -12,7 +12,7 @@ import vien from "../img/vien.png";
 function TemplateCmt2(props) {
   // const { id } = useParams();
   const data = props.data;
-
+  const { noi_dung_su_kien, count_comment, count_view, real_time } = data;
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
   const view =
