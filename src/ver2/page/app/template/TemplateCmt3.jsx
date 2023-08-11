@@ -23,8 +23,8 @@ function TemplateCmt3(props) {
             </div> */}
                 <div>
                     <span key={data.id} to={`/ array / ${data.id}`} className="text-5xl mt-[-100px] flex items-center justify-center "  >{data.ten_su_kien}</span>
-                    <p className="text-3xl font-[Montserrat] max-w-lg pt-3 h-[auto] overflow-y-auto h-32 mt-[50px] h-[150px] items-center justify-center">
-                        {data.noi_dung_su_kien}
+                    <p className="text-3xl font-[Montserrat] max-w-lg pt-3 overflow-y-auto mt-[50px] h-[150px] items-center justify-center">
+                        {data.noi_dung_su_kien} 
                     </p>
                     <div className="flex flex-row ">
                         <div className="mt-[10px] flex">

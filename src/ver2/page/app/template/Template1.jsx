@@ -21,11 +21,11 @@ function Template1(props) {
 
   return (
     <div className="h-[auto] items-center justify-center">
-      <div className="h-[10%] w-[100%]">
+      <div className="mb-10 mt-20">
         <Clock data={data.real_time} />
       </div>
       <div
-        className={` lg:w-[1019px] w-[380px] mb-12 border-8 border-pink-300  h-[auto] bg-white rounded-[36px] flex flex-row mt-[50px]`}
+        className={` border-8 border-pink-300  h-[auto] bg-white rounded-[36px] flex flex-row mt-[50px]`}
       >
         <div className="-ml-2 bg-no-repeat bg-cover w-[55%] flex flex-col justify-between">
           <div>

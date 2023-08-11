@@ -151,7 +151,7 @@ function EventHistory(props) {
                         <span
                           key={array.sukien[array.sukien.length-1].id}
                           to={`/ array / ${array.sukien[array.sukien.length-1].id}`}
-                          className="lg:text-[24px] starborn"
+                          className="lg:text-[24px] starborn mb-4 leading-tight"
                         >
                           {array.sukien[array.sukien.length-1].ten_su_kien}
                         </span>
@@ -200,7 +200,7 @@ function EventHistory(props) {
                         <span
                           key={array.sukien[array.sukien.length-1].id}
                           to={`/ array / ${array.sukien[array.sukien.length-1].id}`}
-                          className="lg:text-[24px] starborn"
+                          className="lg:text-[24px] starborn leading-tight mb-4"
                         >
                           {array.sukien[array.sukien.length-1].ten_su_kien}
                         </span>
@@ -238,7 +238,7 @@ function EventHistory(props) {
                         <span
                           key={array.sukien[array.sukien.length-1].id}
                           to={`/ array / ${array.sukien[array.sukien.length-1].id}`}
-                          className="lg:text-[24px] starborn"
+                          className="lg:text-[24px] starborn mb-4 leading-tight"
                         >
                           {array.sukien[array.sukien.length-1].ten_su_kien}
                         </span>
@@ -284,7 +284,7 @@ function EventHistory(props) {
                         <span
                           key={array.sukien[array.sukien.length-1].id}
                           to={`/ array / ${array.sukien[array.sukien.length-1].id}`}
-                          className="lg:text-[24px] starborn"
+                          className="lg:text-[24px] starborn mb-4 leading-tight"
                         >
                           {array.sukien[array.sukien.length-1].ten_su_kien}
                         </span>
@@ -333,7 +333,7 @@ function EventHistory(props) {
                         <span
                           key={array.sukien[array.sukien.length-1].id}
                           to={`/ array / ${array.sukien[array.sukien.length-1].id}`}
-                          className="lg:text-[24px] starborn"
+                          className="lg:text-[24px] starborn leading-tight mb-4"
                         >
                           {array.sukien[array.sukien.length-1].ten_su_kien}
                         </span>

@@ -72,7 +72,7 @@ function TemplateCmt2(props) {
               {noi_dung_su_kien}
             </p>
           </div>
-          <div className="my-4 relative"></div>
+          {/* <div className="my-4 relative"></div> */}
         </div>
       </div>
     </>

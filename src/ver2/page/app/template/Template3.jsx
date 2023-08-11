@@ -15,7 +15,7 @@ function Template3(props) {
 
     return (
         <div>
-            <div className="h-[10%] w-[100%]">
+            <div className="mt-20 mb-10">
                     <Clock data={data.real_time} />
             </div>
             <div
@@ -30,7 +30,7 @@ function Template3(props) {
             </div> */}
                 <div onClick={setIsOpenPopup.bind(this, true)}>
                     <span key={data.id} to={`/ array / ${data.id}`} className="text-5xl mt-[-100px] flex items-center justify-center "  >{data.ten_su_kien}</span>
-                    <p className="text-3xl font-[Montserrat] max-w-lg pt-3 h-[auto] overflow-y-auto h-32 mt-[50px] h-[150px] items-center justify-center">
+                    <p className="text-3xl font-[Montserrat] max-w-lg pt-3  overflow-y-auto mt-[50px] h-[150px] items-center justify-center">
                         {data.noi_dung_su_kien}
                     </p>
                     <div className="flex flex-row ">

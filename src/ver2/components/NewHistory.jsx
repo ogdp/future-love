@@ -14,14 +14,17 @@ import Divorce from "../page/app/Divorce";
 import Remarry from "../page/app/Remarry";
 import nam1 from "./image/nam1.png";
 import nu1 from "./image/nu1.png";
+import { useNavigate } from "react-router";
 
 function NewHistory() {
   const [isActive, setIsActive] = useState(1);
   const [isScroll, setIsScroll] = useState(true);
   const [dataUser, setDataUser] = useState([]);
-  const redirect = (e) => {
+  const route = useNavigate();
+  const redirect = (e, id) => {
     setIsActive(e);
     scrollToTop();
+    // route.push(`/${id}`);
   };
   const user = JSON.parse(localStorage.getItem("user-info"));
   console.log(user);
@@ -83,13 +86,13 @@ function NewHistory() {
 
   return (
     <div
-      className=" min-h-screen"
+      className=""
       style={{ background: "linear-gradient(to right, pink, violet)" }}
     >
       <Header />
 
-      <div className="flex">
-        <div className="lg:w-[30%] bg-menu min-h-screen">
+      <div className="grid grid-cols-12">
+        <div className="lg:col-span-3 bg-menu">
           <div className=" lg:h-[30%] lg:w-[100%] flex items-center justify-center">
             <div
               style={{
@@ -122,69 +125,55 @@ function NewHistory() {
             </div>
           </div>
           <div className="slab text-[30px] font-bold text-[#FFFFFF]">
-            <div className=" flex justify-center">
-              <ul className="py-10">
+            <div className="">
+              <ul className="py-10 flex flex-col gap-y-6">
                 <li
-                  className="cursor-pointer flex justify-center items-center h-32"
+                  className="cursor-pointer flex justify-center items-center py-10 px-36 rounded-3xl  hover:bg-[#782353] "
                   onClick={() => redirect(1)}
                 >
-                  <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                    First Meet
-                  </div>
+                  First Meet
                 </li>
                 <li
-                  className="cursor-pointer flex justify-center items-center h-32"
+                  className="cursor-pointer flex justify-center items-center py-10 px-36 rounded-3xl  hover:bg-[#782353] "
                   onClick={() => redirect(2)}
                 >
-                  <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                    First date
-                  </div>
+                  First date
                 </li>
                 <li
-                  className="cursor-pointer flex justify-center items-center h-32"
+                  className="cursor-pointer flex justify-center items-center py-10 px-36 rounded-3xl  hover:bg-[#782353] "
                   onClick={() => redirect(3)}
                 >
-                  <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                    Being in love
-                  </div>
+                  Being in love
                 </li>
                 <li
-                  className="cursor-pointer flex justify-center items-center h-32"
+                  className="cursor-pointer flex justify-center items-center py-10 px-36 rounded-3xl  hover:bg-[#782353] "
                   onClick={() => redirect(4)}
                 >
-                  <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                    Breking up
-                  </div>
+                  Breking up
                 </li>
                 <li
-                  className="cursor-pointer flex justify-center items-center h-32"
+                  className="cursor-pointer flex justify-center items-center py-10 px-36 rounded-3xl  hover:bg-[#782353] "
                   onClick={() => redirect(5)}
                 >
-                  <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                    Marry
-                  </div>
+                  Marry
                 </li>
                 <li
-                  className="cursor-pointer flex justify-center items-center h-32"
+                  className="cursor-pointer flex justify-center items-center py-10 px-36 rounded-3xl  hover:bg-[#782353] "
                   onClick={() => redirect(6)}
                 >
-                  <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                    Divorce
-                  </div>
+                  Divorce
                 </li>
                 <li
-                  className="cursor-pointer flex justify-center items-center h-32"
+                  className="cursor-pointer flex justify-center items-center py-10 px-36 rounded-3xl  hover:bg-[#782353] "
                   onClick={() => redirect(7)}
                 >
-                  <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                    Remarry
-                  </div>
+                  Remarry
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        <div className="lg:w-[70%] bg-D9D9D9 min-h-screen">
+        <div className="lg:col-span-9 bg-D9D9D9 min-h-screen">
           {isActive === 1 ? <FirstMeet /> : ""}
           {isActive === 2 ? <FirstDate /> : ""}
           {isActive === 3 ? <BeingInLove /> : ""}
