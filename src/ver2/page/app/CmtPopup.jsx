@@ -127,6 +127,7 @@ function CmtPopup(props) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        zIndex: 30,
       }}
     >
       <div className="w-[15%] h-[100%]" onClick={closePopup}></div>
