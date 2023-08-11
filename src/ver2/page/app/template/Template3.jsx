@@ -66,8 +66,8 @@ function Template3(props) {
               </div>
             </div>
           </div>
-          <div className="absolute z-10 top-0 left-0 w-1/2 h-[573px] float-left mt-[80px]">
-            <div className="w-[500px] h-[450px] overflow-hidden">
+          <div className="absolute z-10 top-0 left-[-15px] w-1/2 h-[573px] float-left mt-[200px]">
+            <div className="w-[280px] h-[300px] overflow-hidden">
               <img
                 src={`${data.link_nam_goc}`}
                 alt=""
@@ -76,13 +76,13 @@ function Template3(props) {
               />
             </div>
           </div>
-          <div className="absolute z-10 top-0 right-0 w-1/2 h-[573px] float-right mt-[80px]">
-            <div className="w-[450px] h-[450px] overflow-hidden float-right">
+          <div className="absolute z-10 top-0 right-0 w-1/2 h-[573px] float-right mt-[200px]">
+            <div className="w-[280px] h-[300px] overflow-hidden ml-[150px]">
               <img
                 src={`${data.link_nu_goc}`}
                 alt=""
                 srcset=""
-                className="w-full"
+                className="w-[280px] h-[300px]"
               />
             </div>
           </div>
