@@ -25,7 +25,7 @@ function NewHistory() {
   };
   const user = JSON.parse(localStorage.getItem("user-info"));
   console.log(user);
-  const idUser = user.id_user;
+  const idUser = user?.id_user;
   console.log("====================================");
   console.log(idUser);
   console.log("====================================");
@@ -90,7 +90,7 @@ function NewHistory() {
 
       <div className="flex">
         <div className="lg:w-[30%] bg-menu min-h-screen">
-          <div className=" lg:h-[30%] lg:w-[100%] flex items-center justify-center">
+          {idUser ?<div className=" lg:h-[30%] lg:w-[100%] flex items-center justify-center">
             <div
               style={{
                 backgroundImage: `url(${nam1})`,
@@ -101,7 +101,7 @@ function NewHistory() {
               }}
             >
               <img
-                src={dataUser.link_nam_goc}
+                src={dataUser?.link_nam_goc}
                 alt=""
                 className="lg:w-[80%] lg:h-[80%] object-cover rounded-[50%] lg:mt-[25px] lg:ml-[6px]"
               />
@@ -115,12 +115,12 @@ function NewHistory() {
               }}
             >
               <img
-                src={dataUser.link_nu_goc}
+                src={dataUser?.link_nu_goc}
                 alt=""
                 className="lg:w-[80%] lg:h-[80%] object-cover rounded-[50%] lg:ml-[25px] lg:mt-[6px]"
               />
             </div>
-          </div>
+          </div>:''}
           <div className="slab text-[30px] font-bold text-[#FFFFFF]">
             <div className=" flex justify-center">
               <ul className="py-10">
