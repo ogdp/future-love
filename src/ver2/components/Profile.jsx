@@ -42,9 +42,11 @@ export default function () {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(`${server}/saveimage/${user.id_user}`);
+        // console.log(data);
         setImgData(data.list_img);
       } catch (error) {
         console.error("Error fetching data:", error);
+        alert("Server error getList 8-12 images");
       }
     };
     // console.log("user", user.id_user);
@@ -97,7 +99,7 @@ export default function () {
       const res = await axios.get(
         `${server}/lovehistory/comment/user/${user.id_user}`
       );
-      console.log(res);
+      // console.log(res);
       setDatas(res.data.comment_user);
       setEvent(res.data);
       // console.log(res);
@@ -199,7 +201,68 @@ export default function () {
     setIsLoading(false);
     return;
   };
+  const validateImgage = (res) => {
+    if (!res || res == null || res.length > 1 || res.length == 0)
+      return setNotiImage({
+        status: true,
+        value: "Ảnh chỉ được chứa 1 khuôn mặt",
+      });
 
+    const face_height = res[0].detection._box._height;
+    const face_width = res[0].detection._box._width;
+    const img_height = res[0].detection._imageDims._height;
+    const img_width = res[0].detection._imageDims._width;
+    if (img_width < 416 || img_height < 416) {
+      return setNotiImage({
+        status: true,
+        value: "Kích thước hình ảnh quá nhỏ",
+      });
+    }
+
+    if (img_height / img_width < 0.6 || img_width / img_height < 0.6) {
+      return setNotiImage({
+        status: true,
+        value: "Ảnh không được quá dài hay quá rộng",
+      });
+    }
+
+    if (img_width < 1000 && img_height < 1000) {
+      if (416 < img_width && 416 < img_height) {
+        if (
+          ((face_height * face_width) / (img_height * img_width)) * 100 >
+          50
+        ) {
+          return setNotiImage({
+            status: true,
+            value: "Tỉ lệ khuôn mặt chiếm quá lớn khung hình",
+          });
+        }
+
+        if (
+          ((face_height * face_width) / (img_height * img_width)) * 100 <
+          15
+        ) {
+          return setNotiImage({
+            status: true,
+            value: "Tỉ lệ khuôn mặt quá bé",
+          });
+        }
+      }
+    } else if (img_width > 1000 && img_height > 1000) {
+      if (((face_height * face_width) / (img_height * img_width)) * 100 > 50) {
+        return setNotiImage({
+          status: true,
+          value: "Tỉ lệ khuôn mặt chiếm quá lớn khung hình",
+        });
+      }
+
+      if (((face_height * face_width) / (img_height * img_width)) * 100 < 10) {
+        return setNotiImage({ status: true, value: "Tỉ lệ khuôn mặt quá bé" });
+      }
+    }
+
+    return true;
+  };
   const validImage = async (image) => {
     try {
       const imageElement = document.createElement("img");
@@ -271,6 +334,10 @@ export default function () {
       return false;
     }
     const res = await validImage(URL.createObjectURL(event.target.files[0]));
+    if (validateImgage(res) == undefined) {
+      setSelectedImage(false);
+      return setIsLoading(false);
+    }
     if (!res || res.length === 0) {
       setIsLoading(false);
       setSelectedImage(false);

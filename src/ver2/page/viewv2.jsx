@@ -9,9 +9,7 @@ function Viewer2() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `http://14.225.7.221:8989/getdata${id}`
-      );
+      const response = await axios.get(`http://14.225.7.221:8989/getdata${id}`);
       setData(response.data);
 
       console.log(response.data);
