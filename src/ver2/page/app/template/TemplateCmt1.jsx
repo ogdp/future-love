@@ -15,28 +15,28 @@ function TemplateCmt1(props) {
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
 
   return (
-    <div className=" flex rounded-t-[36px] h-full">
+    <div className=" flex rounded-t-[36px] h-full relative">
       <div
-        className={` lg:w-full w-[380px] border-8 border-pink-300  rounded-[36px] flex flex-row overflow-hidden`}
+        className={`lg:w-full w-[380px] border-8 border-pink-300  rounded-[36px] flex lg:flex-row flex-col-reverse justify-center items-center overflow-hidden`}
       >
-        <div className="-ml-2 bg-no-repeat bg-cover w-[55%] flex flex-col justify-between">
-          <div className="w-[30%]">
-            <img src={img2} alt="" className="ml-[10px] " />
+        <div className="-ml-2 bg-no-repeat bg-cover w-[70%] flex flex-col justify-between items-center">
+          <div className="absolute top-4 left-4 lg:w-[20%] w-[30%]">
+            <img src={img2} alt="" className="" />
           </div>
           <div className="flex items-center justify-around">
             {/* image love */}
-            <div className="flex flex-col ml-[100px]">
+            <div className="flex flex-col items-center lg:ml-[100px]">
               <span
                 key={data.id}
                 to={`/ array / ${data.id}`}
-                className="text-5xl mt-[-100px] "
+                className="lg:text-5xl text-3xl text-center lg:mt-[60px] lg:mb-[16px] mt-[20px]"
               >
                 {data.ten_su_kien}
               </span>
-              <p className="text-3xl font-[Montserrat] max-w-lg pt-3 overflow-y-auto 2 mt-5 ">
+              <p className="lg:text-3xl text-xl font-[Montserrat] max-w-lg lg:pt-3 overflow-y-auto 2 lg:mt-5 mt-3 text-center ">
                 {data.noi_dung_su_kien}
               </p>
-              <div className="flex flex-row items-center">
+              <div className="flex flex-row items-center justify-center">
                 <div className="flex mt-[30px]">
                   <img className="h-[28px] w-[35px] " src={cmt} />
                   <div className="text-2xl ml-[10px]">{data.count_comment}</div>
@@ -46,10 +46,10 @@ function TemplateCmt1(props) {
                   <div className="text-2xl ml-[10px]">{data.count_view}</div>
                 </div>
               </div>
-              <div className="my-4">
+              <div className="my-8">
                 <span
                   style={{ fontStyle: "normal" }}
-                  className="text-time text-3xl "
+                  className="text-time text-3xl"
                 >
                   {data.real_time}
                 </span>
@@ -57,28 +57,26 @@ function TemplateCmt1(props) {
             </div>
             {/* image swap */}
           </div>
-          <div className="ml-[8px] mb-[3px] w-[30%]">
+          <div className="absolute bottom-4 left-4 lg:w-[20%] w-[30%]">
             <img src={img3} alt="" className="" />
           </div>
         </div>
         <div className="bg-no-repeat bg-cover w-[55%] flex flex-col justify-between ">
-          <div className=" ml-[315px] w-[30%]">
+          <div className="absolute top-4 right-4 lg:w-[20%] w-[30%]">
             <img src={img4} alt="" />
           </div>
-          {/* <div className="flex align-center items-center justify-center"> */}
-          <div className="">
+          <div className="flex items-center justify-center">
             <div
               style={{ backgroundImage: `url(${data.link_da_swap})` }}
-              className=" lg:w-[250px] lg:h-[240px] w-[100px] h-[100px] rounded-full bg-center bg-no-repeat bg-cover 5  "
+              className=" lg:w-[250px] lg:h-[240px] w-[120px] h-[120px] rounded-full bg-center bg-no-repeat bg-cover"
             >
               <div
                 style={{ backgroundImage: `url(${img1})` }}
-                className="rounded-[32px] bg-no-repeat bg-cover w-[265px] h-[245px] "
+                className="rounded-[32px] bg-no-repeat bg-cover lg:w-[265px] lg:h-[245px] w-[120px] h-[120px]"
               />
             </div>
           </div>
-          {/* </div> */}
-          <div className="ml-[315px] w-[30%]">
+          <div className="absolute bottom-4 right-4 lg:w-[20%] w-[30%]">
             <img src={img5} alt="" className="" />
           </div>
         </div>

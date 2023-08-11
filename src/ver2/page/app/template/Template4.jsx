@@ -13,32 +13,32 @@ function Template4(props) {
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
 
   return (
-    <div>
-      <div className="mb-10">
+    <div className="flex flex-col items-center ">
+      <div className="my-20">
         <Clock data={data.real_time} />
       </div>
       <div
-        className={` lg:w-[1019px] w-[380px] mb-12 border-8 border-pink-300  h-[auto] bg-white rounded-[36px] grid grid-cols-2 gap-x-10 overflow-hidden`}
+        className={` lg:w-[1019px] w-[400px] h-full  border-8 border-pink-300  bg-white rounded-[36px] flex lg:flex-row flex-col gap-x-10 overflow-hidden mb-[300px]`}
         onClick={setIsOpenPopup.bind(this, true)}
       >
         <div
-          className="h-[auto]"
+          className="h-[300px] lg:h-auto lg:w-[60%] w-full"
           style={{
             backgroundImage: `url(${data.link_da_swap})`,
             backgroundSize: "cover",
             backgroundPosition: "center center",
           }}
-        ></div>
-        <div className="h-[auto] mt-[70px] ml-[20px]">
+        />
+        <div className="h-[auto] lg:mt-[70px] mt-[30px] lg:ml-[20px] text-center lg:text-left flex flex-col items-center my-8">
           {/* <div className="content-none absolute border-[100px 0 0 173.2px]"> */}
           <span
             key={data.id}
             to={`/ array / ${data.id}`}
-            className="text-5xl mt-[-100px] "
+            className="lg:text-5xl text-4xl "
           >
             {data.ten_su_kien}
           </span>
-          <p className="text-3xl font-[Montserrat] max-w-lg pt-3 max-h-[42rem] overflow-y-auto h-32 mt-[50px] h-[150px]">
+          <p className="lg:text-3xl text-2xl font-[Montserrat] max-w-lg overflow-y-auto  lg:mt-[50px] mt-[20px] text-center">
             {data.noi_dung_su_kien}
           </p>
           <div className="flex flex-row ">

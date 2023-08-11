@@ -127,10 +127,10 @@ function CmtPopup(props) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        zIndex: 999,
+        zIndex: 9990,
       }}
     >
-      <div className="w-full h-full" onClick={closePopup}></div>
+      <div className="w-full h-full z-[9999]" onClick={closePopup}></div>
       <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-max bg-white gap-y-4">
         <div className="w-max h-[85%]">
           <TemplateComponent data={data} onClick={closePopup} />
@@ -185,7 +185,7 @@ function CmtPopup(props) {
           </div>
         </div>
       </div>
-      <div className="w-full h-full" onClick={closePopup}></div>
+      <div className="w-full h-full z-[9999]" onClick={closePopup}></div>
     </div>
   );
 }

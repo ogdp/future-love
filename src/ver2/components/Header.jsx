@@ -5,7 +5,7 @@ import { SlMenu } from "react-icons/sl";
 import useEvenStore from "../../utils/store";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-function Header() {
+function Header({ onClick }) {
   const [showMenu, setShowMenu] = useState(false);
   const version = useEvenStore((state) => state.version);
   const setVersion = useEvenStore((state) => state.setVersion);
@@ -28,7 +28,11 @@ function Header() {
     <div className="h-40 w-full mx-4 lg:py-7 py-3">
       <div className="flex items-center justify-between">
         {/* logo */}
-        <div className="flex">
+        <div className="flex items-center">
+          <SlMenu
+            className="text-[38px] text-white mt-1 font-black mr-20 cursor-pointer transition-transform duration-300 hover:scale-125 lg:hidden block"
+            onClick={onClick}
+          />
           <img src={img} alt="" className="lg:w-28 w-24 lg:h-24 h-20 lg:mt-0" />
           <p className="lg:text-6xl text-3xl text-white flex items-center starborn">
             FUTURE LOVE
@@ -55,21 +59,7 @@ function Header() {
             className="lg:text-[54px] text-[38px] text-white mt-2 lg:mr-10 mr-5 transition-transform duration-300 hover:scale-125 cursor-pointer"
           />
 
-          <SlMenu
-            className="lg:text-[56px] text-[38px] text-white mt-1 font-black mr-20 cursor-pointer transition-transform duration-300 hover:scale-125"
-            onClick={toggleMenu}
-          />
-        </div>
-      </div>
-      {/* mobile search */}
-      <div className="flex justify-center mr-10 mt-3">
-        <div className="lg:i-search im-search flex items-center lg:hidden">
-          <i className="fa fa-search lg:text-4xl text-2xl absolute ml-8" />
-          <input
-            type="search"
-            placeholder="Search"
-            className="searchTerm rounded-full w-search lg:h-20"
-          />
+          <SlMenu className="lg:text-[56px] text-[38px] text-white mt-1 font-black mr-20 cursor-pointer transition-transform duration-300 hover:scale-125" />
         </div>
       </div>
 

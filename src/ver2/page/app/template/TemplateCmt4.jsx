@@ -11,26 +11,27 @@ function TemplateCmt4(props) {
 
   return (
     <div
-      className={` lg:w-[1019px] w-[380px] border-8 border-pink-300  h-full bg-white rounded-[36px] grid grid-cols-2 overflow-hidden gap-x-10`}
+      className={` lg:w-[1019px] w-[380px] border-8 border-pink-300  h-full bg-white rounded-[36px] flex lg:flex-row flex-col gap-y-6 overflow-hidden gap-x-10`}
     >
       <div
-        className="h-[auto]"
+        className="h-[260px] lg:w-full lg:h-full"
         style={{
           backgroundImage: `url(${data.link_da_swap})`,
           backgroundSize: "cover",
-          backgroundPosition: "center center",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       ></div>
-      <div className="h-[auto] mt-[70px] ml-[20px]">
+      <div className="h-[auto] lg:mt-[70px] lg:ml-[20px] lg:w-full mx-6 flex flex-col items-center justify-center">
         {/* <div className="content-none absolute border-[100px 0 0 173.2px]"> */}
         <span
           key={data.id}
           to={`/ array / ${data.id}`}
-          className="text-5xl mt-[-100px] "
+          className="lg:text-5xl text-4xl text-center  lg:mt-[40px] "
         >
           {data.ten_su_kien}
         </span>
-        <p className="text-3xl font-[Montserrat] max-w-lg pt-3 max-h-[42rem] overflow-y-auto mt-[50px] h-[150px]">
+        <p className="lg:text-3xl text-2xl font-[Montserrat] max-w-lg pt-3  text-center overflow-y-auto lg:mt-[20px] lg:mb-[40px]">
           {data.noi_dung_su_kien}
         </p>
         <div className="flex flex-row ">
@@ -44,7 +45,10 @@ function TemplateCmt4(props) {
           </div>
         </div>
         <div className="my-4 ">
-          <span style={{ fontStyle: "normal" }} className="text-time text-3xl ">
+          <span
+            style={{ fontStyle: "normal" }}
+            className="text-time lg:text-3xl text-2xl "
+          >
             {data.real_time}
           </span>
         </div>
