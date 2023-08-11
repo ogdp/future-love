@@ -213,6 +213,13 @@ function Home() {
         img1: res1.success,
         img2: res2.success,
       });
+      if (res3 == false) {
+        setModelAlert({
+          status: true,
+          message: `Đăng nhập để thêm sự kiện`,
+        });
+        return navigate("/login");
+      }
       if (!res3.success || res3.success == undefined) {
         // setShowModal(true);
         await alert(res3.message);
@@ -233,6 +240,7 @@ function Home() {
   };
   const createEvent = async (linkImg) => {
     const user = JSON.parse(window.localStorage.getItem("user-info"));
+    if (!user) return false;
     let config = {
       method: "get",
       maxBodyLength: Infinity,

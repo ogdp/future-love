@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import Clock from "./clock";
 import img from "../components/image/Screenshot_1.png";
 import { BsFillHeartFill } from "react-icons/bs";
 import { SlMenu } from "react-icons/sl";
@@ -12,23 +11,22 @@ function Header() {
   const setVersion = useEvenStore((state) => state.setVersion);
   const navigate = useNavigate();
 
+  const user = window.localStorage.getItem("user-info");
+
   const handleLogout = () => {
     localStorage.clear();
+    navigate("/");
+    window.location.reload();
   };
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
   const toggleVersion = () => {
-    // setVersion(version == 2 ? 1 : 2);
     navigate("/love");
-    // window.location.href = '/home'
-    // console.log('navigate', version)
   };
   return (
     <div className="h-40 w-full mx-4 lg:py-7 py-3">
       <div className="flex items-center justify-between">
-        {/* <Clock className="" /> */}
-
         {/* logo */}
         <div className="flex">
           <img src={img} alt="" className="lg:w-28 w-24 lg:h-24 h-20 lg:mt-0" />
@@ -79,65 +77,87 @@ function Header() {
       {showMenu && (
         <div className="absolute top-36 right-10 w-96 z-50">
           <ul>
-            <li className="w-full bg-[#FFF2EB] h-32 flex justify-center items-center rounded-t-[16px]">
-              <NavLink
-                className="slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-[#ED709D] hover:text-white
+            {user && (
+              <>
+                <li className="w-full bg-[#FFF2EB] h-32 flex justify-center items-center rounded-t-[16px]">
+                  <NavLink
+                    className="slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-[#ED709D] hover:text-white
              "
-                to="/"
-              >
-                HOME
-              </NavLink>
-            </li>
-            <li className="w-full bg-[#FFF2EB] h-32 flex justify-center items-center">
-              <NavLink
-                className="pt-16 slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-[#ED709D] hover:text-white
+                    to="/"
+                  >
+                    HOME
+                  </NavLink>
+                </li>
+                <li className="w-full bg-[#FFF2EB] h-32 flex justify-center items-center">
+                  <NavLink
+                    className="pt-16 slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-[#ED709D] hover:text-white
              "
-                to="/NewHistory"
-              >
-                EVENTS
-              </NavLink>
-            </li>
-            <li className="w-full bg-[#FFF2EB] h-32 flex justify-center items-center">
-              <NavLink
-                className="pt-16 slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-[#ED709D] hover:text-white
+                    to="/NewHistory"
+                  >
+                    EVENTS
+                  </NavLink>
+                </li>
+                <li className="w-full bg-[#FFF2EB] h-32 flex justify-center items-center">
+                  <NavLink
+                    className="pt-16 slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-[#ED709D] hover:text-white
              "
-                to="/Profile"
-              >
-                PROFILE
-              </NavLink>
-            </li>
-            <li className="w-full bg-[#FFF2EB] h-32 flex justify-center items-center rounded-b-[16px]">
-              <NavLink
-                onClick={handleLogout}
-                className="pt-16 slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-gray-300 hover:text-gray-500
+                    to="/Profile"
+                  >
+                    PROFILE
+                  </NavLink>
+                </li>
+                <li className="w-full bg-[#FFF2EB] h-32 flex justify-center items-center rounded-b-[16px]">
+                  <NavLink
+                    onClick={handleLogout}
+                    className="pt-16 slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-gray-300 hover:text-gray-500
              "
-                to="/"
-              >
-                LOGOUT
-              </NavLink>
-            </li>
-            {/* <li
-              className="w-full h-24 bg-[#FFF2EB] flex justify-center items-center rounded-b-[16px] font[Starborn] font-semibold text-[28px] text-[#FF2C61] hover:bg-[#FFCFC5]
+                    to="/"
+                  >
+                    LOGOUT
+                  </NavLink>
+                </li>
+              </>
+            )}
+            {!user && (
+              <>
+                <li className="w-full bg-[#FFF2EB] h-32 flex justify-center items-center rounded-t-[16px]">
+                  <NavLink
+                    className="slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-[#ED709D] hover:text-white
              "
-            >
-              <NavLink
-                to="/"
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                History
-              </NavLink>
-            </li> */}
-            {/* <li
-              className="w-full h-24 bg-[#FFF2EB] flex justify-center items-center rounded-b-[16px] font[Starborn] font-semibold text-[28px] text-[#FF2C61] hover:bg-[#FFCFC5]
+                    to="/"
+                  >
+                    HOME
+                  </NavLink>
+                </li>
+                <li className="w-full bg-[#FFF2EB] h-32 flex justify-center items-center">
+                  <NavLink
+                    className="pt-16 slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-[#ED709D] hover:text-white
              "
-            >
-              <NavLink
-                to="/:id"
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                View
-              </NavLink>
-            </li> */}
+                    to="/NewHistory"
+                  >
+                    EVENTS
+                  </NavLink>
+                </li>
+                <li className="w-full bg-[#FFF2EB] h-32 flex justify-center items-center">
+                  <NavLink
+                    className="pt-16 slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-[#ED709D] hover:text-white
+             "
+                    to="/login"
+                  >
+                    LOGIN
+                  </NavLink>
+                </li>
+                <li className="w-full bg-[#FFF2EB] h-32 flex justify-center items-center rounded-b-[16px]">
+                  <NavLink
+                    className="slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-[#ED709D] hover:text-white
+             "
+                    to="/register"
+                  >
+                    REGISTER
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       )}

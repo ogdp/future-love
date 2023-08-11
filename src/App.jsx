@@ -2,7 +2,7 @@ import "./App.scss";
 import About from "./container/About";
 import "./container/tailwincss.css";
 import SideBar from "./container/SideBar";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Router, Routes, useNavigate } from "react-router-dom";
 import React from "react";
 import History from "./container/History";
 import ViewResult from "./container/View";
@@ -16,61 +16,40 @@ import "slick-carousel/slick/slick-theme.css";
 import Register from "./ver2/page/Register";
 import Login from "./ver2/page/Login";
 import Profile from "./ver2/components/Profile";
+// import "./ver2/css/index.css";
+import LayoutGuest from "./ver2/layouts/LayoutGuest";
+import LayoutUser from "./ver2/layouts/LayoutUser";
+import NotFound from "./ver2/components/NotFound";
+import ProfileGuest from "./ver2/components/ProfileGuest";
 function App() {
-  const version = useEvenStore((state) => state.version);
-  const setVersion = useEvenStore((state) => state.setVersion);
-  const navigate = useNavigate();
-  const toggleVersion = () => {
-    setVersion(version === 2 ? 1 : 2);
-    navigate("/");
-  };
+  const user = window.localStorage.getItem("user-info");
+  if (!user)
+    return (
+      <Routes>
+        <Route path="" element={<LayoutGuest />}>
+          <Route index element={<Historyv2 />} />
+          <Route path="/love" element={<Home />} />
+          <Route path="detail/:id" element={<NewHistory />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="user/:id" element={<ProfileGuest />} />
+        </Route>
+        <Route path="*" exact={true} element={<NotFound />} />
+      </Routes>
+    );
 
-  return version === 1 ? (
-    <div className="App h-[195px] ">
-      <header className="App-header static flex items-center justify-center pt-2">
-        <p className="text-[128px] font-normal m-0 leading-[171px]">
-          Future Love
-        </p>
-        <div
-          className="img-love w-[133px] h-[114px] bg-no-repeat bg-center transition-transform duration-300 transform-origin-center transform hover:scale-150"
-          onClick={toggleVersion}
-        ></div>
-
-        <div className="absolute right-10"></div>
-      </header>
-      <div className="flex flex-row">
-        <div className="">
-          <SideBar />
-        </div>
-        <div className="flex justify-center w-screen">
-          <Routes>
-            <Route path="/Home" element={<About />} />
-            <Route path="/:id" element={<ViewResult />} />
-            <Route path="/qwe" element={<History />} />
-            <Route path="/detail/:id" element={<NewHistory />} />
-          </Routes>
-        </div>
-      </div>
-    </div>
-  ) : (
-    <div>
-      {
-        localStorage.getItem('user-info') ?
-          <Routes>
-            <Route path="/" element={<Historyv2 />} />
-            <Route path="/love" element={<Home />} />
-            <Route path="/:id" element={<View />} />
-            <Route path="/detail/:id" element={<NewHistory />} />
-            <Route path="/Profile" element={<Profile />} />
-          </Routes>
-          :
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-      }
-
-    </div>
+  return (
+    <Routes>
+      <Route path="" element={<LayoutUser />}>
+        <Route index element={<Historyv2 />} />
+        <Route path="/love" element={<Home />} />
+        <Route path="detail/:id" element={<NewHistory />} />
+        <Route path="login" element={<Login />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="user/:id" element={<ProfileGuest />} />
+      </Route>
+      <Route path="*" exact={true} element={<NotFound />} />
+    </Routes>
   );
 }
 
