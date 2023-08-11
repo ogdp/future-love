@@ -137,30 +137,27 @@ function CmtPopup(props) {
         </div>
 
         {/* {comment} */}
-        <div className="overflow-y-auto bg-white">
+        <div className="overflow-y-auto">
           {dataCmt.length > 0 &&
-            dataCmt.map(
-              (cmt, index) =>
-                cmt.so_thu_tu_su_kien === props.stt && (
-                  <div className="flex items-stretch gap-x-4" key={index}>
-                    {/* {other-avt} */}
-                    <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
-                      <img
-                        src={cmt.imageattach ? cmt.imageattach : noAvatar}
-                        alt=""
-                        className="w-[100%] h-[100%] object-cover rounded-[50%]"
-                      />
-                    </div>
+            dataCmt.map((cmt, index) => (
+              <div className="flex items-stretch gap-x-4" key={index}>
+                {/* {other-avt} */}
+                <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
+                  <img
+                    src={cmt.imageattach ? cmt.imageattach : noAvatar}
+                    alt=""
+                    className="w-[100%] h-[100%] object-cover rounded-[50%]"
+                  />
+                </div>
 
-                    {/* { Name + Content } */}
-                    <div className="">
-                      <h1 className="text-lg font-semibold">{cmt.user_name}</h1>
-                      <p className="text-base"> {cmt.noi_dung_cmt}</p>
-                      <p className="text-sm">{cmt.thoi_gian_release}</p>
-                    </div>
-                  </div>
-                )
-            )}
+                {/* { Name + Content } */}
+                <div className="">
+                  <h1 className="text-lg font-semibold">{cmt.user_name}</h1>
+                  <p className="text-base"> {cmt.noi_dung_cmt}</p>
+                  <p className="text-sm">{cmt.thoi_gian_release}</p>
+                </div>
+              </div>
+            ))}
         </div>
         <div className="flex items-center justify-around mx-3 gap-x-4 rounded-full shadow-sm shadow-slate-300">
           <div className="overflow-hidden rounded-full w-[50px]">
