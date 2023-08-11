@@ -16,7 +16,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Register from "./ver2/page/Register";
 import Login from "./ver2/page/Login";
 import Profile from "./ver2/components/Profile";
-// import "./ver2/css/index.css";
+import "./ver2/css/index.css";
 import LayoutGuest from "./ver2/layouts/LayoutGuest";
 import LayoutUser from "./ver2/layouts/LayoutUser";
 import NotFound from "./ver2/components/NotFound";
@@ -28,7 +28,8 @@ function App() {
       <Routes>
         <Route path="" element={<LayoutGuest />}>
           <Route index element={<Historyv2 />} />
-          <Route path="/love" element={<Home />} />
+          <Route path="home" element={<Historyv2 />} />
+          <Route path="love" element={<Home />} />
           <Route path="detail/:id" element={<NewHistory />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
@@ -42,7 +43,8 @@ function App() {
     <Routes>
       <Route path="" element={<LayoutUser />}>
         <Route index element={<Historyv2 />} />
-        <Route path="/love" element={<Home />} />
+        <Route path="home" element={<Historyv2 />} />
+        <Route path="love" element={<Home />} />
         <Route path="detail/:id" element={<NewHistory />} />
         <Route path="login" element={<Login />} />
         <Route path="profile" element={<Profile />} />

@@ -6,7 +6,9 @@ const NotFound = () => {
     <div className="text-[22px] h-screen w-screen bg-gray-100 flex items-center">
       <div className="container flex flex-col md:flex-row items-center justify-center px-5 text-gray-700">
         <div className="max-w-md">
-          <div className="md:text-[6rem] font-dark font-bold md:py-7">404</div>
+          <div className="md:text-[6rem] text-4xl font-dark font-bold md:py-7">
+            404
+          </div>
           <p className="text-2xl md:text-5xl font-light leading-normal md:my-5">
             Sorry we couldn't find this page.{" "}
           </p>
