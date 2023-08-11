@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import img2 from "../components/image/Rectangle4958.png";
 import Header from "../components/Header";
 import axios from "axios";
-import Comments from "../components/comments";
 import useEventStore from "../../utils/store";
 
 import ReactLoading from "react-loading";
@@ -158,6 +157,7 @@ export default function () {
       faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
       faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
       faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+      faceapi.nets.ssdMobilenetv1.loadFromUri("./models"),
     ]).then(() => {
       // faceDetection();
     });
@@ -205,64 +205,74 @@ export default function () {
     if (!res || res == null || res.length > 1 || res.length == 0)
       return setNotiImage({
         status: true,
-        value: "Ảnh chỉ được chứa 1 khuôn mặt",
+        value: "Photos can only contain 1 face",
       });
 
     const face_height = res[0].detection._box._height;
     const face_width = res[0].detection._box._width;
     const img_height = res[0].detection._imageDims._height;
     const img_width = res[0].detection._imageDims._width;
-    if (img_width < 416 || img_height < 416) {
+    if (img_width < 320 || img_height < 320) {
       return setNotiImage({
         status: true,
-        value: "Kích thước hình ảnh quá nhỏ",
+        value: "Minimum image size 320 x 320",
       });
     }
 
-    if (img_height / img_width < 0.6 || img_width / img_height < 0.6) {
+    if (
+      img_height / img_width <= 0.56 ||
+      img_width / img_height >= 1.33333333
+    ) {
       return setNotiImage({
         status: true,
-        value: "Ảnh không được quá dài hay quá rộng",
+        value:
+          "Ideal size images are 16x9 or 3x4 (Image should not be too height or too width )",
       });
     }
 
     if (img_width < 1000 && img_height < 1000) {
       if (416 < img_width && 416 < img_height) {
         if (
-          ((face_height * face_width) / (img_height * img_width)) * 100 >
+          ((face_height * face_width) / (img_height * img_width)) * 100 >=
           50
         ) {
           return setNotiImage({
             status: true,
-            value: "Tỉ lệ khuôn mặt chiếm quá lớn khung hình",
+            value:
+              "The aspect ratio of the face taking up too much of the frame ( <= 50% )",
           });
         }
 
         if (
-          ((face_height * face_width) / (img_height * img_width)) * 100 <
+          ((face_height * face_width) / (img_height * img_width)) * 100 <=
           15
         ) {
           return setNotiImage({
             status: true,
-            value: "Tỉ lệ khuôn mặt quá bé",
+            value: `Face ratio is too small for the frame ( >= 15%)`,
           });
         }
       }
     } else if (img_width > 1000 && img_height > 1000) {
-      if (((face_height * face_width) / (img_height * img_width)) * 100 > 50) {
+      if (((face_height * face_width) / (img_height * img_width)) * 100 >= 50) {
         return setNotiImage({
           status: true,
-          value: "Tỉ lệ khuôn mặt chiếm quá lớn khung hình",
+          value:
+            "The aspect ratio of the face taking up too much of the frame ( <= 50% )",
         });
       }
 
-      if (((face_height * face_width) / (img_height * img_width)) * 100 < 10) {
-        return setNotiImage({ status: true, value: "Tỉ lệ khuôn mặt quá bé" });
+      if (((face_height * face_width) / (img_height * img_width)) * 100 <= 10) {
+        return setNotiImage({
+          status: true,
+          value: `Face ratio is too small for the frame ( >= 10%)`,
+        });
       }
     }
 
     return true;
   };
+
   const validImage = async (image) => {
     try {
       const imageElement = document.createElement("img");
@@ -270,9 +280,10 @@ export default function () {
       const netInput = imageElement;
       // console.log(netInput); // object img with src = blob:....
       const detections = await faceapi
-        .detectAllFaces(netInput, new faceapi.TinyFaceDetectorOptions())
+        .detectAllFaces(netInput, new faceapi.SsdMobilenetv1Options())
         .withFaceLandmarks()
         .withFaceExpressions();
+      // console.log(detections);
       return detections;
     } catch (error) {
       console.log(error);
@@ -451,8 +462,8 @@ export default function () {
         </div>
         {setIsLoading ? renderLoading() : null}
         <div className="md:flex md:justify-around">
-          <div className="relative lg:-top-28 lg:left-16  max-lg:-top-28 max-lg:left-1/2 max-lg:translate-x-[-50%] rounded-3xl lg:w-[450px] lg:h-[200px] w-[330px] h-[250px] bg-gradient-to-r from-violet-500 to-fuchsia-400">
-            <div className="md:flex max-md:flex-col md:justify-around py-3 px-3">
+          <div className="relative lg:-top-28 lg:left-16  max-lg:-top-28 max-lg:left-1/2 max-lg:translate-x-[-50%] rounded-3xl lg:w-[550px] lg:h-[220px] w-[330px] h-[250px] bg-gradient-to-r from-violet-500 to-fuchsia-400">
+            <div className="md:flex max-md:flex-col md:justify-around py-4 px-3">
               <div>
                 <img
                   src={
@@ -462,6 +473,11 @@ export default function () {
                   }
                   className="lg:ml-1 ml-40 lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] border border-white rounded-full object-cover"
                 />
+                <div className="w-full text-center">
+                  <h1 className="lg:text-4xl lg:my-3 text-white max-lg:my-2 max-lg:text-3xl underline">
+                    @{data.user_name}
+                  </h1>
+                </div>
               </div>
               <div className="md:py-5">
                 <div className="flex justify-around lg:w-[300px] text-center">
