@@ -49,6 +49,7 @@ function Home() {
       faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
       faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
       faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+      faceapi.nets.ssdMobilenetv1.loadFromUri("./models"),
     ]).then(() => {
       // faceDetection();
     });
@@ -96,7 +97,7 @@ function Home() {
       const netInput = imageElement;
       // console.log(netInput); // object img with src = blob:....
       const detections = await faceapi
-        .detectAllFaces(netInput, new faceapi.TinyFaceDetectorOptions())
+        .detectAllFaces(netInput, new faceapi.SsdMobilenetv1Options())
         .withFaceLandmarks()
         .withFaceExpressions();
       return detections;
@@ -109,61 +110,67 @@ function Home() {
     if (!res || res == null || res.length > 1 || res.length == 0)
       return setModelAlert({
         status: true,
-        message: "Ảnh chỉ được chứa 1 khuôn mặt",
+        message: "Photos can only contain 1 face",
       });
 
     const face_height = res[0].detection._box._height;
     const face_width = res[0].detection._box._width;
     const img_height = res[0].detection._imageDims._height;
     const img_width = res[0].detection._imageDims._width;
-    if (img_width < 416 || img_height < 416) {
+    if (img_width < 320 || img_height < 320) {
       return setModelAlert({
         status: true,
-        message: "Kích thước hình ảnh quá nhỏ",
+        message: "Minimum image size 320 x 320",
       });
     }
 
-    if (img_height / img_width < 0.6 || img_width / img_height < 0.6) {
+    if (
+      img_height / img_width <= 0.56 ||
+      img_width / img_height >= 1.33333333
+    ) {
       return setModelAlert({
         status: true,
-        message: "Ảnh không được quá dài hay quá rộng",
+        message:
+          "Ideal size images are 16x9 or 3x4 (Image should not be too height or too width )",
       });
     }
 
     if (img_width < 1000 && img_height < 1000) {
       if (416 < img_width && 416 < img_height) {
         if (
-          ((face_height * face_width) / (img_height * img_width)) * 100 >
+          ((face_height * face_width) / (img_height * img_width)) * 100 >=
           50
         ) {
           return setModelAlert({
             status: true,
-            message: "Tỉ lệ khuôn mặt chiếm quá lớn khung hình",
+            message:
+              "The aspect ratio of the face taking up too much of the frame ( <= 50% )",
           });
         }
 
         if (
-          ((face_height * face_width) / (img_height * img_width)) * 100 <
+          ((face_height * face_width) / (img_height * img_width)) * 100 <=
           15
         ) {
           return setModelAlert({
             status: true,
-            message: `Tỉ lệ khuôn mặt quá bé`,
+            message: `Face ratio is too small for the frame ( >= 15%)`,
           });
         }
       }
     } else if (img_width > 1000 && img_height > 1000) {
-      if (((face_height * face_width) / (img_height * img_width)) * 100 > 50) {
+      if (((face_height * face_width) / (img_height * img_width)) * 100 >= 50) {
         return setModelAlert({
           status: true,
-          message: "Tỉ lệ khuôn mặt chiếm quá lớn khung hình",
+          message:
+            "The aspect ratio of the face taking up too much of the frame ( <= 50% )",
         });
       }
 
-      if (((face_height * face_width) / (img_height * img_width)) * 100 < 10) {
+      if (((face_height * face_width) / (img_height * img_width)) * 100 <= 10) {
         return setModelAlert({
           status: true,
-          message: `Tỉ lệ khuôn mặt quá bé`,
+          message: `Face ratio is too small for the frame ( >= 10%)`,
         });
       }
     }
@@ -216,7 +223,7 @@ function Home() {
       if (res3 == false) {
         setModelAlert({
           status: true,
-          message: `Đăng nhập để thêm sự kiện`,
+          message: `Login to add events`,
         });
         return navigate("/login");
       }
@@ -227,7 +234,7 @@ function Home() {
       }
       setIsLoading(false);
       if (!res3.success.data.sukien || res3.success.data.sukien.length === 0) {
-        await alert("Không nhận được id sự kiện");
+        await alert("Didn't get event id");
         return window.location.reload();
       }
       toast.success("Upload and save data completed successfully");
@@ -308,7 +315,7 @@ function Home() {
                       setModelAlert({ status: false, message: "" });
                     }}
                   >
-                    Đóng
+                    Close
                   </button>
                 </div>
               </div>
@@ -548,7 +555,7 @@ function Home() {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="relative p-6 flex-auto">
                   <p className="my-4 text-slate-500 slab text-3xl leading-relaxed">
-                    Hãy chọn ảnh để tiếp tục
+                    Please select a photo to continue
                   </p>
                 </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -559,7 +566,7 @@ function Home() {
                       setIsModelWarning(false);
                     }}
                   >
-                    Tiếp tục
+                    Continue
                   </button>
                 </div>
               </div>
@@ -576,7 +583,7 @@ function Home() {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="relative p-6 flex-auto">
                   <p className="my-4 text-slate-500 slab text-3xl leading-relaxed">
-                    Không nhận diện được khuôn mặt
+                    Can't recognize faces
                   </p>
                 </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -587,7 +594,7 @@ function Home() {
                       closeUploadImg();
                     }}
                   >
-                    Đóng
+                    Close
                   </button>
                 </div>
               </div>
