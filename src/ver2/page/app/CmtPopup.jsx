@@ -7,6 +7,7 @@ import TemplateCmt3 from "./template/TemplateCmt3";
 import TemplateCmt4 from "./template/TemplateCmt4";
 import { useParams } from "react-router-dom";
 import noAvatar from "../app/img/no-avatar.png";
+import { toast } from "react-toastify";
 const templateComponents = {
   TemplateCmt1: TemplateCmt1,
   TemplateCmt2: TemplateCmt2,
@@ -102,10 +103,13 @@ function CmtPopup(props) {
       .then((response) => {
         console.log("Dữ liệu đã được gửi thành công:", response.data.comment);
         setInputValue("");
+        toast.success("Commented!!!");
         setDataCmt((prev) => [...prev, response.data.comment]);
+
         setDataSend(response.data.comment);
       })
       .catch((error) => {
+        toast.error("comment failed");
         console.error("Lỗi khi gửi dữ liệu:", error);
       });
   };

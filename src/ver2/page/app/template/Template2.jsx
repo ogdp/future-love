@@ -17,6 +17,7 @@ function Template2(props) {
     count_view,
     count_comment,
     ten_su_kien,
+    link_da_swap
   } = data;
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
@@ -30,7 +31,7 @@ function Template2(props) {
       </div>
       <div className=" lg:w-[1019px] w-[400px] h-[500px] mb-[120px] border-8 border-pink-300  lg:h-[600px] bg-white  rounded-[36px] flex flex-row mt-[50px] overflow-hidden relative">
         <div
-          style={{ backgroundImage: `url(${link_nu_goc})` }}
+          style={{ backgroundImage: `url(${link_da_swap})` }}
           className="lg:w-full lg:h-[340px] w-full h-[400px] bg-top  bg-no-repeat bg-cover object-contain  z-20"
           onClick={setIsOpenPopup.bind(this, true)}
         >

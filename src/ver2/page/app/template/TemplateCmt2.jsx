@@ -20,6 +20,7 @@ function TemplateCmt2(props) {
     real_time,
     ten_su_kien,
     noi_dung_su_kien,
+    link_da_swap
   } = data;
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
@@ -38,9 +39,9 @@ function TemplateCmt2(props) {
       >
         <div className="relative">
           <div
-            style={{ backgroundImage: `url(${link_nu_goc})` }}
+            style={{ backgroundImage: `url(${link_da_swap})` }}
             className="lg:w-full lg:h-[250px] w-full h-[250px] bg-top  bg-no-repeat bg-cover object-contain "
-            onClick={() => handlePopupImage(link_nu_goc)}
+            onClick={() => handlePopupImage(link_da_swap)}
           >
             <img
               src={vien}

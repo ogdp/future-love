@@ -19,7 +19,7 @@ import ReactLoading from "react-loading";
 
 export default function NewHistory() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const route = useNavigate();
   const [dataUser, setDataUser] = useState(null);
   const [isActive, setIsActive] = useState(1);
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
@@ -49,6 +49,10 @@ export default function NewHistory() {
     setIsActive(e);
     scrollToTop();
     setIsOpenSidebar(false);
+    console.log("====================================");
+    console.log(id);
+    console.log("====================================");
+    // route(`${dataUser.so_thu_tu_su_kien}`);
   };
   const handleSidebar = () => {
     setIsOpenSidebar(!isOpenSidebar);
@@ -110,7 +114,6 @@ export default function NewHistory() {
                 ? "col-span-8 sm:col-span-6 transition-all transform duration-300 ease-linear block opacity-100 absolute top-40 left-0 bottom-0 h-full"
                 : "transition-all transform hidden duration-300 ease-out "
             }`}
-            
           >
             <div className=" lg:h-[30%] lg:w-[100%] flex items-center justify-center mt-4">
               <div
