@@ -112,69 +112,6 @@ function Home() {
         status: true,
         message: "Photos can only contain 1 face",
       });
-
-    const face_height = res[0].detection._box._height;
-    const face_width = res[0].detection._box._width;
-    const img_height = res[0].detection._imageDims._height;
-    const img_width = res[0].detection._imageDims._width;
-    if (img_width < 320 || img_height < 320) {
-      return setModelAlert({
-        status: true,
-        message: "Minimum image size 320 x 320",
-      });
-    }
-
-    if (
-      img_height / img_width <= 0.56 ||
-      img_width / img_height >= 1.33333333
-    ) {
-      return setModelAlert({
-        status: true,
-        message:
-          "Ideal size images are 16x9 or 3x4 (Image should not be too height or too width )",
-      });
-    }
-
-    if (img_width < 1000 && img_height < 1000) {
-      if (416 < img_width && 416 < img_height) {
-        if (
-          ((face_height * face_width) / (img_height * img_width)) * 100 >=
-          50
-        ) {
-          return setModelAlert({
-            status: true,
-            message:
-              "The aspect ratio of the face taking up too much of the frame ( <= 50% )",
-          });
-        }
-
-        if (
-          ((face_height * face_width) / (img_height * img_width)) * 100 <=
-          15
-        ) {
-          return setModelAlert({
-            status: true,
-            message: `Face ratio is too small for the frame ( >= 15%)`,
-          });
-        }
-      }
-    } else if (img_width > 1000 && img_height > 1000) {
-      if (((face_height * face_width) / (img_height * img_width)) * 100 >= 50) {
-        return setModelAlert({
-          status: true,
-          message:
-            "The aspect ratio of the face taking up too much of the frame ( <= 50% )",
-        });
-      }
-
-      if (((face_height * face_width) / (img_height * img_width)) * 100 <= 10) {
-        return setModelAlert({
-          status: true,
-          message: `Face ratio is too small for the frame ( >= 10%)`,
-        });
-      }
-    }
-
     return true;
   };
 
