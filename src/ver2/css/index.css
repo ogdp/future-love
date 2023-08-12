@@ -2,9 +2,11 @@
   --color-primary: #ff9f9f;
   --side-bar-width: 300px;
 }
+
 * {
-  box-sizing: inherit;
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
 html {
   font-size: 62.5%;
@@ -27,6 +29,8 @@ body {
   font-family: "Pacifico", cursive !important;
   overflow: hidden;
   overflow-y: scroll;
+  height: 100%;
+  width: 100%;
 }
 html *::-webkit-scrollbar {
   border-radius: 0;
