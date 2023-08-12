@@ -127,9 +127,9 @@ function EventHistory(props) {
       </div>
     );
   }
-  console.log('====================================');
+  console.log("====================================");
   console.log(props.data);
-  console.log('====================================');
+  console.log("====================================");
   return (
     <div className="">
       <div className="cursor-pointer">

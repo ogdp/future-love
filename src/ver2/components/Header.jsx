@@ -59,7 +59,7 @@ function Header({ onClick }) {
             className="lg:text-[54px] text-[38px] text-white mt-2 lg:mr-10 mr-5 transition-transform duration-300 hover:scale-125 cursor-pointer"
           />
 
-          <SlMenu className="lg:text-[56px] text-[38px] text-white mt-1 font-black mr-20 cursor-pointer transition-transform duration-300 hover:scale-125" />
+          <SlMenu className="lg:text-[56px] text-[38px] text-white mt-1 font-black mr-20 cursor-pointer transition-transform duration-300 hover:scale-125" onClick={()=> {setShowMenu(!showMenu)}} />
         </div>
       </div>
 

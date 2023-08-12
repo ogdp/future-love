@@ -30,7 +30,7 @@ function App() {
           <Route index element={<Historyv2 />} />
           <Route path="home" element={<Historyv2 />} />
           <Route path="love" element={<Home />} />
-          <Route path="detail/:id/:userId" element={<NewHistory />} />
+          <Route path="detail/:id/:stt" element={<NewHistory />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="user/:id" element={<ProfileGuest />} />
@@ -45,7 +45,7 @@ function App() {
         <Route index element={<Historyv2 />} />
         <Route path="home" element={<Historyv2 />} />
         <Route path="love" element={<Home />} />
-        <Route path="detail/:id/:userId" element={<NewHistory />} />
+        <Route path="detail/:id/:stt" element={<NewHistory />} />
         <Route path="login" element={<Login />} />
         <Route path="profile" element={<Profile />} />
         <Route path="user/:id" element={<ProfileGuest />} />

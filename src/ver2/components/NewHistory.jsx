@@ -16,7 +16,7 @@ import nam1 from "./image/nam1.png";
 import nu1 from "./image/nu1.png";
 import { useParams, useNavigate } from "react-router";
 import ReactLoading from "react-loading";
-
+import noAvatar from "./image/no-avatar.png";
 export default function NewHistory() {
   const { id } = useParams();
   const route = useNavigate();
@@ -52,7 +52,7 @@ export default function NewHistory() {
     console.log("====================================");
     console.log(id);
     console.log("====================================");
-    // route(`${dataUser.so_thu_tu_su_kien}`);
+    route(`${dataUser.so_thu_tu_su_kien}`);
   };
   const handleSidebar = () => {
     setIsOpenSidebar(!isOpenSidebar);
@@ -77,15 +77,15 @@ export default function NewHistory() {
     }
     return null;
   };
-  const checkUser = () => {
-    const user = JSON.parse(window.localStorage.getItem("user-info"));
-    console.log(user);
-    if (user == null) {
-      alert("Đăng nhập để tiếp tục");
-      return (window.location.href = "/login");
-    }
-  };
-  if (dataUser == null) return <>{renderLoading(true)}</>;
+  // const checkUser = () => {
+  //   const user = JSON.parse(window.localStorage.getItem("user-info"));
+  //   console.log(user);
+  //   if (user == null) {
+  //     alert("Đăng nhập để tiếp tục");
+  //     return (window.location.href = "/login");
+  //   }
+  // };
+  // if (dataUser == null) return <>{renderLoading(true)}</>;
   return (
     <>
       <div
@@ -127,7 +127,7 @@ export default function NewHistory() {
                 className="lg:w-[150px] lg:h-[150px] w-[90px] h-[90px] object-cover"
               >
                 <img
-                  src={dataUser.link_nam_goc}
+                  src={dataUser?.link_nam_goc}
                   alt=""
                   className="lg:w-[80%] lg:h-[80%] w-[80%] h-[80%] object-cover  rounded-full lg:mt-[25px] lg:ml-[6px] mt-6 ml-2"
                 />
@@ -143,7 +143,7 @@ export default function NewHistory() {
                 className="lg:w-[150px] lg:h-[150px] w-[90px] h-[90px]"
               >
                 <img
-                  src={dataUser.link_nu_goc}
+                  src={dataUser?.link_nu_goc}
                   alt=""
                   className="lg:w-[80%] lg:h-[80%] w-[80%] h-[80%] object-fill  rounded-full lg:mt-[25px] ml-6 mt-2 lg:ml-9"
                 />
@@ -211,49 +211,49 @@ export default function NewHistory() {
           </div>
           <div className="lg:col-span-9 col-span-12 bg-D9D9D9 min-h-screen">
             {isActive === 1 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <FirstMeet />
               </aside>
             ) : (
               ""
             )}
             {isActive === 2 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <FirstDate />
               </aside>
             ) : (
               ""
             )}
             {isActive === 3 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <BeingInLove />
               </aside>
             ) : (
               ""
             )}
             {isActive === 4 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <BreakingUp />
               </aside>
             ) : (
               ""
             )}
             {isActive === 5 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <Marry />
               </aside>
             ) : (
               ""
             )}
             {isActive === 6 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <Divorce />
               </aside>
             ) : (
               ""
             )}
             {isActive === 7 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <Remarry />
               </aside>
             ) : (
