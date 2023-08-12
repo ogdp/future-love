@@ -25,11 +25,10 @@ function CmtPopup(props) {
   console.log(user);
   const idUser = user.id_user;
   console.log(user.id_user);
-
   const templateCmt = props.TemplateCmt;
   const data = props.data;
   console.log("====================================");
-  console.log(idsk);
+  console.log(props);
   console.log("====================================");
   const closePopup = () => {
     props.setIsOpenPopup(false);
@@ -159,7 +158,7 @@ function CmtPopup(props) {
                 {/* {other-avt} */}
                 <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
                   <img
-                    src={cmt.imageattach ? cmt.imageattach : noAvatar}
+                    src={cmt?.imageattach ? cmt.imageattach : noAvatar}
                     alt=""
                     className="w-[100%] h-[100%] object-cover rounded-[50%]"
                   />
@@ -181,11 +180,7 @@ function CmtPopup(props) {
         <div className="flex items-center justify-around mx-3 gap-x-4 rounded-full shadow-sm shadow-slate-300">
           <div className="overflow-hidden rounded-full w-[50px]">
             <img
-              src={
-                dataUser?.avatar_user.split(":")[0] === "https"
-                  ? dataUser.avatar_user
-                  : noAvatar
-              }
+              src={dataUser ? dataUser.avatar_user : noAvatar}
               alt=""
               className="w-[100%] h-[100%] object-cover"
             />
