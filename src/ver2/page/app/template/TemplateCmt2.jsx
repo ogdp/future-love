@@ -20,6 +20,7 @@ function TemplateCmt2(props) {
     real_time,
     ten_su_kien,
     noi_dung_su_kien,
+    link_da_swap
   } = data;
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
@@ -34,25 +35,25 @@ function TemplateCmt2(props) {
   return (
     <>
       <div
-        className={`lg:w-full w-[380px] border-8 border-pink-300  h-[auto] bg-white flex flex-col rounded-[36px] overflow-hidden`}
+        className={`lg:w-full w-[380px] h-full border-8 border-pink-300  bg-white flex flex-col rounded-[36px] overflow-hidden`}
       >
         <div className="relative">
           <div
-            style={{ backgroundImage: `url(${link_nu_goc})` }}
-            className="lg:w-full lg:h-[250px] w-max bg-top  bg-no-repeat bg-cover object-contain "
-            onClick={() => handlePopupImage(link_nu_goc)}
+            style={{ backgroundImage: `url(${link_da_swap})` }}
+            className="lg:w-full lg:h-[250px] w-full h-[250px] bg-top  bg-no-repeat bg-cover object-contain "
+            onClick={() => handlePopupImage(link_da_swap)}
           >
             <img
               src={vien}
-              className="absolute top-[100px] left-0 right-0 object-contain "
+              className="absolute lg:top-[100px] top-[180px] left-0 right-0 object-contain "
               alt="avatar"
             />
           </div>
         </div>
         <div className="h-[auto] w-full relative ">
-          <div className="flex items-center justify-evenly">
+          <div className="flex items-center justify-evenly lg:flex-row flex-col">
             <div className="flex flex-col items-center gap-y-2 justify-center">
-              <p key={id} to={`/ array / ${id}`} className="text-2xl font-bold">
+              <p key={id} to={`/ array / ${id}`} className="lg:text-3xl text-2xl  font-bold">
                 {ten_su_kien}
               </p>
 
@@ -68,11 +69,11 @@ function TemplateCmt2(props) {
               </div>
               <span className="font-bold">{real_time.split(",")[0]}</span>
             </div>
-            <p className="text-base font-[Montserrat] max-w-lg pt-3 max-h-[42rem] overflow-y-auto h-32 mt-[30px] h-[150px] z-[3]">
+            <p className="text-base font-[Montserrat] max-w-lg pt-3 overflow-y-auto lg:mt-[30px] mb-10 z-[3]">
               {noi_dung_su_kien}
             </p>
           </div>
-          <div className="my-4 relative"></div>
+          {/* <div className="my-4 relative"></div> */}
         </div>
       </div>
     </>

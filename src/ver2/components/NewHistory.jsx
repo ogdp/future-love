@@ -16,12 +16,13 @@ import nam1 from "./image/nam1.png";
 import nu1 from "./image/nu1.png";
 import { useParams, useNavigate } from "react-router";
 import ReactLoading from "react-loading";
-
+import noAvatar from "./image/no-avatar.png";
 export default function NewHistory() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const route = useNavigate();
   const [dataUser, setDataUser] = useState(null);
   const [isActive, setIsActive] = useState(1);
+  const [isOpenSidebar, setIsOpenSidebar] = useState(false);
   const fetchDataUser = async () => {
     try {
       const response = await axios.get(
@@ -47,12 +48,20 @@ export default function NewHistory() {
   const redirect = (e) => {
     setIsActive(e);
     scrollToTop();
+    setIsOpenSidebar(false);
+    console.log("====================================");
+    console.log(id);
+    console.log("====================================");
+    route(`${dataUser.so_thu_tu_su_kien}`);
+  };
+  const handleSidebar = () => {
+    setIsOpenSidebar(!isOpenSidebar);
   };
   const renderLoading = (isLoading) => {
     if (isLoading) {
       return (
-        <div className="fixed top-0 min-w-[100%] h-[100vh] z-[999]">
-          <div className="absolute top-0 min-w-[100%] h-[100vh] bg-black opacity-70 z-10"></div>
+        <div className="fixed top-0 min-w-[100%] h-[100vh] z-[99]">
+          <div className="absolute top-0 min-w-[100%] h-[100vh] bg-black opacity-70"></div>
           <div
             style={{
               display: "flex",
@@ -68,164 +77,183 @@ export default function NewHistory() {
     }
     return null;
   };
-  const checkUser = () => {
-    const user = JSON.parse(window.localStorage.getItem("user-info"));
-    console.log(user);
-    if (user == null) {
-      alert("Đăng nhập để tiếp tục");
-      return (window.location.href = "/login");
-    }
-  };
-  if (dataUser == null) return <>{renderLoading(true)}</>;
+  // const checkUser = () => {
+  //   const user = JSON.parse(window.localStorage.getItem("user-info"));
+  //   console.log(user);
+  //   if (user == null) {
+  //     alert("Đăng nhập để tiếp tục");
+  //     return (window.location.href = "/login");
+  //   }
+  // };
+  // if (dataUser == null) return <>{renderLoading(true)}</>;
   return (
     <>
       <div
         className=" min-h-screen"
         style={{ background: "linear-gradient(to right, pink, violet)" }}
       >
-        <Header />
+        <Header onClick={handleSidebar} />
 
-        <div className="flex">
-          <div className="lg:w-[30%] bg-menu min-h-screen">
-            <div className=" lg:h-[30%] lg:w-[100%] flex items-center justify-center">
+        <div className="grid grid-cols-12">
+          {isOpenSidebar && (
+            <div
+              style={{
+                position: "fixed",
+                top: 100,
+                right: 0,
+                left: 0,
+                bottom: 0,
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+              }}
+              className="lg:hidden block"
+            />
+          )}
+          <div
+            className={`lg:col-span-3 z-[999] bg-menu lg:block ${
+              isOpenSidebar
+                ? "col-span-8 sm:col-span-6 transition-all transform duration-300 ease-linear block opacity-100 absolute top-40 left-0 bottom-0 h-full"
+                : "transition-all transform hidden duration-300 ease-out "
+            }`}
+          >
+            <div className=" lg:h-[30%] lg:w-[100%] flex items-center justify-center mt-4">
               <div
                 style={{
                   backgroundImage: `url(${nam1})`,
                   backgroundSize: "cover",
-                  width: "150px",
-                  height: "150px",
+                  backgroundPosition: "center center",
+                  backgroundRepeat: "no-repeat",
                   overflow: "hidden",
                 }}
+                className="lg:w-[150px] lg:h-[150px] w-[90px] h-[90px] object-cover"
               >
                 <img
-                  src={dataUser.link_nam_goc}
+                  src={dataUser?.link_nam_goc}
                   alt=""
-                  className="lg:w-[80%] lg:h-[80%] object-cover rounded-[50%] lg:mt-[25px] lg:ml-[6px]"
+                  className="lg:w-[80%] lg:h-[80%] w-[80%] h-[80%] object-cover  rounded-full lg:mt-[25px] lg:ml-[6px] mt-6 ml-2"
                 />
               </div>
               <div
                 style={{
                   backgroundImage: `url(${nu1})`,
                   backgroundSize: "cover",
-                  width: "150px",
-                  height: "150px",
+                  backgroundPosition: "center center",
+                  backgroundRepeat: "no-repeat",
+                  overflow: "hidden",
                 }}
+                className="lg:w-[150px] lg:h-[150px] w-[90px] h-[90px]"
               >
                 <img
-                  src={dataUser.link_nu_goc}
+                  src={dataUser?.link_nu_goc}
                   alt=""
-                  className="lg:w-[80%] lg:h-[80%] object-cover rounded-[50%] lg:ml-[25px] lg:mt-[6px]"
+                  className="lg:w-[80%] lg:h-[80%] w-[80%] h-[80%] object-fill  rounded-full lg:mt-[25px] ml-6 mt-2 lg:ml-9"
                 />
               </div>
             </div>
-            <div className="slab text-[30px] font-bold text-[#FFFFFF]">
+            <div className="slab lg:text-[26px] text-2xl font-bold text-[#FFFFFF]">
               <div className=" flex justify-center">
-                <ul className="py-10">
+                <ul className="flex flex-col gap-y-8 w-full">
                   <li
-                    className="cursor-pointer flex justify-center items-center h-32"
+                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
                     onClick={() => redirect(1)}
                   >
-                    <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                      First Meet
-                    </div>
+                    First Meet
                   </li>
                   <li
-                    className="cursor-pointer flex justify-center items-center h-32"
+                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
                     onClick={() => redirect(2)}
                   >
-                    <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                      First date
-                    </div>
+                    First date
                   </li>
                   <li
-                    className="cursor-pointer flex justify-center items-center h-32"
+                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
                     onClick={() => redirect(3)}
                   >
-                    <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                      Being in love
-                    </div>
+                    Being in love
                   </li>
                   <li
-                    className="cursor-pointer flex justify-center items-center h-32"
+                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
                     onClick={() => redirect(4)}
                   >
-                    <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                      Breking up
-                    </div>
+                    Breking up
                   </li>
                   <li
-                    className="cursor-pointer flex justify-center items-center h-32"
+                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
                     onClick={() => redirect(5)}
                   >
-                    <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                      Marry
-                    </div>
+                    Marry
                   </li>
                   <li
-                    className="cursor-pointer flex justify-center items-center h-32"
+                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
                     onClick={() => redirect(6)}
                   >
-                    <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                      Divorce
-                    </div>
+                    Divorce
                   </li>
                   <li
-                    className="cursor-pointer flex justify-center items-center h-32"
+                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
                     onClick={() => redirect(7)}
                   >
-                    <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
-                      Remarry
+                    Remarry
+                  </li>
+                  <li>
+                    {/* mobile search */}
+                    <div className="flex gap-x-4 mx-4 items-center py-3 px-4  lg:hidden  border rounded-full bg-white">
+                      <i className="fa fa-search lg:text-4xl text-2xl text-black" />
+                      <input
+                        type="search"
+                        placeholder="Search"
+                        className="placeholder:text-xl border-none outline-none w-full h-full"
+                      />
                     </div>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-          <div className="lg:w-[70%] bg-D9D9D9 min-h-screen">
+          <div className="lg:col-span-9 col-span-12 bg-D9D9D9 min-h-screen">
             {isActive === 1 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <FirstMeet />
               </aside>
             ) : (
               ""
             )}
             {isActive === 2 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <FirstDate />
               </aside>
             ) : (
               ""
             )}
             {isActive === 3 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <BeingInLove />
               </aside>
             ) : (
               ""
             )}
             {isActive === 4 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <BreakingUp />
               </aside>
             ) : (
               ""
             )}
             {isActive === 5 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <Marry />
               </aside>
             ) : (
               ""
             )}
             {isActive === 6 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <Divorce />
               </aside>
             ) : (
               ""
             )}
             {isActive === 7 ? (
-              <aside onClick={() => checkUser()}>
+              <aside>
                 <Remarry />
               </aside>
             ) : (

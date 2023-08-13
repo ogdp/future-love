@@ -20,19 +20,23 @@ function Template1(props) {
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
 
   return (
-    <div className="h-[auto] items-center justify-center">
-      <div className="h-[10%] w-[100%]">
+    <div className="h-full flex flex-col items-center justify-center">
+      <div className="mb-10 mt-20">
         <Clock data={data.real_time} />
       </div>
       <div
-        className={` lg:w-[1019px] w-[380px] mb-12 border-8 border-pink-300  h-[auto] bg-white rounded-[36px] flex flex-row mt-[50px]`}
+        className={`border-8 border-pink-300 w-full lg:h-[550px] bg-white rounded-[36px] flex lg:flex-row flex-col-reverse mt-[50px] items-center justify-center relative gap-x-20 overflow-hidden lg:mb-[180px] mb-[60px]`}
       >
-        <div className="-ml-2 bg-no-repeat bg-cover w-[55%] flex flex-col justify-between">
+        <div className="-ml-2 bg-no-repeat bg-cover lg:w-[55%] w-full flex flex-col justify-between mt-8">
           <div>
-            <img src={img2} alt="" className="ml-[10px] mt-[5px]" />
+            <img
+              src={img2}
+              alt=""
+              className="lg:ml-[5px] lg:mt-[3px] absolute top-0 left-0"
+            />
           </div>
           {/* image love */}
-          <div className="flex flex-col ml-[100px]">
+          <div className="flex flex-col lg:ml-[100px] mx-14 items-center justify-center mt-[100px]">
             <span
               key={data.id}
               to={`/ array / ${data.id}`}
@@ -40,7 +44,7 @@ function Template1(props) {
             >
               {data.ten_su_kien}
             </span>
-            <p className="text-3xl font-[Montserrat] max-w-lg pt-3 max-h-[42rem] overflow-y-auto h-32 mt-[50px] h-[150px]">
+            <p className="text-3xl font-[Montserrat] max-w-lg pt-3 max-h-[42rem] overflow-y-auto mt-[50px] text-center lg:text-left">
               {data.noi_dung_su_kien}
             </p>
             <div className="flex flex-row ">
@@ -53,22 +57,22 @@ function Template1(props) {
                 <div className="text-2xl ml-[10px]">{data.count_view}</div>
               </div>
             </div>
-            <div className="my-4 ">
+            <div className="lg:my-4 my-10">
               <span
                 style={{ fontStyle: "normal" }}
-                className="text-time text-3xl "
+                className="text-time text-3xl mb-4 block"
               >
                 {data.real_time}
               </span>
             </div>
           </div>
           {/* image swap */}
-          <div className="ml-[8px] mb-[3px]">
+          <div className="absolute left-0 bottom-0">
             <img src={img3} alt="" className="" />
           </div>
         </div>
         <div className="bg-no-repeat bg-cover w-[55%] flex flex-col justify-between ">
-          <div className=" ml-[315px]">
+          <div className="absolute right-0 top-0">
             <img src={img4} alt="" />
           </div>
           <div
@@ -78,17 +82,17 @@ function Template1(props) {
             <div>
               <div
                 style={{ backgroundImage: `url(${data.link_da_swap})` }}
-                className=" lg:w-[450px] lg:h-[450px] w-[405px] h-[405px] rounded-full bg-center bg-no-repeat bg-cover 5  "
+                className=" lg:w-[450px] lg:h-[450px]  rounded-full bg-center bg-no-repeat bg-cover 5  "
               >
                 <div
                   style={{ backgroundImage: `url(${img1})` }}
-                  className="rounded-[32px] bg-no-repeat bg-cover w-[495px] h-[465px] ml-[-35px]"
+                  className="rounded-[32px] bg-no-repeat bg-cover lg:w-[495px] lg:h-[465px] w-[300px] h-[300px] ml-[-35px] mt-6"
                 />
               </div>
               {/* first event */}
             </div>
           </div>
-          <div className="ml-[315px]">
+          <div className="absolute right-0 bottom-0">
             <img src={img5} alt="" className="" />
           </div>
         </div>
