@@ -315,6 +315,7 @@ export default function () {
     setIsLoading(true);
     try {
       const imageUrl = await uploadImage(selectedImage);
+      if (!imageUrl) return alert("Fail API upload image");
       let data = new FormData();
       data.append("link_img", imageUrl.success);
       data.append("check_img ", "upload");

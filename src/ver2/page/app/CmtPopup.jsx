@@ -16,40 +16,23 @@ const templateComponents = {
 };
 
 function CmtPopup(props) {
-  const { idsk } = useParams();
+  const param = useParams();
   const [dataCmt, setDataCmt] = useState([]);
-  const [dataUser, setDataUser] = useState(null);
-  const [dataSend, setDataSend] = useState({});
-
   const user = JSON.parse(localStorage.getItem("user-info"));
   console.log(user);
-  const idUser = user.id_user;
-  console.log(user.id_user);
-
+  const [imgComment, setImgComment] = useState("");
   const templateCmt = props.TemplateCmt;
-  const data = props.data;
-  console.log("====================================");
-  console.log(idsk);
-  console.log("====================================");
   const closePopup = () => {
     props.setIsOpenPopup(false);
-    // setImgSrc(props.data.link_nu_goc);
-    // setIsImgPopup();
   };
-  // useEffect(() => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchDataCmt = async () => {
+    console.log(1234);
     try {
       const response = await axios.get(
-        `http://14.225.7.221:8989/lovehistory/comment/user/${idUser}`
-        // `http://14.225.7.221:8989/lovehistory/comment/user/${idUser}`
+        `http://14.225.7.221:8989/lovehistory/comment/${props.data.so_thu_tu_su_kien}?id_toan_bo_su_kien=${param.id}`
       );
-      const data = await response.data.comment_user;
-      console.log("====================================");
-      console.log("data ee", data);
-      console.log("====================================");
-      setDataCmt(data);
-      console.log("data", data);
+      console.log(response.data.comment);
+      setDataCmt(response.data.comment);
     } catch (err) {
       console.log(err);
     }
@@ -58,57 +41,24 @@ function CmtPopup(props) {
   useEffect(() => {
     fetchDataCmt();
   }, []);
-  useEffect(() => {
-    const fetchDataUser = async () => {
-      try {
-        const response = await axios.get(
-          `http://14.225.7.221:8989/lovehistory/comment/1?id_toan_bo_su_kien=${idUser}`
-        );
-        console.log(response.data.comment);
-        setDataUser(response.data.comment[1]);
-        console.log("====================================");
-        console.log(dataUser);
-        console.log("====================================");
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchDataUser();
-  }, []);
-
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (event) => {
     const newValue = event.target.value;
     setInputValue(newValue);
   };
-  const sortCmt = dataCmt.sort(
-    (a, b) => new Date(a.real_time) - new Date(b.real_time)
-  );
-  console.log("====================================");
-  console.log(sortCmt);
-  console.log("====================================");
   const HandleSendCmt = async (e) => {
     const url = "http://14.225.7.221:8989/lovehistory/comment";
-    const {
-      device_cmt,
-      id_toan_bo_su_kien,
-      dia_chi_ip,
-      so_thu_tu_su_kien,
-      imageattach,
-      id_user,
-      location,
-    } = dataUser;
-    const data = {
-      noi_dung_cmt: inputValue,
-      device_cmt,
-      id_toan_bo_su_kien,
-      so_thu_tu_su_kien,
-      ipComment: dia_chi_ip,
-      imageattach,
-      id_user,
-      location,
+    const comment = {
+      device_cmt: "Simulator (iPhone 14 Plus)",
+      id_toan_bo_su_kien: param.id,
+      ipComment: "14.232.159.109",
+      so_thu_tu_su_kien: props.data.so_thu_tu_su_kien,
+      imageattach: imgComment ? imgComment.url : "",
+      id_user: user.id_user,
+      location: "Ha Noi",
     };
+    const data = { ...comment, noi_dung_cmt: inputValue };
     await axios
       .post(url, data, {
         headers: {
@@ -116,10 +66,9 @@ function CmtPopup(props) {
         },
       })
       .then((response) => {
-        console.log("Dữ liệu đã được gửi thành công:", response.data.comment);
         setInputValue("");
-        // dataCmt.push(response.data.comment);
         setDataCmt((prev) => [...prev, response.data.comment]);
+        setImgComment("");
         toast.success("Commented!!!");
       })
       .catch((error) => {
@@ -128,7 +77,21 @@ function CmtPopup(props) {
       });
   };
   const TemplateComponent = templateComponents[templateCmt];
-
+  const onSubmitComment = (event) => {
+    event.preventDefault();
+  };
+  const onChangeImgComment = async (event) => {
+    const formData = new FormData();
+    formData.append("image", event.target.files[0]);
+    const apiResponse = await axios.post(
+      `https://api.imgbb.com/1/upload?key=283182a99cb41ed4065016b64933524f`,
+      formData
+    );
+    setImgComment(apiResponse.data.data);
+  };
+  const removeImgComment = () => {
+    setImgComment("");
+  };
   return (
     <div
       style={{
@@ -148,29 +111,32 @@ function CmtPopup(props) {
       <div className="w-full h-full z-[9999]" onClick={closePopup}></div>
       <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-max bg-white gap-y-4">
         <div className="w-max h-[85%]">
-          <TemplateComponent data={data} onClick={closePopup} />
+          <TemplateComponent data={props.data} onClick={closePopup} />
         </div>
-
-        {/* {comment} */}
         <div className="overflow-y-auto">
-          {sortCmt.length > 0 &&
-            sortCmt.map((cmt, index) => (
+          {dataCmt.length > 0 &&
+            dataCmt.map((cmt, index) => (
               <div className="flex items-stretch gap-x-4" key={index}>
-                {/* {other-avt} */}
                 <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
                   <img
-                    src={cmt.imageattach ? cmt.imageattach : noAvatar}
+                    src={cmt.avatar_user ? cmt.avatar_user : noAvatar}
                     alt=""
                     className="w-[100%] h-[100%] object-cover rounded-[50%]"
                   />
                 </div>
-
-                {/* { Name + Content } */}
                 <div className="">
                   <h1 className="lg:text-2xl text-xl font-semibold">
                     {cmt.user_name ? cmt.user_name : "Guest"}
                   </h1>
                   <p className="lg:text-xl text-base"> {cmt.noi_dung_cmt}</p>
+                  {cmt.imageattach ? (
+                    <img
+                      className="w-[60px] h-[50px]"
+                      src={cmt.imageattach}
+                    ></img>
+                  ) : (
+                    ""
+                  )}
                   <p className="lg:text-base text-sm">
                     {cmt.thoi_gian_release}
                   </p>
@@ -181,27 +147,57 @@ function CmtPopup(props) {
         <div className="flex items-center justify-around mx-3 gap-x-4 rounded-full shadow-sm shadow-slate-300">
           <div className="overflow-hidden rounded-full w-[50px]">
             <img
-              src={
-                dataUser?.avatar_user.split(":")[0] === "https"
-                  ? dataUser.avatar_user
-                  : noAvatar
-              }
+              src={user.id_user ? user.link_avatar : noAvatar}
               alt=""
               className="w-[100%] h-[100%] object-cover"
             />
           </div>
 
           <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-full">
-            <input
-              type="text"
-              value={inputValue}
-              onChange={handleInputChange}
-              className="w-full h-auto border-none outline-none"
-            ></input>
+            <form onSubmit={onSubmitComment}>
+              <input
+                type="text"
+                value={inputValue}
+                onChange={handleInputChange}
+                className="w-full h-auto border-none outline-none"
+              ></input>
+              <div className="inline-block relative">
+                <label for="file-input">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/685/685655.png"
+                    width="20px"
+                    height="20px"
+                  />
+                  <input
+                    type="file"
+                    onChange={onChangeImgComment}
+                    accept=".jpg"
+                    className="absolute left-0 top-0 opacity-0 w-[100%] h-[100%]"
+                  />
+                </label>
+              </div>
+              <button className="w-[30px] float-right" onClick={HandleSendCmt}>
+                <img
+                  src={send}
+                  alt=""
+                  className="w-[100%] h-[100%] object-cover"
+                />
+              </button>
+            </form>
           </div>
-          <button className="w-[30px]" onClick={HandleSendCmt}>
-            <img src={send} alt="" className="w-[100%] h-[100%] object-cover" />
-          </button>
+          {imgComment ? (
+            <>
+              <img
+                className="w-[80px] h-[70px]"
+                src="https://i.imgur.com/VLOfPdr.jpg"
+              />
+              <button className="mt-[-50px]" onClick={removeImgComment}>
+                <i className="fas fa-times font-bold" />
+              </button>
+            </>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <div className="w-full h-full z-[9999]" onClick={closePopup}></div>
