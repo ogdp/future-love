@@ -94,11 +94,10 @@ function EventHistory(props) {
     setCurrentPage(pageNumber);
   };
 
-  const handleEventHistory = (idsk, stt) => {
+  const handleEventHistory = (idsk, id) => {
     history.push({
-      pathname: `/detail/${idsk}/${stt}`,
+      pathname: `/detail/${idsk}/${id}`,
     });
-    console.log(stt);
     window.location.reload();
   };
 
@@ -294,7 +293,7 @@ function EventHistory(props) {
                 onClick={() =>
                   handleEventHistory(
                     array.sukien[array.sukien.length - 1].id_toan_bo_su_kien,
-                    array.sukien[array.sukien.length - 1].so_thu_tu_su_kien
+                    array.sukien[array.sukien.length - 1].id_template
                   )
                 }
                 key={index}

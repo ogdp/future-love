@@ -17,12 +17,14 @@ import nu1 from "./image/nu1.png";
 import { useParams, useNavigate } from "react-router";
 import ReactLoading from "react-loading";
 import noAvatar from "./image/no-avatar.png";
+import { createBrowserHistory } from "history";
 export default function NewHistory() {
   const { id } = useParams();
   const route = useNavigate();
   const [dataUser, setDataUser] = useState(null);
   const [isActive, setIsActive] = useState(1);
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
+  const history = createBrowserHistory();
   const fetchDataUser = async () => {
     try {
       const response = await axios.get(
@@ -52,7 +54,9 @@ export default function NewHistory() {
     console.log("====================================");
     console.log(id);
     console.log("====================================");
-    route(`${dataUser.so_thu_tu_su_kien}`);
+    history.replace({
+      pathname: `/detail/${id}/${e}`,
+    });
   };
   const handleSidebar = () => {
     setIsOpenSidebar(!isOpenSidebar);
