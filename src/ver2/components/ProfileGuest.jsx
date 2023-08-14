@@ -5,16 +5,18 @@ import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import ReactLoading from "react-loading";
 import Header from "./Header";
+import HistoryCommentList from "./HistoryCommentList";
+import EventListProfile from "./EventListProfile";
 const ProfileGuest = () => {
   const id = useParams().id;
   const [data, setData] = useState(null);
-  console.log(id);
-
+  const [listEvent, setListEvent] = useState([]);
+  const [showEvent, setShowEvent] = useState(false);
   const server = "http://14.225.7.221:8989";
   const getUser = async (idUser) => {
     try {
       const { data } = await axios.get(`${server}/profile/${idUser}`);
-      // console.log(res);
+      // console.log(data);
       setData(data);
     } catch (error) {
       console.log(error);
@@ -23,8 +25,19 @@ const ProfileGuest = () => {
   const getAllEventUser = async (idUser) => {
     try {
       const { data } = await axios.get(`${server}/lovehistory/user/${idUser}`);
-      console.log(data);
-      // setData(data);
+      setListEvent(data.list_sukien);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  //comments
+  const [dataComment, setDataComment] = useState(null);
+  const fetchDatas = async (idUser) => {
+    try {
+      const res = await axios.get(
+        `${server}/lovehistory/comment/user/${idUser}`
+      );
+      setDataComment(res.data.comment_user.slice(0, 60));
     } catch (error) {
       console.log(error);
     }
@@ -32,6 +45,7 @@ const ProfileGuest = () => {
   useEffect(() => {
     getUser(id);
     getAllEventUser(id);
+    fetchDatas(id);
   }, []);
 
   const renderLoading = (isLoading) => {
@@ -54,8 +68,8 @@ const ProfileGuest = () => {
     }
     return null;
   };
-
   if (data == null) return <>{renderLoading(true)}</>;
+  const nic = listEvent.slice(0, 20);
   return (
     <div className="bg-[#E9E9E9] w-[100%] h-full">
       <div className="h-full">
@@ -102,7 +116,10 @@ const ProfileGuest = () => {
                   </div>
                 </div>
                 <div className="flex justify-center items-center py-4 gap-3 md:my-8">
-                  <button className=" bg-white shadow-gray-500 rounded-full py-2 px-5 text-[14px]">
+                  <button
+                    className=" bg-white shadow-gray-500 rounded-full py-2 px-5 text-[14px]"
+                    onClick={() => setShowEvent(true)}
+                  >
                     View Events
                   </button>
                   <button
@@ -111,19 +128,27 @@ const ProfileGuest = () => {
                   >
                     <div className="flex justify-center items-center">
                       <svg
+                        width={15}
+                        height={15}
+                        className="mx-3"
+                        viewBox="0 0 36 36"
+                        fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        width={24}
-                        height={24}
-                        viewBox="0 0 24 24"
-                        style={{
-                          fill: "rgba(0, 0, 0, 1)",
-                          transform: "",
-                          msfilter: "",
-                        }}
                       >
-                        <path d="M11.587 6.999H7.702a2 2 0 0 0-1.88 1.316l-3.76 10.342c-.133.365-.042.774.232 1.049l.293.293 6.422-6.422c-.001-.026-.008-.052-.008-.078a1.5 1.5 0 1 1 1.5 1.5c-.026 0-.052-.007-.078-.008l-6.422 6.422.293.293a.997.997 0 0 0 1.049.232l10.342-3.761a2 2 0 0 0 1.316-1.88v-3.885L19 10.414 13.586 5l-1.999 1.999zm8.353 2.062-5-5 2.12-2.121 5 5z" />
+                        <path
+                          d="M18.5991 31.7995C18.2991 31.3495 17.9991 31.0495 17.8491 30.5995C17.0991 29.2495 16.7991 27.7495 16.7991 26.2495C16.7991 23.9995 17.6991 21.8995 19.0491 20.2495C19.3491 19.9495 19.4991 19.6495 19.7991 19.4995C19.7991 19.3495 20.5491 18.8995 20.9991 18.5995C23.6991 16.9495 25.3491 13.9495 25.0491 10.7995C24.8991 9.44947 24.4491 8.09947 23.8491 7.19947C22.6491 5.24947 20.6991 3.74947 18.2991 3.29947C12.8991 2.24947 8.09906 6.29947 8.09906 11.5495C8.09906 14.3995 9.44906 16.7995 11.5491 18.2995C7.79906 19.6495 4.79906 22.4995 3.14906 26.2495C2.54906 27.7495 2.69906 29.3995 3.59906 30.7495C4.79906 32.0995 6.29906 32.9995 8.09906 32.9995H19.7991C19.3491 32.5495 18.8991 32.2495 18.5991 31.7995Z"
+                          fill="black"
+                        />
+                        <path
+                          d="M26.0992 19.1992C25.4992 19.1992 24.8992 19.3492 24.2992 19.4992C23.8492 19.6492 23.2492 19.7992 22.7992 20.0992C22.3492 20.2492 22.0492 20.5492 21.5992 20.8492C20.0992 22.0492 19.1992 23.9992 19.1992 26.0992C19.1992 27.7492 19.7992 29.2492 20.6992 30.4492C21.1492 30.8992 21.5992 31.3492 22.0492 31.6492C23.0992 32.3992 24.2992 32.8492 25.4992 32.8492C25.6492 32.8492 25.7992 32.8492 25.9492 32.8492C29.6992 32.8492 32.8492 29.6992 32.8492 25.9492C32.9992 22.3492 29.8492 19.1992 26.0992 19.1992Z"
+                          fill="black"
+                        />
+                        <path
+                          d="M29.55 24.8996H27.45V22.7996C27.45 22.0496 26.85 21.5996 26.25 21.5996C25.65 21.5996 25.05 22.1996 25.05 22.7996V24.8996H22.95C22.2 24.8996 21.75 25.4996 21.75 26.0996C21.75 26.8496 22.35 27.2996 22.95 27.2996H25.05V29.3996C25.05 30.1496 25.65 30.5996 26.25 30.5996C26.85 30.5996 27.45 29.9996 27.45 29.3996V27.2996H29.55C30.3 27.2996 30.75 26.6996 30.75 26.0996C30.75 25.4996 30.15 24.8996 29.55 24.8996Z"
+                          fill="white"
+                        />
                       </svg>
-                      <span> Edit </span>
+                      <span> Follow </span>
                     </div>
                   </button>
                 </div>
@@ -169,7 +194,10 @@ const ProfileGuest = () => {
             </button>
           </div>
         </div>
-        {/* <HistoryCommentList datas={datas} /> */}
+        <HistoryCommentList datas={dataComment} />
+        {showEvent && (
+          <EventListProfile data={nic} closeTab={() => setShowEvent(false)} />
+        )}
       </div>
     </div>
   );

@@ -315,6 +315,7 @@ export default function () {
     setIsLoading(true);
     try {
       const imageUrl = await uploadImage(selectedImage);
+      if (!imageUrl) return alert("Fail API upload image");
       let data = new FormData();
       data.append("link_img", imageUrl.success);
       data.append("check_img ", "upload");
@@ -858,7 +859,7 @@ export default function () {
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         ) : null}
-        <HistoryCommentList datas={datas} />
+        {datas.length > 0 && <HistoryCommentList datas={datas} />}
       </div>
     </div>
   );

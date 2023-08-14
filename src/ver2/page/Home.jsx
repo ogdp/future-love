@@ -151,7 +151,9 @@ function Home() {
     setIsLoading(true);
     try {
       const res1 = await uploadImage(image1, setImage1);
+      if (!res1) return alert("Fail API upload image");
       const res2 = await uploadImage(image2, setImage2);
+      if (!res2) return alert("Fail API upload image");
       setRandomImages([res1.success, res2.success]);
       const res3 = await createEvent({
         img1: res1.success,
