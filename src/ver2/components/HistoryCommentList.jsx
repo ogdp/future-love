@@ -13,11 +13,7 @@ const HistoryCommentList = ({ datas }) => {
         <h2 className="text-center py-6">Không có dữ liệu</h2>
       </>
     );
-  const dataSort = datas.sort((a, b) => {
-    const dateA = new Date(a.thoi_gian_release);
-    const dateB = new Date(b.thoi_gian_release);
-    return dateB - dateA;
-  });
+  const dataSort = datas.reverse();
 
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
@@ -90,8 +86,8 @@ const HistoryCommentList = ({ datas }) => {
                         />
                       </div>
                       <div className="max-lg:pl-2 max-lg:pr-2 lg:ml-4 flex flex-col justify-center lg:gap-3 text-left">
-                        <h2 className="line-clamp-1 max-lg:text-lg lg:text-2xl font-medium">
-                          Bạn đã comment vào sự kiện của{" "}
+                        <h2 className="line-clamp-1 max-lg:text-xl lg:text-2xl font-medium">
+                          You commented on the event of{" "}
                           <span className="underline">{item.user_name}</span>
                         </h2>
                         <h5 className="line-clamp-1 max-lg:text-sm text-base">
@@ -152,69 +148,6 @@ const HistoryCommentList = ({ datas }) => {
               </div>
             </aside>
           ))}
-
-          {/* <aside className="px-4">
-            <div className="flex lg:justify-between border-b border-[#ff000000] hover:border-gray-300 transition-all">
-              <div className="max-lg: lg:max-w-[85%]">
-                <Link to="/">
-                  <div className="flex py-2 lg:py-3">
-                    <div className="lg:hidden">
-                      <div className="w-[40px] h-[40px] bg-red-500 overflow-hidden rounded-full">
-                        <img
-                          src="https://images.unsplash.com/photo-1595350363780-74f91284c61a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
-                          alt=""
-                          className="w-full object-cover"
-                        />
-                      </div>
-                    </div>
-                    <div className="max-lg:hidden max-lg:w-[50px] max-lg:h-[50px] lg:w-[80px] lg:h-[80px] rounded-full overflow-hidden">
-                      <img
-                        src="https://images.unsplash.com/photo-1595350363780-74f91284c61a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
-                        alt=""
-                        className="w-full object-cover"
-                      />
-                    </div>
-                    <div className="max-lg:pl-2 max-lg:pr-2 lg:ml-4 flex flex-col justify-center lg:gap-3 text-left">
-                      <h2 className="line-clamp-1 max-lg:text-lg lg:text-2xl font-medium">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit. Veritatis repellendus exercitationem incidunt.
-                      </h2>
-                      <h5 className="line-clamp-1 max-lg:text-sm text-base">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit. Veritatis repellendus exercitationem incidunt.
-                      </h5>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-              <div className="flex justify-center items-center max-lg:gap-2 lg:gap-3 lg:max-w-[15%]">
-                <span className="font-bold max-lg:text-base text-2xl">3m</span>
-                <button className="lg:text-[5px] max-lg:text-[3px] flex gap-1">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="1em"
-                    viewBox="0 0 512 512"
-                  >
-                    <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
-                  </svg>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="1em"
-                    viewBox="0 0 512 512"
-                  >
-                    <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
-                  </svg>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="1em"
-                    viewBox="0 0 512 512"
-                  >
-                    <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </aside> */}
         </div>
       </div>
       <div className="pagination text-4xl flex justify-center my-6">
