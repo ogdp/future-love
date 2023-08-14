@@ -18,7 +18,7 @@ export default function Profile() {
   const user = JSON.parse(localStorage.getItem("user-info"));
   const [imgdata, setImgData] = useState(false);
 
-  const api_key = "892b947dfa3a2a18ccb9574d2c1fe14e";
+  const api_key = "ba35005b6d728bd9197bfd95d64e4e39";
   const server = "http://14.225.7.221:8989";
   const [notiImage, setNotiImage] = React.useState({
     status: false,

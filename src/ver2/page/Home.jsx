@@ -21,7 +21,7 @@ import "../css/AddEvent.css";
 import RenderRandomWaitImage from "../components/randomImages";
 
 function Home() {
-  const Api_key = "892b947dfa3a2a18ccb9574d2c1fe14e";
+  const Api_key = "ba35005b6d728bd9197bfd95d64e4e39";
   const server = "http://14.225.7.221:8989/getdata";
   const [showModal, setShowModal] = React.useState(false);
   const [nam1, setBoy] = useState(boy);
