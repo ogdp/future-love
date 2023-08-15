@@ -14,11 +14,14 @@ import Divorce from "../page/app/Divorce";
 import Remarry from "../page/app/Remarry";
 import nam1 from "./image/nam1.png";
 import nu1 from "./image/nu1.png";
+import { Outlet, useNavigate, useParams } from "react-router";
 
 function NewHistory() {
   const [isActive, setIsActive] = useState(1);
   const [isScroll, setIsScroll] = useState(true);
   const [dataUser, setDataUser] = useState([]);
+  const { id } = useParams()
+  const navigate=useNavigate()
   const redirect = (e) => {
     setIsActive(e);
     scrollToTop();
@@ -67,8 +70,10 @@ function NewHistory() {
 
   const fetchDataUser = async () => {
     try {
+      // const data=await axios.get(``)
+
       const response = await axios.get(
-        `http://14.225.7.221:8989/lovehistory/${idUser}`
+        `http://14.225.7.221:8989/lovehistory/${id}`
       );
       setDataUser(response.data.sukien[0]);
       console.log(response.data);
@@ -130,7 +135,9 @@ function NewHistory() {
               <ul className="py-10">
                 <li
                   className="cursor-pointer flex justify-center items-center h-32"
-                  onClick={() => redirect(1)}
+                  onClick={() => {
+                    navigate(`/detail/${id}/1`)
+                  }}
                 >
                   <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
                     First Meet
@@ -138,7 +145,9 @@ function NewHistory() {
                 </li>
                 <li
                   className="cursor-pointer flex justify-center items-center h-32"
-                  onClick={() => redirect(2)}
+                  onClick={() => {
+                    navigate(`/detail/${id}/2`)
+                  }}
                 >
                   <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
                     First date
@@ -146,7 +155,9 @@ function NewHistory() {
                 </li>
                 <li
                   className="cursor-pointer flex justify-center items-center h-32"
-                  onClick={() => redirect(3)}
+                  onClick={() => {
+                    navigate(`/detail/${id}/3`)
+                  }}
                 >
                   <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
                     Being in love
@@ -154,7 +165,9 @@ function NewHistory() {
                 </li>
                 <li
                   className="cursor-pointer flex justify-center items-center h-32"
-                  onClick={() => redirect(4)}
+                  onClick={() => {
+                    navigate(`/detail/${id}/4`)
+                  }}
                 >
                   <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
                     Breking up
@@ -162,7 +175,9 @@ function NewHistory() {
                 </li>
                 <li
                   className="cursor-pointer flex justify-center items-center h-32"
-                  onClick={() => redirect(5)}
+                  onClick={() => {
+                    navigate(`/detail/${id}/5`)
+                  }}
                 >
                   <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
                     Marry
@@ -170,7 +185,9 @@ function NewHistory() {
                 </li>
                 <li
                   className="cursor-pointer flex justify-center items-center h-32"
-                  onClick={() => redirect(6)}
+                  onClick={() => {
+                    navigate(`/detail/${id}/6`)
+                  }}
                 >
                   <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
                     Divorce
@@ -178,7 +195,9 @@ function NewHistory() {
                 </li>
                 <li
                   className="cursor-pointer flex justify-center items-center h-32"
-                  onClick={() => redirect(7)}
+                  onClick={() => {
+                    navigate(`/detail/${id}/7`)
+                  }}
                 >
                   <div className="hover:bg-[#782353] rounded-3xl py-2 px-36">
                     Remarry
@@ -189,13 +208,14 @@ function NewHistory() {
           </div>
         </div>
         <div className="lg:w-[70%] bg-D9D9D9 min-h-screen">
-          {isActive === 1 ? <FirstMeet /> : ""}
+          <Outlet/>
+          {/* {isActive === 1 ? <FirstMeet /> : ""}
           {isActive === 2 ? <FirstDate /> : ""}
           {isActive === 3 ? <BeingInLove /> : ""}
           {isActive === 4 ? <BreakingUp /> : ""}
           {isActive === 5 ? <Marry /> : ""}
           {isActive === 6 ? <Divorce /> : ""}
-          {isActive === 7 ? <Remarry /> : ""}
+          {isActive === 7 ? <Remarry /> : ""} */}
         </div>
       </div>
     </div>

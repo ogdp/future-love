@@ -24,7 +24,7 @@ function Marry() {
     const fetchData = async () => {
         try {
             const response = await axios.get(
-                `http://14.225.7.221:8989/lovehistory/272`
+                `http://14.225.7.221:8989/lovehistory/${id}`
             )
             setData(response.data.sukien[4])
             console.log(response.data.sukien[4])

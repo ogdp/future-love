@@ -54,7 +54,7 @@ function CmtPopup(props) {
       id_toan_bo_su_kien: param.id,
       ipComment: "14.232.159.109",
       so_thu_tu_su_kien: props.data.so_thu_tu_su_kien,
-      imageattach: imgComment ? imgComment.url : "",
+      imageattach: imgComment ? imgComment : "",
       id_user: user.id_user,
       location: "Ha Noi",
     };
@@ -87,7 +87,7 @@ function CmtPopup(props) {
       `https://api.imgbb.com/1/upload?key=283182a99cb41ed4065016b64933524f`,
       formData
     );
-    setImgComment(apiResponse.data.data);
+    setImgComment(apiResponse.data.data.url);
   };
   const removeImgComment = () => {
     setImgComment("");
@@ -189,7 +189,7 @@ function CmtPopup(props) {
             <>
               <img
                 className="w-[80px] h-[70px]"
-                src="https://i.imgur.com/VLOfPdr.jpg"
+                src={imgComment}
               />
               <button className="mt-[-50px]" onClick={removeImgComment}>
                 <i className="fas fa-times font-bold" />
