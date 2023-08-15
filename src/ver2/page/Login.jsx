@@ -24,7 +24,7 @@ export default function Login() {
     if (validate()) {
       try {
         const response = await axios.post(
-          "http://14.225.7.221:8989/login",
+          "http://61.28.226.120:8989/login",
           formData
         );
         if (response.data.ketqua) {
@@ -54,7 +54,7 @@ export default function Login() {
     try {
       isLoading(true);
       const response = await axios.post(
-        "http://14.225.7.221:8989/reset",
+        "http://61.28.226.120:8989/reset",
         formData
       );
       console.log("okoko", response);

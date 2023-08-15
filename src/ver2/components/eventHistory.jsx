@@ -42,7 +42,7 @@ function EventHistory(props) {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `http://14.225.7.221:8989/lovehistory/page/${count}`
+        `http://61.28.226.120:8989/lovehistory/page/${count}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -138,7 +138,7 @@ function EventHistory(props) {
               <div
                 onClick={() =>
                   handleEventHistory(
-                    array.sukien[array.sukien.length - 1].id_toan_bo_su_kien,
+                    array.sukien[array.sukien.length - 1].id_toan_bo_su_kien
                   )
                 }
                 key={index}

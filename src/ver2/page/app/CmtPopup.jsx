@@ -29,7 +29,7 @@ function CmtPopup(props) {
     console.log(1234);
     try {
       const response = await axios.get(
-        `http://14.225.7.221:8989/lovehistory/comment/${props.data.so_thu_tu_su_kien}?id_toan_bo_su_kien=${param.id}`
+        `http://61.28.226.120:8989/lovehistory/comment/${props.data.so_thu_tu_su_kien}?id_toan_bo_su_kien=${param.id}`
       );
       console.log(response.data.comment);
       setDataCmt(response.data.comment);
@@ -48,7 +48,7 @@ function CmtPopup(props) {
     setInputValue(newValue);
   };
   const HandleSendCmt = async (e) => {
-    const url = "http://14.225.7.221:8989/lovehistory/comment";
+    const url = "http://61.28.226.120:8989/lovehistory/comment";
     const comment = {
       device_cmt: "Simulator (iPhone 14 Plus)",
       id_toan_bo_su_kien: param.id,
@@ -187,10 +187,7 @@ function CmtPopup(props) {
           </div>
           {imgComment ? (
             <>
-              <img
-                className="w-[80px] h-[70px]"
-                src={imgComment}
-              />
+              <img className="w-[80px] h-[70px]" src={imgComment} />
               <button className="mt-[-50px]" onClick={removeImgComment}>
                 <i className="fas fa-times font-bold" />
               </button>

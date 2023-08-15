@@ -12,7 +12,7 @@ const ChangePassword = () => {
     reset,
   } = useForm();
   const user = JSON.parse(window.localStorage.getItem("user-info"));
-  const server = "http://14.225.7.221:8989";
+  const server = "http://61.28.226.120:8989";
   const onSubmit = async (data) => {
     if (data.newpassword == data.oldpassword)
       return toast.error(

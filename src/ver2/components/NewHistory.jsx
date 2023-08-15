@@ -28,7 +28,7 @@ export default function NewHistory() {
   const fetchDataUser = async () => {
     try {
       const response = await axios.get(
-        `http://14.225.7.221:8989/lovehistory/${id}`
+        `http://61.28.226.120:8989/lovehistory/${id}`
       );
       setDataUser(response.data.sukien[0]);
       // console.log(response.data);
