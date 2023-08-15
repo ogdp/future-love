@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import img2 from "../components/image/Rectangle4958.png";
 import Header from "../components/Header";
 import axios from "axios";
@@ -9,14 +9,21 @@ import * as faceapi from "face-api.js";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import HistoryCommentList from "./HistoryCommentList";
+import EventListProfile from "./EventListProfile";
+import ManagerAcount from "./ManagerAcount";
 
-export default function Profile() {
+export default function () {
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const [showModals, setShowModals] = React.useState(false);
   const [showModals22, setShowModals22] = React.useState(false);
   const user = JSON.parse(localStorage.getItem("user-info"));
   const [imgdata, setImgData] = useState(false);
+
+  const [showManagerAccount, setShowManagerAccount] = React.useState(false);
+
+  const [showEvent, setShowEvent] = React.useState(false);
+  const [listEvent, setListEvent] = useState([]);
 
   const api_key = "ba35005b6d728bd9197bfd95d64e4e39";
   const server = "http://14.225.7.221:8989";
@@ -34,49 +41,17 @@ export default function Profile() {
   ]);
 
   const [selectedImage, setSelectedImage] = useState(null);
-  // check scroll
-  // const [y, setY] = useState(0);
-  // useEffect(() => {
-  //   setY(window.scrollY);
-  // }, []);
-  // const handleNavigation = (e) => {
-  //   const window = e.currentTarget;
-  //   if (y > window.scrollY) {
-  //     console.log("scrolling up", y);
-  //   } else if (y < window.scrollY) {
-  //     console.log("scrolling down", y);
-  //   }
-  //   setY(window.scrollY);
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", (e) => handleNavigation(e));
-
-  //   return () => {
-  //     // return a cleanup function to unregister our function since it will run multiple times
-  //     window.removeEventListener("scroll", (e) => handleNavigation(e));
-  //   };
-  // }, [y]);
-  const windowHeight = useRef(window.innerHeight);
-  console.log("====================================");
-  console.log(windowHeight);
-  console.log("====================================");
+  const fetchDataIMG = async () => {
+    try {
+      const { data } = await axios.get(`${server}/saveimage/${user.id_user}`);
+      // console.log(data);
+      setImgData(data.list_img);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      alert("Server error getList 8-12 images");
+    }
+  };
   //hiện thị ảnh
-  useEffect(() => {
-    // Fetch data from the API
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get(`${server}/saveimage/${user.id_user}`);
-        // console.log(data);
-        setImgData(data.list_img);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        alert("Server error getList 8-12 images");
-      }
-    };
-    // console.log("user", user.id_user);
-    fetchData();
-  }, []);
 
   //hiện thị avatar
   const fetchData = async () => {
@@ -86,16 +61,16 @@ export default function Profile() {
         throw new Error("Failed to fetch data");
       }
       const jsonData = await response.json();
+      if (jsonData.ketqua == "khong co user nay") {
+        window.localStorage.clear();
+        return (window.location.href = "/login");
+      }
+
       setData(jsonData);
     } catch (error) {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const openModals = () => {
     setShowModals(true);
   };
@@ -135,10 +110,6 @@ export default function Profile() {
     }
   };
 
-  useEffect(() => {
-    fetchDatas();
-  }, []);
-
   // ---end commnets
 
   //   Upload from 8-> 12 images
@@ -174,9 +145,7 @@ export default function Profile() {
   };
 
   //
-  useEffect(() => {
-    loadModels();
-  }, []);
+
   const loadModels = () => {
     Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
@@ -388,6 +357,27 @@ export default function Profile() {
 
   // ---- END
 
+  // --- EVENT
+  const getAllEventUser = async (idUser) => {
+    try {
+      const { data } = await axios.get(`${server}/lovehistory/user/${idUser}`);
+      console.log(data);
+      setListEvent(data.list_sukien);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const nic = listEvent;
+  // --- END
+
+  useEffect(() => {
+    getAllEventUser(user.id_user);
+    fetchDatas();
+    fetchDataIMG();
+    fetchData();
+    loadModels();
+  }, []);
+
   return (
     <div className="bg-[#E9E9E9] w-[100%] h-full">
       {notiImage.status ? (
@@ -431,15 +421,14 @@ export default function Profile() {
               <div>
                 <img
                   src={
-                    data.link_avatar === "1"
+                    data.link_avatar == "1"
                       ? "https://i.ibb.co/WHmrzPt/106287976-917734608745320-4594528301123064306-n.jpg"
                       : data.link_avatar
                   }
                   className="lg:ml-1 ml-40 lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] border border-white rounded-full object-cover"
-                  alt=""
                 />
                 <div className="w-full text-center">
-                  <h1 className="lg:text-4xl lg:my-3 text-white max-lg:my-2 max-lg:text-3xl underline">
+                  <h1 className="lg:text-4xl lg:my-3 lg:max-w-[150px] text-white max-lg:my-2 max-lg:text-3xl underline">
                     @{data.user_name}
                   </h1>
                 </div>
@@ -460,7 +449,10 @@ export default function Profile() {
                   </div>
                 </div>
                 <div className="flex justify-center items-center py-4 gap-3 md:my-8">
-                  <button className=" bg-white shadow-gray-500 rounded-full py-2 px-5 text-[14px]">
+                  <button
+                    className=" bg-white shadow-gray-500 rounded-full py-2 px-5 text-[14px]"
+                    onClick={() => setShowEvent(true)}
+                  >
                     View Events
                   </button>
                   <button
@@ -470,8 +462,8 @@ export default function Profile() {
                     <div className="flex justify-center items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width={24}
-                        height={24}
+                        width={16}
+                        height={16}
                         viewBox="0 0 24 24"
                         style={{
                           fill: "rgba(0, 0, 0, 1)",
@@ -483,6 +475,24 @@ export default function Profile() {
                       </svg>
                       <span> Edit </span>
                     </div>
+                  </button>
+                  <button
+                    className="lg:hidden py-2 px-2 rounded-lg hover:bg-gray-100 transition-all"
+                    onClick={() => setShowManagerAccount(true)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={16}
+                      height={16}
+                      viewBox="0 0 24 24"
+                      style={{
+                        fill: "rgba(0, 0, 0, 1)",
+                        transform: "",
+                        msfilter: "",
+                      }}
+                    >
+                      <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -510,6 +520,27 @@ export default function Profile() {
                 <span> Edit your profile</span>
               </div>
             </button>
+            <button
+              className="max-lg:hidden py-2 px-2 rounded-lg hover:bg-gray-300 transition-all"
+              onClick={() => setShowManagerAccount(true)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={24}
+                height={24}
+                viewBox="0 0 24 24"
+                style={{
+                  fill: "rgba(0, 0, 0, 1)",
+                  transform: "",
+                  msfilter: "",
+                }}
+              >
+                <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+              </svg>
+            </button>
+            {showManagerAccount && (
+              <ManagerAcount close={() => setShowManagerAccount(false)} />
+            )}
             {showModal ? (
               <>
                 <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -531,8 +562,7 @@ export default function Profile() {
                                   : data.link_avatar
                               }
                               className="lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] border border-white rounded-full"
-                              alt="avatar"
-                            />
+                            ></img>
                           </div>
                           <div>
                             <button
@@ -567,8 +597,7 @@ export default function Profile() {
                                                   src={item}
                                                   className="w-[90px] h-[90px] hover:scale-105 transition-all cursor-pointer"
                                                   type="file"
-                                                  alt=""
-                                                />
+                                                ></img>
                                               </div>
                                             ))}
                                           </div>
@@ -629,7 +658,6 @@ export default function Profile() {
                                                   src={item}
                                                   className="w-[90px] h-[90px] hover:scale-105 transition-all cursor-pointer"
                                                   type="file"
-                                                  alt=""
                                                 />
                                               </div>
                                             ))}
@@ -676,8 +704,7 @@ export default function Profile() {
                             <img
                               src={data.link_avatar}
                               className="lg:w-[280px] lg:h-[130px] w-[200px] h-[100px] border border-white"
-                              alt=""
-                            />
+                            ></img>
                           </div>
                           <div>
                             <button className=" bg-white shadow-gray-500 rounded-full w-[50px] h-[30px]">
@@ -704,11 +731,7 @@ export default function Profile() {
           </div>
         </div>
         {imgdata.length === 0 && (
-          <div
-            className={`bg-amber-400 w-screen h-[50px] text-1xl  mb-8 -mt-20 ${
-              windowHeight < 420 ? "relative" : "sticky top-0"
-            } `}
-          >
+          <div className="bg-amber-400 w-screen h-[50px] text-1xl sticky top-[400px] mb-8 -mt-20">
             <div className="flex justify-center pt-6">
               <div className="mt-2">You haven't finished the procedure yet</div>
               <div className="mx-8">
@@ -724,11 +747,7 @@ export default function Profile() {
         )}
         {showModals22 ? (
           <>
-            <div
-              className={
-                "justify-center items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none"
-              }
-            >
+            <div className="justify-center items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none">
               <div className="relative w-[1000px]  max-w-3xl">
                 <div className="lg:-ml-16 ml-6 lg:w-[680px] lg:py-4 lg:px-8 w-[400px] border-0 rounded-lg shadow-lg relative flex flex-col bg-black outline-none focus:outline-none">
                   <div className="relative px-10 flex-auto  lg:h-[700px] h-[600px] text-white">
@@ -745,7 +764,7 @@ export default function Profile() {
                             className="h-[30px]"
                             src="https://png.pngtree.com/png-vector/20221215/ourmid/pngtree-green-check-mark-png-image_6525691.png"
                             alt=""
-                          />
+                          />{" "}
                           Good photos
                         </h1>
                         <p className="w-[350px] max-lg:text-2xl">
@@ -898,10 +917,25 @@ export default function Profile() {
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         ) : null}
-        <div className={`${windowHeight > 420 && "lg:mt-[100px]"}`}>
-          {" "}
-          {datas.length > 0 && <HistoryCommentList datas={datas} />}
-        </div>
+        {datas.length > 0 && <HistoryCommentList datas={datas} />}
+        {datas.length === 0 && (
+          <div className="w-full text-center py-5 ">
+            <h1 className="text-xl lg:text-4xl">
+              You don't have any comments yet
+            </h1>
+          </div>
+        )}
+
+        {showEvent && nic.length > 0 ? (
+          <EventListProfile data={nic} closeTab={() => setShowEvent(false)} />
+        ) : null}
+        {showEvent && nic.length == 0 ? (
+          <div className="w-full text-center py-5 ">
+            <h1 className="text-xl lg:text-4xl">
+              You don't have any event yet
+            </h1>
+          </div>
+        ) : null}
       </div>
     </div>
   );
