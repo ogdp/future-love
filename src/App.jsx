@@ -21,6 +21,13 @@ import LayoutGuest from "./ver2/layouts/LayoutGuest";
 import LayoutUser from "./ver2/layouts/LayoutUser";
 import NotFound from "./ver2/components/NotFound";
 import ProfileGuest from "./ver2/components/ProfileGuest";
+import FirstMeet from "./ver2/page/app/FirstMeet";
+import FirstDate from "./ver2/page/app/FirstDate";
+import BeingInLove from "./ver2/page/app/BeingInLove";
+import BreakingUp from "./ver2/page/app/BreakingUp";
+import Marry from "./ver2/page/app/Marry";
+import Remarry from "./ver2/page/app/Remarry";
+import Divorce from "./ver2/page/app/Divorce";
 function App() {
   const user = window.localStorage.getItem("user-info");
   if (!user)
@@ -30,7 +37,7 @@ function App() {
           <Route index element={<Historyv2 />} />
           <Route path="home" element={<Historyv2 />} />
           <Route path="love" element={<Home />} />
-          <Route path="detail/:id/:stt" element={<NewHistory />} />
+          <Route path="detail/:id" element={<NewHistory />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="user/:id" element={<ProfileGuest />} />
@@ -45,7 +52,15 @@ function App() {
         <Route index element={<Historyv2 />} />
         <Route path="home" element={<Historyv2 />} />
         <Route path="love" element={<Home />} />
-        <Route path="detail/:id/:stt" element={<NewHistory />} />
+        <Route path="detail/:id" element={<NewHistory />} >
+          <Route path="1" element={<FirstMeet />} />
+          <Route path="2" element={<FirstDate />} />
+          <Route path="3" element={<BeingInLove />} />
+          <Route path="4" element={<BreakingUp />} />
+          <Route path="5" element={<Marry />} />
+          <Route path="6" element={<Divorce />} />
+          <Route path="7" element={<Remarry />} />
+        </Route>
         <Route path="login" element={<Login />} />
         <Route path="profile" element={<Profile />} />
         <Route path="user/:id" element={<ProfileGuest />} />
