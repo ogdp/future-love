@@ -7,12 +7,15 @@ import ReactLoading from "react-loading";
 import Header from "./Header";
 import HistoryCommentList from "./HistoryCommentList";
 import EventListProfile from "./EventListProfile";
+import NotFound from "./NotFound";
 const ProfileGuest = () => {
   const id = useParams().id;
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [listEvent, setListEvent] = useState([]);
   const [showEvent, setShowEvent] = useState(false);
   const server = "http://14.225.7.221:8989";
+  const user = JSON.parse(window.localStorage.getItem("user-info"));
   const getUser = async (idUser) => {
     try {
       const { data } = await axios.get(`${server}/profile/${idUser}`);
@@ -68,8 +71,17 @@ const ProfileGuest = () => {
     }
     return null;
   };
+  if (user && user !== null && user.id_user && user.id_user == id)
+    return navigate("/profile");
   if (data == null) return <>{renderLoading(true)}</>;
   const nic = listEvent.slice(0, 20);
+  // console.log(data);
+  if (data && data.ketqua == "khong co user nay")
+    return (
+      <>
+        <NotFound />
+      </>
+    );
   return (
     <div className="bg-[#E9E9E9] w-[100%] h-full">
       <div className="h-full">
