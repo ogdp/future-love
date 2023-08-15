@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import img2 from "../../ver2/components/image/Onboarding.png";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,8 @@ export default function Register() {
   const [email, emailchange] = useState("");
   const [password, passwordchange] = useState("");
   const [loading, isLoading] = useState(false);
-
+  const [imageSrc, setImageSrc] = useState(null);
+  const [imageName, setImageName] = useState("");
   const navigate = useNavigate();
   const redirect = () => {
     navigate("/login");
@@ -31,7 +32,10 @@ export default function Register() {
       isproceed = false;
       errormessage += " Password";
     }
-
+    if (imageSrc === null) {
+      isproceed = false;
+      errormessage += "Image";
+    }
     if (!isproceed) {
       toast.warning(errormessage);
     } else {
@@ -47,17 +51,19 @@ export default function Register() {
   const handlesubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("link_avatar", 1);
-    formData.append("user_name", user_name);
-    formData.append("password", password);
-    formData.append("email", email);
     if (IsValidate()) {
       isLoading(true);
+      await uploadImg();
+      formData.append("link_avatar", `https://i.ibb.co/vjVvZL5/${imageName}`);
+      formData.append("user_name", user_name);
+      formData.append("password", password);
+      formData.append("email", email);
       try {
         const response = await axios.post(
           "http://14.225.7.221:8989/register",
           formData
         );
+
         console.log(response.data.account);
         if (response.data.account) {
           navigate("/");
@@ -71,6 +77,28 @@ export default function Register() {
       } finally {
         isLoading(false);
       }
+    }
+  };
+  const handleImage = async (e) => {
+    setImageSrc(e.target.files[0]);
+  };
+  const uploadImg = async (e) => {
+    try {
+      var formData = new FormData();
+      formData.append("image", imageSrc);
+      const apiKey = "dc602cd2409c2f9f06d21dc9f6b26502";
+      let body = new FormData();
+      body.set("key", apiKey);
+      body.append("image", imageSrc);
+
+      const upload = await axios({
+        method: "post",
+        url: "https://api.imgbb.com/1/upload",
+        data: body,
+      });
+      setImageName(upload.data.data.thumb.filename);
+    } catch (error) {
+      throw new Error(error);
     }
   };
 
@@ -97,7 +125,7 @@ export default function Register() {
                     onChange={(e) => usernamechange(e.target.value)}
                     className="form-control lg:w-[400px] lg:h-[35px] w-[300px] h-[35px] font-extrabold"
                     placeholder="User Name"
-                  ></input>
+                  />
                 </div>
                 <div className="mt-12">
                   <input
@@ -105,7 +133,7 @@ export default function Register() {
                     onChange={(e) => emailchange(e.target.value)}
                     className="form-control lg:w-[400px] lg:h-[35px] w-[300px] h-[35px] font-extrabold"
                     placeholder="Email"
-                  ></input>
+                  />
                 </div>
                 <div className="mt-12">
                   <input
@@ -114,12 +142,21 @@ export default function Register() {
                     type="password"
                     className="font-extrabold form-control lg:w-[400px] lg:h-[35px] w-[300px] h-[35px]"
                     placeholder="Password"
-                  ></input>
+                  />
+                </div>
+                <div className="mt-12">
+                  <div>
+                    <input
+                      onChange={handleImage}
+                      type="file"
+                      className=" form-control lg:w-[400px] lg:h-[35px] w-[300px] h-[35px]"
+                      accept="image/*"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
             <div className="mt-10 flex justify-center">
-              {/* <button type="submit" className="btn btn-primary">Register</button> */}
               <button
                 type="submit"
                 className="mt-3 register-title rounded-full lg:w-[300px] h-[35px] w-[200px] text-4xl  bg-white"
