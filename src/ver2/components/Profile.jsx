@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import img2 from "../components/image/Rectangle4958.png";
 import Header from "../components/Header";
 import axios from "axios";
@@ -35,28 +35,32 @@ export default function Profile() {
 
   const [selectedImage, setSelectedImage] = useState(null);
   // check scroll
-  const [y, setY] = useState(window.scrollY);
-  useEffect(() => {
-    setY(window.scrollY);
-  }, []);
-  const handleNavigation = (e) => {
-    const window = e.currentTarget;
-    if (y > window.scrollY) {
-      console.log("scrolling up", y);
-    } else if (y < window.scrollY) {
-      console.log("scrolling down", y);
-    }
-    setY(window.scrollY);
-  };
+  // const [y, setY] = useState(0);
+  // useEffect(() => {
+  //   setY(window.scrollY);
+  // }, []);
+  // const handleNavigation = (e) => {
+  //   const window = e.currentTarget;
+  //   if (y > window.scrollY) {
+  //     console.log("scrolling up", y);
+  //   } else if (y < window.scrollY) {
+  //     console.log("scrolling down", y);
+  //   }
+  //   setY(window.scrollY);
+  // };
 
-  useEffect(() => {
-    window.addEventListener("scroll", (e) => handleNavigation(e));
+  // useEffect(() => {
+  //   window.addEventListener("scroll", (e) => handleNavigation(e));
 
-    return () => {
-      // return a cleanup function to unregister our function since it will run multiple times
-      window.removeEventListener("scroll", (e) => handleNavigation(e));
-    };
-  }, [y]);
+  //   return () => {
+  //     // return a cleanup function to unregister our function since it will run multiple times
+  //     window.removeEventListener("scroll", (e) => handleNavigation(e));
+  //   };
+  // }, [y]);
+  const windowHeight = useRef(window.innerHeight);
+  console.log('====================================');
+  console.log(windowHeight);
+  console.log('====================================');
   //hiện thị ảnh
   useEffect(() => {
     // Fetch data from the API
@@ -702,7 +706,7 @@ export default function Profile() {
         {imgdata.length === 0 && (
           <div
             className={`bg-amber-400 w-screen h-[50px] text-1xl  mb-8 -mt-20 ${
-              y < 420 ? "relative" : "sticky top-0"
+              windowHeight < 420 ? "relative" : "sticky top-0"
             } `}
           >
             <div className="flex justify-center pt-6">
@@ -894,7 +898,7 @@ export default function Profile() {
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         ) : null}
-        <div className={`${y > 420 && "lg:mt-[100px]"}`}>
+        <div className={`${windowHeight > 420 && "lg:mt-[100px]"}`}>
           {" "}
           {datas.length > 0 && <HistoryCommentList datas={datas} />}
         </div>

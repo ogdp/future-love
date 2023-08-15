@@ -15,8 +15,8 @@ function Template3(props) {
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
 
   return (
-    <div className="min-w-full min-h-full m-auto">
-      <div className="h-[10%] w-[100%]">
+    <div className="min-w-full min-h-full">
+      <div className="h-[10%] w-[100%] mt-[40px] ml-[30px]">
         <Clock data={data.real_time} />
       </div>
       <div>
@@ -40,7 +40,7 @@ function Template3(props) {
                 >
                   {data.ten_su_kien}
                 </span>
-                <p className="text-3xl font-[Montserrat] max-w-lg pt-3 h-[auto] overflow-y-auto h-32 mt-[50px] h-[150px] items-center justify-center">
+                <p className="text-3xl font-[Montserrat] max-w-lg pt-3 overflow-y-auto h-32 mt-[50px] items-center justify-center">
                   {data.noi_dung_su_kien}
                 </p>
                 <div className="flex flex-row ">

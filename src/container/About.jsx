@@ -7,15 +7,15 @@ import { db } from "../utils/firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { getFullFaceDescription, createMatcher, loadModels } from '../api/face';
+import { getFullFaceDescription, createMatcher, loadModels } from "../api/face";
 
 function About() {
   // const Api_key = "4b92af7f16b0fb074cc5e1c7adfa512a";
   const Api_key = "c9b98b0eb1ba623a2fcb1c3fe6b1f35b";
-  const server = "http://14.225.7.221:8989/getdata";
+  const server = "http://61.28.226.120:8989/getdata";
 
   // Import face profile
-  const JSON_PROFILE = require('../descriptors/bnk48.json');
+  const JSON_PROFILE = require("../descriptors/bnk48.json");
 
   const [data, setData] = useState([]);
 
@@ -49,26 +49,24 @@ function About() {
         }
         const apiResponse = await axios.post(
           `https://api.imgbb.com/1/upload?key=${Api_key}`,
-          formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
+        );
 
         let apiImage = apiResponse.data.data.url;
 
-        await getFullFaceDescription(apiImage).then(fullDesc => {
+        await getFullFaceDescription(apiImage).then((fullDesc) => {
           if (fullDesc.length == 0) {
             setImage(null);
             window.alert("no face detected");
-          }
-          else {
+          } else {
             setImage(apiImage);
           }
         });
-
-
-
       }
     } catch (error) {
       throw error;
@@ -118,11 +116,9 @@ function About() {
 
   useEffect(() => {
     uploadImage(image1, setImage1);
-
   }, [image1]);
   useEffect(() => {
     uploadImage(image2, setImage2);
-
   }, [image2]);
 
   const renderLink = () => {
@@ -206,15 +202,16 @@ function About() {
             <p>Female name</p>
           </div>
         </div>
-
       </div>
 
-      {image1 != null && image2 != null && <div className="about-bottom">
-        <button onClick={fetchData}>
-          {data.length > 0 ? "Try again" : "Start"}
-          <i className="fas fa-sync-alt"></i>
-        </button>
-      </div>}
+      {image1 != null && image2 != null && (
+        <div className="about-bottom">
+          <button onClick={fetchData}>
+            {data.length > 0 ? "Try again" : "Start"}
+            <i className="fas fa-sync-alt"></i>
+          </button>
+        </div>
+      )}
       {renderLink()}
       {renderLoading()}
     </div>
