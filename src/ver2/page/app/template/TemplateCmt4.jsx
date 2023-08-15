@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 function TemplateCmt4(props) {
   // const { id } = useParams();
-  const {data, onClick} = props;
+  const { data, onClick } = props;
 
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
@@ -21,10 +21,9 @@ function TemplateCmt4(props) {
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
-          }} 
+          }}
           onClick={onClick}
-
-          />
+        />
         <div className="h-[80%] lg:mt-[50px] lg:ml-[20px] lg:w-full mx-6 flex flex-col items-center justify-center">
           {/* <div className="content-none absolute border-[100px 0 0 173.2px]"> */}
           <span
@@ -34,7 +33,7 @@ function TemplateCmt4(props) {
           >
             {data.ten_su_kien}
           </span>
-          <p className="lg:text-3xl text-2xl font-[Montserrat] max-w-lg pt-3  text-center overflow-y-auto lg:mt-[20px] lg:mb-[40px]">
+          <p className="lg:text-3xl text-2xl font-[Montserrat] max-w-lg pt-3  text-center overflow-y-auto lg:mt-[20px] lg:mb-[20px]">
             {data.noi_dung_su_kien}
           </p>
           <div className="flex flex-row ">
@@ -47,7 +46,7 @@ function TemplateCmt4(props) {
               <div className="text-2xl ml-[10px]">{data.count_view}</div>
             </div>
           </div>
-          <div className="my-4 ">
+          <div className="my-1">
             <span
               style={{ fontStyle: "normal" }}
               className="text-time lg:text-3xl text-2xl "
