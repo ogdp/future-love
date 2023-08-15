@@ -25,9 +25,9 @@ function CmtPopup(props) {
   const templateCmt = props.TemplateCmt;
   const closePopup = () => {
     props.setIsOpenPopup(false);
-    console.log('====================================');
+    console.log("====================================");
     console.log("OKkek");
-    console.log('====================================');
+    console.log("====================================");
   };
   const fetchDataCmt = async () => {
     console.log(1234);

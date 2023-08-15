@@ -22,7 +22,7 @@ import RenderRandomWaitImage from "../components/randomImages";
 
 function Home() {
   const Api_key = "ba35005b6d728bd9197bfd95d64e4e39";
-  const server = "http://14.225.7.221:8989/getdata";
+  const server = "http://61.28.226.120:8989/getdata";
   const [showModal, setShowModal] = React.useState(false);
   const [nam1, setBoy] = useState(boy);
   const [nu1, setNu] = useState(girl);

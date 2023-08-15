@@ -60,7 +60,7 @@ export default function Register() {
       formData.append("email", email);
       try {
         const response = await axios.post(
-          "http://14.225.7.221:8989/register",
+          "http://61.28.226.120:8989/register",
           formData
         );
 

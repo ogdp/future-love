@@ -16,7 +16,7 @@ function Comments() {
     try {
       setIsLoading(true);
       const res = await axios.get(
-        `http://14.225.7.221:8989/lovehistory/pageComment/${countCM}`
+        `http://61.28.226.120:8989/lovehistory/pageComment/${countCM}`
       );
       const comments = await res.data.comment;
       setData(res.data.comment);
