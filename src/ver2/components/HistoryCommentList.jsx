@@ -64,7 +64,7 @@ const HistoryCommentList = ({ datas }) => {
 
   //   console.log(datas);
   //   console.log(totalPages);
-  console.log(currentResults);
+  // console.log(currentResults);
   function getTime(time_core) {
     const providedTime = new Date(time_core); // Lưu ý: Tháng bắt đầu từ 0 (0 - 11)
     const currentTime = new Date();
