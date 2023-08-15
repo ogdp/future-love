@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import HistoryCommentList from "./HistoryCommentList";
 
-export default function Profile() {
+export default function () {
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const [showModals, setShowModals] = React.useState(false);
@@ -34,29 +34,7 @@ export default function Profile() {
   ]);
 
   const [selectedImage, setSelectedImage] = useState(null);
-  // check scroll
-  const [y, setY] = useState(window.scrollY);
-  useEffect(() => {
-    setY(window.scrollY);
-  }, []);
-  const handleNavigation = (e) => {
-    const window = e.currentTarget;
-    if (y > window.scrollY) {
-      console.log("scrolling up", y);
-    } else if (y < window.scrollY) {
-      console.log("scrolling down", y);
-    }
-    setY(window.scrollY);
-  };
 
-  useEffect(() => {
-    window.addEventListener("scroll", (e) => handleNavigation(e));
-
-    return () => {
-      // return a cleanup function to unregister our function since it will run multiple times
-      window.removeEventListener("scroll", (e) => handleNavigation(e));
-    };
-  }, [y]);
   //hiện thị ảnh
   useEffect(() => {
     // Fetch data from the API
@@ -427,12 +405,11 @@ export default function Profile() {
               <div>
                 <img
                   src={
-                    data.link_avatar === "1"
+                    data.link_avatar == "1"
                       ? "https://i.ibb.co/WHmrzPt/106287976-917734608745320-4594528301123064306-n.jpg"
                       : data.link_avatar
                   }
                   className="lg:ml-1 ml-40 lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] border border-white rounded-full object-cover"
-                  alt=""
                 />
                 <div className="w-full text-center">
                   <h1 className="lg:text-4xl lg:my-3 text-white max-lg:my-2 max-lg:text-3xl underline">
@@ -527,8 +504,7 @@ export default function Profile() {
                                   : data.link_avatar
                               }
                               className="lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] border border-white rounded-full"
-                              alt="avatar"
-                            />
+                            ></img>
                           </div>
                           <div>
                             <button
@@ -563,8 +539,7 @@ export default function Profile() {
                                                   src={item}
                                                   className="w-[90px] h-[90px] hover:scale-105 transition-all cursor-pointer"
                                                   type="file"
-                                                  alt=""
-                                                />
+                                                ></img>
                                               </div>
                                             ))}
                                           </div>
@@ -625,7 +600,6 @@ export default function Profile() {
                                                   src={item}
                                                   className="w-[90px] h-[90px] hover:scale-105 transition-all cursor-pointer"
                                                   type="file"
-                                                  alt=""
                                                 />
                                               </div>
                                             ))}
@@ -653,7 +627,7 @@ export default function Profile() {
                                           type="button"
                                           onClick={() => closeModals()}
                                         >
-                                          X
+                                          *
                                         </button>
                                       </div>
                                     </div>
@@ -672,8 +646,7 @@ export default function Profile() {
                             <img
                               src={data.link_avatar}
                               className="lg:w-[280px] lg:h-[130px] w-[200px] h-[100px] border border-white"
-                              alt=""
-                            />
+                            ></img>
                           </div>
                           <div>
                             <button className=" bg-white shadow-gray-500 rounded-full w-[50px] h-[30px]">
@@ -688,7 +661,7 @@ export default function Profile() {
                           type="button"
                           onClick={() => closeModal()}
                         >
-                          X
+                          *
                         </button>
                       </div>
                     </div>
@@ -700,11 +673,7 @@ export default function Profile() {
           </div>
         </div>
         {imgdata.length === 0 && (
-          <div
-            className={`bg-amber-400 w-screen h-[50px] text-1xl  mb-8 -mt-20 ${
-              y < 420 ? "relative" : "sticky top-0"
-            } `}
-          >
+          <div className="bg-amber-400 w-screen h-[50px] text-1xl sticky top-[400px] mb-8 -mt-20">
             <div className="flex justify-center pt-6">
               <div className="mt-2">You haven't finished the procedure yet</div>
               <div className="mx-8">
@@ -720,11 +689,7 @@ export default function Profile() {
         )}
         {showModals22 ? (
           <>
-            <div
-              className={
-                "justify-center items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none"
-              }
-            >
+            <div className="justify-center items-center flex overflow-auto fixed inset-0 z-50 outline-none focus:outline-none">
               <div className="relative w-[1000px]  max-w-3xl">
                 <div className="lg:-ml-16 ml-6 lg:w-[680px] lg:py-4 lg:px-8 w-[400px] border-0 rounded-lg shadow-lg relative flex flex-col bg-black outline-none focus:outline-none">
                   <div className="relative px-10 flex-auto  lg:h-[700px] h-[600px] text-white">
@@ -741,7 +706,7 @@ export default function Profile() {
                             className="h-[30px]"
                             src="https://png.pngtree.com/png-vector/20221215/ourmid/pngtree-green-check-mark-png-image_6525691.png"
                             alt=""
-                          />
+                          />{" "}
                           Good photos
                         </h1>
                         <p className="w-[350px] max-lg:text-2xl">
@@ -885,7 +850,7 @@ export default function Profile() {
                       type="button"
                       onClick={() => setShowModals22(false)}
                     >
-                      X
+                      *
                     </button>
                   </div>
                 </div>
@@ -894,10 +859,7 @@ export default function Profile() {
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         ) : null}
-        <div className={`${y > 420 && "lg:mt-[100px]"}`}>
-          {" "}
-          {datas.length > 0 && <HistoryCommentList datas={datas} />}
-        </div>
+        {datas.length > 0 && <HistoryCommentList datas={datas} />}
       </div>
     </div>
   );
