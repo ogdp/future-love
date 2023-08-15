@@ -12,7 +12,7 @@ function Template1(props) {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const data = props.data;
   console.log("====================================");
-  console.log(props.data);
+  console.log(props);
   console.log("====================================");
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";

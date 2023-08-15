@@ -26,12 +26,6 @@ function TemplateCmt2(props) {
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
   const view =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
-  function handlePopupImage(src) {
-    console.log("====================================");
-    console.log(src);
-    console.log("====================================");
-    onClick(src);
-  }
   return (
     <>
       <div
@@ -41,7 +35,7 @@ function TemplateCmt2(props) {
           <div
             style={{ backgroundImage: `url(${link_da_swap})` }}
             className="lg:w-full lg:h-[250px] w-full h-[250px] bg-top  bg-no-repeat bg-cover object-contain "
-            onClick={() => handlePopupImage(link_da_swap)}
+            onClick={onClick}
           >
             <img
               src={vien}

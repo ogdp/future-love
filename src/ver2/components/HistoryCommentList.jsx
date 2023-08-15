@@ -96,7 +96,7 @@ const HistoryCommentList = ({ datas }) => {
             <aside key={index} className="px-4">
               <div className="flex justify-between border-b border-[#ff000000] hover:border-gray-300 transition-all">
                 <div className="max-lg: lg:max-w-[85%]">
-                  <Link to={`/detail/${item.id_toan_bo_su_kien}/6`}>
+                  <Link to={`/detail/${item.id_toan_bo_su_kien}/${item.so_thu_tu_su_kien}`}>
                     <div className="flex py-2 lg:py-3">
                       <div className="lg:hidden">
                         <div className="w-[40px] h-[40px] bg-white overflow-hidden rounded-full">

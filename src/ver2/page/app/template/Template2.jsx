@@ -5,10 +5,9 @@ import firstdate from "../img/firstdate.png";
 import CmtPopup from "../CmtPopup";
 function Template2(props) {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
-  // const [isImgPopup, setImgPopup] = useState(false);
   const data = props.data;
   console.log("====================================");
-  console.log(data);
+  console.log(props);
   console.log("====================================");
   const {
     real_time,
@@ -17,13 +16,12 @@ function Template2(props) {
     count_view,
     count_comment,
     ten_su_kien,
-    link_da_swap
+    link_da_swap,
   } = data;
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
   const view =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
-
   return (
     <div className="mt-20 mb-10 flex flex-col items-center">
       <div>

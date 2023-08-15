@@ -2,7 +2,7 @@ import React, { useEffect, useState, useTransition } from "react";
 import no_avatar from "./image/no-avatar.png";
 import useEventStore from "../../utils/store";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 function Comments() {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +31,6 @@ function Comments() {
       console.log(error);
     }
   };
-
   const changeUp = () => {
     if (countCM <= currentPage + 1) {
       setCountCM(countCM + 1);
@@ -49,7 +48,6 @@ function Comments() {
     console.log(data);
     fetchData();
   }, []);
-
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -60,8 +58,8 @@ function Comments() {
 
     return dateB - dateA;
   });
-  const visitProfile = (id_user) => {
-    navigate(`/detail/${id_user}`);
+  const visitProfile = (idsk, id_user) => {
+    navigate(`/detail/${idsk}/${id_user}`);
   };
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
@@ -81,7 +79,7 @@ function Comments() {
           <li
             className="flex items-center py-4"
             key={i}
-            onClick={() => visitProfile(data.id_user)}
+            onClick={() => visitProfile(data.id_toan_bo_su_kien, data.id_user)}
           >
             <div className="lg:w-[10%] w-[20%]">
               {data.avatar_user.split(":")[0] === "https" ? (
