@@ -8,7 +8,6 @@ function Template3(props) {
   // const { id } = useParams();
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const data = props.data;
-
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
   const view =
@@ -67,22 +66,22 @@ function Template3(props) {
             </div>
           </div>
           <div className="absolute z-10 top-0 left-[-15px] w-1/2 h-[573px] float-left mt-[200px]">
-            <div className="w-[280px] h-[300px] overflow-hidden">
+            <div className=" w-[290px] h-[300px] overflow-hidden">
               <img
-                src={`${data.link_nam_goc}`}
+                src={`${data.link_da_swap}`}
                 alt=""
                 srcset=""
-                className="w-full"
+                className=" w-full h-full object-cover"
               />
             </div>
           </div>
           <div className="absolute z-10 top-0 right-0 w-1/2 h-[573px] float-right mt-[200px]">
-            <div className="w-[280px] h-[300px] overflow-hidden ml-[150px]">
+            <div className="w-[330px] h-[300px] overflow-hidden ml-[150px]">
               <img
-                src={`${data.link_nu_goc}`}
+                src={`${data.link_da_swap}`}
                 alt=""
                 srcset=""
-                className="w-[280px] h-[300px]"
+                className="w-full h-full object-cover mt-5"
               />
             </div>
           </div>

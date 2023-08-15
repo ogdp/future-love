@@ -23,11 +23,11 @@ function TemplateCmt3(props) {
       {/* <div className="heart-overlay" style={{ backgroundImage: `url(${data.link_nam_goc})` }}>
                 <div className="heart-overlay__shape"></div>
             </div> */}
-      <div>
+      <div className="flex flex-col items-start">
         <span
           key={data.id}
           to={`/ array / ${data.id}`}
-          className="text-5xl mt-[-100px] flex items-center justify-center "
+          className="text-5xl mt-[50px] flex items-center justify-center "
         >
           {data.ten_su_kien}
         </span>
@@ -36,16 +36,16 @@ function TemplateCmt3(props) {
         </p>
         <div className="flex flex-row ">
           <div className="mt-[10px] flex">
-            <img className="h-[28px] w-[35px] " src={cmt} />
+            <img className="h-[28px] w-[35px] " src={cmt} alt="" />
             <div className="text-2xl ml-[10px]">{data.count_comment}</div>
           </div>
           <div className="mt-[10px] ml-[100px] flex">
-            <img className="h-[28px] w-[35px] " src={view} />
+            <img className="h-[28px] w-[35px] " src={view} alt="" />
             <div className="text-2xl ml-[10px]">{data.count_view}</div>
           </div>
         </div>
         <div className="my-4 ">
-          <span style={{ fontStyle: "normal" }} className="text-time text-3xl ">
+          <span style={{ fontStyle: "normal" }} className="text-time text-3xl text-center">
             {data.real_time}
           </span>
         </div>
