@@ -168,7 +168,10 @@ function CmtPopup(props) {
             </div>
 
             <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-full">
-              <form onSubmit={onSubmitComment}>
+              <form
+                onSubmit={onSubmitComment}
+                className="flex items-center gap-x-4"
+              >
                 <input
                   type="text"
                   value={inputValue}

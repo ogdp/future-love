@@ -8,7 +8,7 @@ function ImagePopup({ imgSrc, closeImg }) {
     <div className="w-[80%] h-[95%] flex items-center">
       <img
         src={imgSrc}
-        className="w-[90%] h-full object-contain"
+        className="w-full h-full object-contain"
         alt="anh swap"
       />
       <div className="w-[40px] h-full flex flex-col gap-y-10">
