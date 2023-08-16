@@ -22,7 +22,7 @@ import RenderRandomWaitImage from "../components/randomImages";
 
 function Home() {
   const Api_key = "ba35005b6d728bd9197bfd95d64e4e39";
-  const server = "http://14.225.7.221:8989/getdata";
+  const server = "http://61.28.226.120:8989/getdata";
   const [showModal, setShowModal] = React.useState(false);
   const [nam1, setBoy] = useState(boy);
   const [nu1, setNu] = useState(girl);
@@ -192,8 +192,8 @@ function Home() {
       maxBodyLength: Infinity,
       url: `${server}?device_them_su_kien=1.1.1.1&ip_them_su_kien=1.1.1.1&id_user=${user.id_user}&ten_nam=NguyenVanA&ten_nu=TranThiB`,
       headers: {
-        Link_img1: String(linkImg.img1),
-        Link_img2: String(linkImg.img2),
+        Link1: String(linkImg.img1),
+        Link2: String(linkImg.img2),
       },
     };
     try {

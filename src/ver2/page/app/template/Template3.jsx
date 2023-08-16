@@ -25,9 +25,8 @@ function Template3(props) {
               src={bgr}
               alt=""
               className="h-full w-full rounded-[50px]"
-              srcset=""
             />
-            <div class="absolute top-0  justify-center items-center flex">
+            <div className="absolute top-0  justify-center items-center flex">
               <div
                 className="ml-[400px] mt-[200px] mr-[300px]"
                 onClick={setIsOpenPopup.bind(this, true)}
@@ -70,7 +69,6 @@ function Template3(props) {
               <img
                 src={`${data.link_da_swap}`}
                 alt=""
-                srcset=""
                 className=" w-full h-full object-cover"
               />
             </div>
@@ -80,7 +78,6 @@ function Template3(props) {
               <img
                 src={`${data.link_da_swap}`}
                 alt=""
-                srcset=""
                 className="w-full h-full object-cover mt-5"
               />
             </div>
