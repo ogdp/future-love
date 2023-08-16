@@ -192,8 +192,8 @@ function Home() {
       maxBodyLength: Infinity,
       url: `${server}?device_them_su_kien=1.1.1.1&ip_them_su_kien=1.1.1.1&id_user=${user.id_user}&ten_nam=NguyenVanA&ten_nu=TranThiB`,
       headers: {
-        Link_img1: String(linkImg.img1),
-        Link_img2: String(linkImg.img2),
+        Link1: String(linkImg.img1),
+        Link2: String(linkImg.img2),
       },
     };
     try {

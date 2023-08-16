@@ -34,12 +34,12 @@ function TemplateCmt2(props) {
         <div className="relative">
           <div
             style={{ backgroundImage: `url(${link_da_swap})` }}
-            className="lg:w-full lg:h-[250px] w-full h-[250px] bg-top  bg-no-repeat bg-cover object-contain "
+            className="lg:w-full lg:h-[250px] w-full h-[250px] bg-center  bg-no-repeat bg-cover object-contain "
             onClick={onClick}
           >
             <img
               src={vien}
-              className="absolute lg:top-[100px] top-[180px] left-0 right-0 object-contain "
+              className="absolute lg:top-[130px] top-[180px] left-0 right-0 object-contain "
               alt="avatar"
             />
           </div>

@@ -83,8 +83,8 @@ function About() {
         {},
         {
           headers: {
-            Link_img1: image1,
-            Link_img2: image2,
+            Link1: image1,
+            Link2: image2,
           },
         }
       );

@@ -3,9 +3,9 @@ import img from "../components/image/Screenshot_1.png";
 import { BsFillHeartFill } from "react-icons/bs";
 import { SlMenu } from "react-icons/sl";
 import useEvenStore from "../../utils/store";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
-function Header({ onClick }) {
+function Header({ onSearchChange, onClick }) {
   const [showMenu, setShowMenu] = useState(false);
   const version = useEvenStore((state) => state.version);
   const setVersion = useEvenStore((state) => state.setVersion);
@@ -34,9 +34,12 @@ function Header({ onClick }) {
             onClick={onClick}
           />
           <img src={img} alt="" className="lg:w-28 w-24 lg:h-24 h-20 lg:mt-0" />
-          <p className="lg:text-6xl text-3xl text-white flex items-center starborn">
+          <Link
+            to="/"
+            className="lg:text-6xl text-3xl text-white flex items-center starborn"
+          >
             FUTURE LOVE
-          </p>
+          </Link>
           <img src={img} alt="" className="lg:w-28 w-24 lg:h-24 h-20" />
         </div>
 
@@ -48,6 +51,7 @@ function Header({ onClick }) {
               type="search"
               placeholder="Search"
               className="searchTerm rounded-full w-search h-20"
+              onChange={onSearchChange}
             />
           </div>
         </div>
@@ -59,7 +63,12 @@ function Header({ onClick }) {
             className="lg:text-[54px] text-[38px] text-white mt-2 lg:mr-10 mr-5 transition-transform duration-300 hover:scale-125 cursor-pointer"
           />
 
-          <SlMenu className="lg:text-[56px] text-[38px] text-white mt-1 font-black mr-20 cursor-pointer transition-transform duration-300 hover:scale-125" onClick={()=> {setShowMenu(!showMenu)}} />
+          <SlMenu
+            className="lg:text-[56px] text-[38px] text-white mt-1 font-black mr-20 cursor-pointer transition-transform duration-300 hover:scale-125"
+            onClick={() => {
+              setShowMenu(!showMenu);
+            }}
+          />
         </div>
       </div>
 
@@ -82,7 +91,7 @@ function Header({ onClick }) {
                   <NavLink
                     className="pt-16 slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-[#ED709D] hover:text-white
              "
-                    to="/NewHistory"
+                    to="/viewEvent"
                   >
                     EVENTS
                   </NavLink>

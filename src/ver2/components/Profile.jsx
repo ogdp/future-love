@@ -12,7 +12,7 @@ import HistoryCommentList from "./HistoryCommentList";
 import EventListProfile from "./EventListProfile";
 import ManagerAcount from "./ManagerAcount";
 
-export default function () {
+export default function Profile() {
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const [showModals, setShowModals] = React.useState(false);
@@ -426,6 +426,7 @@ export default function () {
                       : data.link_avatar
                   }
                   className="lg:ml-1 ml-40 lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] border border-white rounded-full object-cover"
+                  alt=""
                 />
                 <div className="w-full text-center">
                   <h1 className="lg:text-4xl lg:my-3 lg:max-w-[150px] text-white max-lg:my-2 max-lg:text-3xl underline">
