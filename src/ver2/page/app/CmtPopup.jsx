@@ -118,12 +118,12 @@ function CmtPopup(props) {
         zIndex: 9990,
       }}
     >
-      <div className="w-full h-full z-[9999]" onClick={closePopup}></div>
+      <div className="w-[400px] h-full z-[9999]" onClick={closePopup}></div>
       {isImgPopup ? (
         <ImagePopup imgSrc={props.data.link_da_swap} closeImg={closePopup} />
       ) : (
-        <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-max bg-white gap-y-4">
-          <div className="w-max h-[85%]">
+        <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-full bg-white gap-y-4">
+          <div className="w-full h-[85%] relative">
             <TemplateComponent data={props.data} onClick={handlePopup} />
           </div>
           <div className="overflow-y-auto ">
@@ -219,7 +219,7 @@ function CmtPopup(props) {
           </div>
         </div>
       )}
-      <div className="w-full h-full z-[9999]" onClick={closePopup}></div>
+      <div className="w-[400px] h-full z-[9999]" onClick={closePopup}></div>
     </div>
   );
 }

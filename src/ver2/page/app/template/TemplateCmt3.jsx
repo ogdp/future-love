@@ -11,14 +11,15 @@ function TemplateCmt3(props) {
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
 
   return (
-    <div className="relative z-[20]">
+    <div className="relative lg:w-[1019px] h-full flex justify-center">
       <div
-        className={` lg:w-[1019px] w-[380px] mb-12 border-8 border-pink-300 lg:h-[80%] bg-white rounded-[36px] flex flex-col items-center justify-center relative overflow-hidden z-[20]`}
+        className={`absolute z-20  min-w-full min-h-full lg:w-full w-[300px] border-8 border-pink-300  lg:h-[380px] rounded-[36px] flex flex-row items-center justify-center `}
       >
         <img
           src={bgr}
           alt=""
-          className="mt-160px] object-cover w-full rounded-[36px]"
+          className="h-full w-full rounded-[36px]"
+          onClick={onClick}
         />
 
         <div className="absolute flex flex-col items-start">
@@ -52,15 +53,24 @@ function TemplateCmt3(props) {
           </div>
         </div>
       </div>
-      {/* <div className="absolute top-0 z-10 left-[18px] w-1/2 float-left mt-[110px]">
-        <div className=" w-[270px] h-[300px] overflow-hidden z-[10]">
+      <div className="absolute z-[10] top-0 left-[15px] w-1/2 h-[573px] mt-[110px]">
+        <div className=" w-[290px] h-[300px] overflow-hidden">
           <img
             src={`${data.link_da_swap}`}
             alt=""
             className=" w-full h-full object-cover"
           />
         </div>
-      </div> */}
+      </div>
+      <div className="absolute z-10 top-4 left-[70%] w-1/2 h-[573px] float-right mt-[110px]">
+        <div className=" w-[290px] h-[300px] overflow-hidden">
+          <img
+            src={`${data.link_da_swap}`}
+            alt=""
+            className=" w-full h-full object-cover"
+          />
+        </div>
+      </div>
     </div>
   );
 }

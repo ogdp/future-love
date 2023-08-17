@@ -79,7 +79,7 @@ function Comments() {
           <li
             className="flex items-center py-4"
             key={i}
-            onClick={() => visitProfile(data.id_toan_bo_su_kien, data.id_user)}
+            onClick={() => visitProfile(data.id_toan_bo_su_kien, data.so_thu_tu_su_kien)}
           >
             <div className="lg:w-[10%] w-[20%]">
               {data.avatar_user.split(":")[0] === "https" ? (

@@ -127,12 +127,12 @@ function EventHistory(props) {
     );
   }
   console.log("====================================");
-  console.log(props.data);
+  console.log(props);
   console.log("====================================");
   return (
     <div className="">
       <div className="cursor-pointer">
-        {props.data && props.search ? (
+        {props.data?.length > 0 && props.search ? (
           <div>
             {props.data.map((array, index) => (
               <div
@@ -144,7 +144,7 @@ function EventHistory(props) {
                 key={index}
                 className={`lg:w-[100vh] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
               >
-                {array.sukien[array.sukien.length - 1].id_template === 1 &&
+                {array?.sukien[array.sukien.length - 1]?.id_template === 1 &&
                 4 ? (
                   <div
                     style={{ backgroundImage: `url(${bg1})` }}
@@ -154,9 +154,9 @@ function EventHistory(props) {
                       <div className="lg:w-[300px] flex flex-col justify-center lg:ml-28 ml-5 lg:mt-0 mt-20">
                         {/* image love */}
                         <span
-                          key={array.sukien[array.sukien.length - 1].id}
+                          key={array.sukien[array.sukien.length - 1]?.id}
                           to={`/ array / ${
-                            array.sukien[array.sukien.length - 1].id
+                            array.sukien[array.sukien.length - 1]?.id
                           }`}
                           className="lg:text-[24px] starborn mb-4 leading-tight"
                         >
@@ -195,7 +195,8 @@ function EventHistory(props) {
                     </div>
                     {/* first event */}
                   </div>
-                ) : array.sukien[array.sukien.length - 1].id_template === 2 ? (
+                ) : array?.sukien[array.sukien.length - 1]?.id_template ===
+                  2 ? (
                   <div
                     style={{ backgroundImage: `url(${bg2})` }}
                     className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
@@ -210,9 +211,9 @@ function EventHistory(props) {
                       <div className="flex flex-col justify-center items-center mt-12">
                         {/* image love */}
                         <span
-                          key={array.sukien[array.sukien.length - 1].id}
+                          key={array.sukien[array.sukien.length - 1]?.id}
                           to={`/ array / ${
-                            array.sukien[array.sukien.length - 1].id
+                            array.sukien[array.sukien.length - 1]?.id
                           }`}
                           className="lg:text-[24px] starborn leading-tight mb-4"
                         >
@@ -253,9 +254,9 @@ function EventHistory(props) {
                       {/* image love */}
                       <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
                         <span
-                          key={array.sukien[array.sukien.length - 1].id}
+                          key={array.sukien[array.sukien.length - 1]?.id}
                           to={`/ array / ${
-                            array.sukien[array.sukien.length - 1].id
+                            array.sukien[array.sukien.length - 1]?.id
                           }`}
                           className="lg:text-[24px] starborn mb-4 leading-tight"
                         >
@@ -298,7 +299,7 @@ function EventHistory(props) {
                 key={index}
                 className={`lg:w-[100vh] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
               >
-                {array.sukien[array.sukien.length - 1].id_template === 1 &&
+                {array?.sukien[array.sukien.length - 1]?.id_template === 1 &&
                 4 ? (
                   <div
                     style={{ backgroundImage: `url(${bg1})` }}
@@ -308,9 +309,9 @@ function EventHistory(props) {
                       <div className="lg:w-[300px] flex flex-col justify-center lg:ml-28 ml-5 lg:mt-0 mt-20">
                         {/* image love */}
                         <span
-                          key={array.sukien[array.sukien.length - 1].id}
+                          key={array.sukien[array.sukien.length - 1]?.id}
                           to={`/ array / ${
-                            array.sukien[array.sukien.length - 1].id
+                            array.sukien[array.sukien.length - 1]?.id
                           }`}
                           className="lg:text-[24px] starborn mb-4 leading-tight"
                         >
@@ -349,7 +350,8 @@ function EventHistory(props) {
                     </div>
                     {/* first event */}
                   </div>
-                ) : array.sukien[array.sukien.length - 1].id_template === 2 ? (
+                ) : array?.sukien[array.sukien.length - 1]?.id_template ===
+                  2 ? (
                   <div
                     style={{ backgroundImage: `url(${bg2})` }}
                     className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
@@ -364,9 +366,9 @@ function EventHistory(props) {
                       <div className="flex flex-col justify-center items-center mt-12">
                         {/* image love */}
                         <span
-                          key={array.sukien[array.sukien.length - 1].id}
+                          key={array.sukien[array.sukien.length - 1]?.id}
                           to={`/ array / ${
-                            array.sukien[array.sukien.length - 1].id
+                            array.sukien[array.sukien.length - 1]?.id
                           }`}
                           className="lg:text-[24px] starborn leading-tight mb-4"
                         >
@@ -407,9 +409,9 @@ function EventHistory(props) {
                       {/* image love */}
                       <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
                         <span
-                          key={array.sukien[array.sukien.length - 1].id}
+                          key={array.sukien[array.sukien.length - 1]?.id}
                           to={`/ array / ${
-                            array.sukien[array.sukien.length - 1].id
+                            array.sukien[array.sukien.length - 1]?.id
                           }`}
                           className="lg:text-[24px] starborn"
                         >

@@ -20,7 +20,7 @@ function TemplateCmt2(props) {
     real_time,
     ten_su_kien,
     noi_dung_su_kien,
-    link_da_swap
+    link_da_swap,
   } = data;
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
@@ -47,7 +47,11 @@ function TemplateCmt2(props) {
         <div className="h-[auto] w-full relative ">
           <div className="flex items-center justify-evenly lg:flex-row flex-col">
             <div className="flex flex-col items-center gap-y-2 justify-center">
-              <p key={id} to={`/ array / ${id}`} className="lg:text-3xl text-2xl  font-bold">
+              <p
+                key={id}
+                to={`/ array / ${id}`}
+                className="lg:text-3xl text-2xl  font-bold"
+              >
                 {ten_su_kien}
               </p>
 
