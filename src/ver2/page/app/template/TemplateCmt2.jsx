@@ -8,6 +8,7 @@ import img6 from "../img/phai2.png";
 import img7 from "../img/khung2_1.png";
 import img8 from "../img/khung2_2.png";
 import vien from "../img/vien.png";
+import moment from "moment";
 
 function TemplateCmt2(props) {
   // const { id } = useParams();
@@ -65,7 +66,12 @@ function TemplateCmt2(props) {
                   <span>{count_view}</span>
                 </div>
               </div>
-              <span className="font-bold">{real_time.split(",")[0]}</span>
+              <span className="font-bold">
+                {" "}
+                {moment(data.real_time)
+                  .add(7, "hours")
+                  .format("YYYY-MM-DD HH:mm:ss")}
+              </span>
             </div>
             <p className="text-base font-[Montserrat] max-w-lg pt-3 overflow-y-auto lg:mt-[30px] mb-10 z-[3]">
               {noi_dung_su_kien}

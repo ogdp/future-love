@@ -6,11 +6,7 @@ function ImagePopup({ imgSrc, closeImg }) {
   };
   return (
     <div className="w-full h-[90%] flex items-center relative bg-white">
-      <img
-        src={imgSrc}
-        className="w-full h-full object-cover"
-        alt="anh swap"
-      />
+      <img src={imgSrc} className="w-full h-full object-cover" alt="anh swap" />
       <div className="w-[40px] h-full absolute top-0 -right-24 flex flex-col gap-y-10">
         <button
           className="flex items-center justify-center flex-col"

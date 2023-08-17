@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 
 function TemplateCmt4(props) {
@@ -51,7 +52,9 @@ function TemplateCmt4(props) {
               style={{ fontStyle: "normal" }}
               className="text-time lg:text-3xl text-2xl "
             >
-              {data.real_time}
+              {moment(data.real_time)
+                .add(7, "hours")
+                .format("YYYY-MM-DD HH:mm:ss")}
             </span>
           </div>
           {/* </div> */}

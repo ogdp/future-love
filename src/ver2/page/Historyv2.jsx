@@ -28,11 +28,13 @@ function Historyv2() {
     navigate("/love");
   };
 
-  const onSearch =(value) => {
+  const onSearch = (value) => {
     console.log(value);
-    axios.get(`http://61.28.226.120:8989/search?word=${value}`).then((response=>{
-      setDataSearch(response.data.list_sukien);
-    }))
+    axios
+      .get(`http://61.28.226.120:8989/search?word=${value}`)
+      .then((response) => {
+        setDataSearch(response.data.list_sukien);
+      });
     // const params = {
     //   word: search_w,
     // };
@@ -55,7 +57,7 @@ function Historyv2() {
         background: "linear-gradient(to right, #F0A3BF, #A86ED4 )",
       }}
     >
-      <Header onSearch={onSearch}/>
+      <Header onSearch={onSearch} />
       <b className="starborn text-white lg:text-5xl text-3xl ml-12 mb-3 mt-5">
         Events
       </b>

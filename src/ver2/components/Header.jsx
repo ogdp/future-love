@@ -5,14 +5,16 @@ import { SlMenu } from "react-icons/sl";
 import useEvenStore from "../../utils/store";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
-function Header({ onSearchChange, onClick,onSearch }) {
-  console.log(onSearch);
+function Header({ onSearchChange, onClick }) {
   const [showMenu, setShowMenu] = useState(false);
   const version = useEvenStore((state) => state.version);
   const setVersion = useEvenStore((state) => state.setVersion);
   const navigate = useNavigate();
 
   const user = window.localStorage.getItem("user-info");
+  const BackHome = () => {
+    navigate("/");
+  };
 
   const handleLogout = () => {
     localStorage.clear();
@@ -25,10 +27,6 @@ function Header({ onSearchChange, onClick,onSearch }) {
   const toggleVersion = () => {
     navigate("/love");
   };
-  const onChange=(event)=>{
-    event.preventDefault()
-    onSearch(event.target.value)
-  }
   return (
     <div className="h-40 w-full mx-4 lg:py-7 py-3">
       <div className="flex items-center justify-between">
@@ -39,12 +37,12 @@ function Header({ onSearchChange, onClick,onSearch }) {
             onClick={onClick}
           />
           <img src={img} alt="" className="lg:w-28 w-24 lg:h-24 h-20 lg:mt-0" />
-          <Link
-            to="/"
+          <p
             className="lg:text-6xl text-3xl text-white flex items-center starborn"
+            onClick={BackHome}
           >
-            FUTURE LOVE
-          </Link>
+            <Link>FUTURE LOVE</Link>
+          </p>
           <img src={img} alt="" className="lg:w-28 w-24 lg:h-24 h-20" />
         </div>
 
@@ -56,7 +54,7 @@ function Header({ onSearchChange, onClick,onSearch }) {
               type="search"
               placeholder="Search"
               className="searchTerm rounded-full w-search h-20"
-              onChange={onChange}
+              onChange={onSearchChange}
             />
           </div>
         </div>

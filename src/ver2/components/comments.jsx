@@ -12,6 +12,42 @@ function Comments() {
   const resultsPerPage = 25;
   const [countCM, setCountCM] = useState(1);
   const navigate = useNavigate();
+  function wrapText(text, maxLineLength) {
+    const words = text.split(" ");
+    const lines = [];
+    let currentLine = "";
+
+    words.forEach((word) => {
+      if (word.length > maxLineLength) {
+        const slicedWords = [];
+        for (let i = 0; i < word.length; i += maxLineLength) {
+          slicedWords.push(word.slice(i, i + maxLineLength));
+        }
+        slicedWords.forEach((slicedWord) => {
+          if (currentLine.length + slicedWord.length + 1 <= maxLineLength) {
+            currentLine += (currentLine.length > 0 ? " " : "") + slicedWord;
+          } else {
+            lines.push(currentLine);
+            currentLine = slicedWord;
+          }
+        });
+      } else if (currentLine.length + word.length + 1 <= maxLineLength) {
+        currentLine += (currentLine.length > 0 ? " " : "") + word;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
+    });
+
+    if (currentLine.length > 0) {
+      lines.push(currentLine);
+    }
+
+    return lines.join("\n");
+  }
+  const windowWidth = window.innerWidth;
+  const maxLineLength = Math.floor(windowWidth * 0.025);
+
   const fetchData = async () => {
     try {
       setIsLoading(true);
@@ -32,22 +68,20 @@ function Comments() {
     }
   };
   const changeUp = () => {
-    if (countCM <= currentPage + 1) {
+    if (countCM <= totalPages) {
       setCountCM(countCM + 1);
-      fetchData();
     }
   };
+
   const changeDown = () => {
     if (countCM > 1) {
       setCountCM(countCM - 1);
-      fetchData();
     }
   };
 
   useEffect(() => {
-    console.log(data);
     fetchData();
-  }, []);
+  }, [countCM]);
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -79,7 +113,7 @@ function Comments() {
           <li
             className="flex items-center py-4"
             key={i}
-            onClick={() => visitProfile(data.id_toan_bo_su_kien, data.so_thu_tu_su_kien)}
+            onClick={() => visitProfile(data.id_toan_bo_su_kien, data.id_user)}
           >
             <div className="lg:w-[10%] w-[20%]">
               {data.avatar_user.split(":")[0] === "https" ? (
@@ -100,7 +134,21 @@ function Comments() {
               <span className="text-[18px] font-semibold">
                 {data.user_name}
               </span>
-              <span className="text-[16px]">{data.noi_dung_cmt}</span>
+              <span
+                className="text-[16px] mt-3 max-w-[25vw] "
+                style={{ whiteSpace: "pre-wrap" }}
+              >
+                {wrapText(data.noi_dung_cmt, maxLineLength)}
+              </span>
+              {data.imageattach ? (
+                <img
+                  className="w-[60px] h-[50px]"
+                  src={data.imageattach}
+                  alt=""
+                />
+              ) : (
+                ""
+              )}
               <span className="text-base">{data.device_cmt}</span>
             </div>
 
