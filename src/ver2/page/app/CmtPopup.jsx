@@ -17,6 +17,7 @@ const templateComponents = {
 };
 
 function CmtPopup(props) {
+  console.log(props);
   const param = useParams();
   const [dataCmt, setDataCmt] = useState([]);
   const user = JSON.parse(localStorage.getItem("user-info"));
@@ -128,34 +129,47 @@ function CmtPopup(props) {
           </div>
           <div className="overflow-y-auto ">
             {dataCmt.length > 0 &&
-              dataCmt.map((cmt, index) => (
-                <div className="flex items-stretch gap-x-4" key={index}>
-                  <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
-                    <img
-                      src={cmt.avatar_user ? cmt.avatar_user : noAvatar}
-                      alt=""
-                      className="w-[100%] h-[100%] object-cover rounded-[50%]"
-                    />
+              dataCmt.map((item, index) => (
+                <div className="flex mt-[30px] ml-[0px]">
+                  <img src={item.avatar_user} className="w-[50px] h-[50px] rounded-full"></img>
+                  <div className="ml-10 w-[800px]">
+                    <h3 className="text-3xl">{item.user_name}</h3>
+                    <div className="mt-3 w-[700px] break-words">
+                      {item.noi_dung_cmt}
+                    </div>
+                    {item.imageattach ? <img src={item.imageattach} className="w-[150px] h-[120px] mt-[20px]"></img> : ""}
                   </div>
-                  <div className="">
-                    <h1 className="lg:text-2xl text-xl font-semibold">
-                      {cmt.user_name ? cmt.user_name : "Guest"}
-                    </h1>
-                    <p className="lg:text-xl text-base"> {cmt.noi_dung_cmt}</p>
-                    {cmt.imageattach ? (
-                      <img
-                        className="w-[60px] h-[50px]"
-                        src={cmt.imageattach}
-                        alt=""
-                      />
-                    ) : (
-                      ""
-                    )}
-                    <p className="lg:text-base text-sm">
-                      {cmt.thoi_gian_release}
-                    </p>
+                  <div className="float-right">
+                    <p className="text-xl">{item.thoi_gian_release}</p>
                   </div>
                 </div>
+                // <div className="flex items-stretch gap-x-4" key={index}>
+                //   <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
+                //     <img
+                //       src={cmt.avatar_user ? cmt.avatar_user : noAvatar}
+                //       alt=""
+                //       className="w-[100%] h-[100%] object-cover rounded-[50%]"
+                //     />
+                //   </div>
+                //   <div className="">
+                //     <h1 className="lg:text-2xl text-xl font-semibold">
+                //       {cmt.user_name ? cmt.user_name : "Guest"}
+                //     </h1>
+                //     <p className="lg:text-xl text-base"> {cmt.noi_dung_cmt}</p>
+                //     {cmt.imageattach ? (
+                //       <img
+                //         className="w-[60px] h-[50px]"
+                //         src={cmt.imageattach}
+                //         alt=""
+                //       />
+                //     ) : (
+                //       ""
+                //     )}
+                //     <p className="lg:text-base text-sm">
+                //       {cmt.thoi_gian_release}
+                //     </p>
+                //   </div>
+                // </div>
               ))}
           </div>
           <div className="flex items-center justify-around mx-3 gap-x-4 rounded-full shadow-sm shadow-slate-300">
