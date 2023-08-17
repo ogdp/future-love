@@ -5,7 +5,8 @@ import { SlMenu } from "react-icons/sl";
 import useEvenStore from "../../utils/store";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
-function Header({ onSearchChange, onClick }) {
+function Header({ onSearchChange, onClick,onSearch }) {
+  console.log(onSearch);
   const [showMenu, setShowMenu] = useState(false);
   const version = useEvenStore((state) => state.version);
   const setVersion = useEvenStore((state) => state.setVersion);
@@ -24,6 +25,10 @@ function Header({ onSearchChange, onClick }) {
   const toggleVersion = () => {
     navigate("/love");
   };
+  const onChange=(event)=>{
+    event.preventDefault()
+    onSearch(event.target.value)
+  }
   return (
     <div className="h-40 w-full mx-4 lg:py-7 py-3">
       <div className="flex items-center justify-between">
@@ -51,7 +56,7 @@ function Header({ onSearchChange, onClick }) {
               type="search"
               placeholder="Search"
               className="searchTerm rounded-full w-search h-20"
-              onChange={onSearchChange}
+              onChange={onChange}
             />
           </div>
         </div>

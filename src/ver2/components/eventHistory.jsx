@@ -126,13 +126,14 @@ function EventHistory(props) {
       </div>
     );
   }
+  console.log(currentResults);
   console.log("====================================");
   console.log(props.data);
   console.log("====================================");
   return (
     <div className="">
       <div className="cursor-pointer">
-        {props.data && props.search ? (
+        {props.data? (
           <div>
             {props.data.map((array, index) => (
               <div
