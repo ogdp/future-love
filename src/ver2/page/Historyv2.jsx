@@ -18,6 +18,34 @@ function Historyv2() {
   const setVersion = useEvenStore((state) => state.setVersion);
   const navigate = useNavigate();
 
+  // function getOS() {
+  //   const userAgent = window.navigator.userAgent;
+  //   const platform = window.navigator.platform;
+  //   const macPlatforms = ["Macintosh", "MacIntel", "MacPPC", "Mac68K"];
+  //   const windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"];
+  //   const iosPlatforms = ["iPhone", "iPad", "iPod"];
+    
+  //   if (macPlatforms.includes(platform)) {
+  //     return "Mac OS";
+  //   } else if (iosPlatforms.includes(platform)) {
+  //     return "IOS";
+  //   } else if (windowsPlatforms.includes(platform)) {
+  //     return "Windows";
+  //   } else if (/Android/.test(userAgent)) {
+  //     return "Android";
+  //   } else if (/Linux/.test(platform)) {
+  //     return "Linux";
+  //   }
+    
+  //   return "Unknown";
+  // }
+  // const userOS = getOS();
+  // console.log("User Operating System:", userOS);
+  const platform = window.navigator.platform;
+  console.log("User Operating System:", platform);
+
+
+
   const handleLogout = () => {
     localStorage.clear();
   };
@@ -33,7 +61,7 @@ function Historyv2() {
       word: search_w,
     };
     await axios
-      .get("http://14.225.7.221:8989/search", { params: params })
+      .get("http://61.28.226.120:8989/search", { params: params })
       .then((response) => {
         setDataSearch(response.data?.list_sukien[0]?.sukien);
       })

@@ -10,8 +10,10 @@ import img1 from "../components/image/finish.png";
 import img2 from "../components/image/12.png";
 import bg1 from "../components/image/bg-1.png";
 import bg2 from "../components/image/bg-2.png";
+import bg3 from "../components/image/bg-3.png";
 import vec1 from "../components/image/Vector1.png";
 import vec2 from "../components/image/Vector2.png";
+import moment from "moment";
 
 // import image1 from "../components/image/khung-vien-dep-33-removebg-preview.png"
 // import image2 from "../components/image/khung-vien-dep-powerpoint_022258315.png"
@@ -42,7 +44,7 @@ function EventHistory(props) {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `http://14.225.7.221:8989/lovehistory/page/${count}`
+        `http://61.28.226.120:8989/lovehistory/page/${count}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -60,14 +62,17 @@ function EventHistory(props) {
     if (count <= currentPage) {
     }
     setCount(count + 1);
-    fetchData();
+    
   };
   const changePageDown = () => {
     if (count > 1) {
       setCount(count - 1);
-      fetchData();
+      
     }
   };
+  useEffect(() => {
+    fetchData(); 
+  }, [ count]);
 
   useEffect(() => {
     const loadingTypes = [
@@ -145,7 +150,7 @@ function EventHistory(props) {
                 className={`lg:w-[100vh] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
               >
                 {array.sukien[array.sukien.length - 1].id_template === 1 &&
-                4 ? (
+                  4 ? (
                   <div
                     style={{ backgroundImage: `url(${bg1})` }}
                     className="bg-no-repeat lg:bg-contain bg-center lg:w-full lg:h-full"
@@ -155,9 +160,8 @@ function EventHistory(props) {
                         {/* image love */}
                         <span
                           key={array.sukien[array.sukien.length - 1].id}
-                          to={`/ array / ${
-                            array.sukien[array.sukien.length - 1].id
-                          }`}
+                          to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                            }`}
                           className="lg:text-[24px] starborn mb-4 leading-tight"
                         >
                           {array.sukien[array.sukien.length - 1].ten_su_kien}
@@ -173,7 +177,7 @@ function EventHistory(props) {
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
-                            {array.sukien[array.sukien.length - 1].real_time}
+                            {moment(array.sukien[array.sukien.length - 1].real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
                           </span>
                         </div>
                       </div>
@@ -181,9 +185,8 @@ function EventHistory(props) {
                         {/* image swap */}
                         <div
                           style={{
-                            backgroundImage: `url(${
-                              array.sukien[array.sukien.length - 1].link_da_swap
-                            })`,
+                            backgroundImage: `url(${array.sukien[array.sukien.length - 1].link_da_swap
+                              })`,
                           }}
                           className=" lg:w-[295px] w-[100px] h-[100px] lg:h-[295px] rounded-full bg-no-repeat bg-cover mt-1"
                         />
@@ -211,9 +214,8 @@ function EventHistory(props) {
                         {/* image love */}
                         <span
                           key={array.sukien[array.sukien.length - 1].id}
-                          to={`/ array / ${
-                            array.sukien[array.sukien.length - 1].id
-                          }`}
+                          to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                            }`}
                           className="lg:text-[24px] starborn leading-tight mb-4"
                         >
                           {array.sukien[array.sukien.length - 1].ten_su_kien}
@@ -232,7 +234,7 @@ function EventHistory(props) {
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
-                            {array.sukien[array.sukien.length - 1].real_time}
+                            {moment(array.sukien[array.sukien.length - 1].real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
                           </span>
                         </div>
                       </div>
@@ -254,9 +256,8 @@ function EventHistory(props) {
                       <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
                         <span
                           key={array.sukien[array.sukien.length - 1].id}
-                          to={`/ array / ${
-                            array.sukien[array.sukien.length - 1].id
-                          }`}
+                          to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                            }`}
                           className="lg:text-[24px] starborn mb-4 leading-tight"
                         >
                           {array.sukien[array.sukien.length - 1].ten_su_kien}
@@ -276,7 +277,7 @@ function EventHistory(props) {
                           style={{ fontStyle: "normal", marginTop: 100 }}
                           className="text-time"
                         >
-                          {array.sukien[array.sukien.length - 1].real_time}
+                          {moment(array.sukien[array.sukien.length - 1].real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
                         </span>
                       </div>
                     </div>
@@ -299,7 +300,7 @@ function EventHistory(props) {
                 className={`lg:w-[100vh] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
               >
                 {array.sukien[array.sukien.length - 1].id_template === 1 &&
-                4 ? (
+                  4 ? (
                   <div
                     style={{ backgroundImage: `url(${bg1})` }}
                     className="bg-no-repeat lg:bg-contain bg-center lg:w-full lg:h-full"
@@ -309,9 +310,8 @@ function EventHistory(props) {
                         {/* image love */}
                         <span
                           key={array.sukien[array.sukien.length - 1].id}
-                          to={`/ array / ${
-                            array.sukien[array.sukien.length - 1].id
-                          }`}
+                          to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                            }`}
                           className="lg:text-[24px] starborn mb-4 leading-tight"
                         >
                           {array.sukien[array.sukien.length - 1].ten_su_kien}
@@ -327,7 +327,7 @@ function EventHistory(props) {
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
-                            {array.sukien[array.sukien.length - 1].real_time}
+                            {moment(array.sukien[array.sukien.length - 1].real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
                           </span>
                         </div>
                       </div>
@@ -335,9 +335,8 @@ function EventHistory(props) {
                         {/* image swap */}
                         <div
                           style={{
-                            backgroundImage: `url(${
-                              array.sukien[array.sukien.length - 1].link_da_swap
-                            })`,
+                            backgroundImage: `url(${array.sukien[array.sukien.length - 1].link_da_swap
+                              })`,
                           }}
                           className=" lg:w-[295px] w-[100px] h-[100px] lg:h-[295px] rounded-full bg-no-repeat bg-cover mt-1"
                         />
@@ -365,9 +364,8 @@ function EventHistory(props) {
                         {/* image love */}
                         <span
                           key={array.sukien[array.sukien.length - 1].id}
-                          to={`/ array / ${
-                            array.sukien[array.sukien.length - 1].id
-                          }`}
+                          to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                            }`}
                           className="lg:text-[24px] starborn leading-tight mb-4"
                         >
                           {array.sukien[array.sukien.length - 1].ten_su_kien}
@@ -386,7 +384,7 @@ function EventHistory(props) {
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
-                            {array.sukien[array.sukien.length - 1].real_time}
+                            {moment(array.sukien[array.sukien.length - 1].real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
                           </span>
                         </div>
                       </div>
@@ -399,6 +397,56 @@ function EventHistory(props) {
                     </div>
                   </div>
                 ) : (
+                  // <div
+                  //   style={{ backgroundImage: `url(${bg3})` }}
+                  //   className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
+                  // >
+                  //   <div className="grid grid-cols-3">
+                      
+                  //       <div className=" w-[290px] h-[300px] overflow-hidden ">
+                  //         <img
+                  //           src={`${array.sukien[array.sukien.length - 1].link_nu_goc}`}
+                  //           alt=""
+                  //           className=" bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32 absolute"
+                  //         />
+                  //       </div>
+                      
+                  //     <div className="flex flex-col justify-center items-center mt-12">
+                  //       {/* image love */}
+                  //       <span
+                  //         key={array.sukien[array.sukien.length - 1].id}
+                  //         to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                  //           }`}
+                  //         className="lg:text-[24px] starborn leading-tight mb-4"
+                  //       >
+                  //         {array.sukien[array.sukien.length - 1].ten_su_kien}
+                  //       </span>
+                  //       <div className="box lg:h-52 h-36 mt-3">
+                  //         <p className="slab font-semibold lg:text-[16px]">
+                  //           {
+                  //             array.sukien[array.sukien.length - 1]
+                  //               .noi_dung_su_kien
+                  //           }
+                  //         </p>
+                  //       </div>
+
+                  //       <div className="my-4 slab font-semibold lg:text-[16px]">
+                  //         <span
+                  //           style={{ fontStyle: "normal", marginTop: 100 }}
+                  //           className="text-time"
+                  //         >
+                  //           {moment(array.sukien[array.sukien.length - 1].real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
+                  //         </span>
+                  //       </div>
+                  //     </div>
+                  //     <div className="flex justify-center items-center">
+                  //       <div
+                  //         style={{ backgroundImage: `url(${array.sukien[array.sukien.length - 1].link_nu_goc})` }}
+                  //         className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
+                  //       ></div>
+                  //     </div>
+                  //   </div>
+                  // </div>
                   <div
                     style={{ backgroundImage: `url(${bg2})` }}
                     className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
@@ -430,11 +478,24 @@ function EventHistory(props) {
                           style={{ fontStyle: "normal", marginTop: 100 }}
                           className="text-time"
                         >
-                          {array.sukien[array.sukien.length - 1].real_time}
+                          {moment(array.sukien[array.sukien.length - 1].real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
                         </span>
                       </div>
                     </div>
                   </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
                 )}
               </div>
             ))}

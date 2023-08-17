@@ -3,7 +3,7 @@ import About from "./container/About";
 import "./container/tailwincss.css";
 import SideBar from "./container/SideBar";
 import { Route, Router, Routes, useNavigate } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import History from "./container/History";
 import ViewResult from "./container/View";
 import useEvenStore from "./utils/store";
@@ -28,8 +28,13 @@ import BreakingUp from "./ver2/page/app/BreakingUp";
 import Marry from "./ver2/page/app/Marry";
 import Remarry from "./ver2/page/app/Remarry";
 import Divorce from "./ver2/page/app/Divorce";
+import EventHistory from "./ver2/components/eventHistory";
+import EventListProfile from "./ver2/components/EventListProfile";
+import axios from "axios";
+import EventResults from "./ver2/components/EventResults";
 function App() {
   const user = window.localStorage.getItem("user-info");
+
   if (!user)
     return (
       <Routes>
@@ -37,7 +42,16 @@ function App() {
           <Route index element={<Historyv2 />} />
           <Route path="home" element={<Historyv2 />} />
           <Route path="love" element={<Home />} />
-          <Route path="detail/:id" element={<NewHistory />} />
+          <Route path="detail/:id" element={<NewHistory />}>
+            <Route path="1" element={<FirstMeet />} />
+            <Route path="2" element={<FirstDate />} />
+            <Route path="3" element={<BeingInLove />} />
+            <Route path="4" element={<BreakingUp />} />
+            <Route path="5" element={<Marry />} />
+            <Route path="6" element={<Divorce />} />
+            <Route path="7" element={<Remarry />} />
+          </Route>
+          <Route path="viewEvent" element={<EventResults />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="user/:id" element={<ProfileGuest />} />
@@ -52,7 +66,7 @@ function App() {
         <Route index element={<Historyv2 />} />
         <Route path="home" element={<Historyv2 />} />
         <Route path="love" element={<Home />} />
-        <Route path="detail/:id" element={<NewHistory />} >
+        <Route path="detail/:id" element={<NewHistory />}>
           <Route path="1" element={<FirstMeet />} />
           <Route path="2" element={<FirstDate />} />
           <Route path="3" element={<BeingInLove />} />
@@ -61,6 +75,8 @@ function App() {
           <Route path="6" element={<Divorce />} />
           <Route path="7" element={<Remarry />} />
         </Route>
+        <Route path="viewEvent" element={<EventResults />} />
+
         <Route path="login" element={<Login />} />
         <Route path="profile" element={<Profile />} />
         <Route path="user/:id" element={<ProfileGuest />} />

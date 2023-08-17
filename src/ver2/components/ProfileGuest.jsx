@@ -14,7 +14,7 @@ const ProfileGuest = () => {
   const [data, setData] = useState(null);
   const [listEvent, setListEvent] = useState([]);
   const [showEvent, setShowEvent] = useState(false);
-  const server = "http://14.225.7.221:8989";
+  const server = "http://61.28.226.120:8989";
   const user = JSON.parse(window.localStorage.getItem("user-info"));
   const getUser = async (idUser) => {
     try {

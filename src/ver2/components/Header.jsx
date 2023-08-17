@@ -3,7 +3,7 @@ import img from "../components/image/Screenshot_1.png";
 import { BsFillHeartFill } from "react-icons/bs";
 import { SlMenu } from "react-icons/sl";
 import useEvenStore from "../../utils/store";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 function Header({ onClick }) {
   const [showMenu, setShowMenu] = useState(false);
@@ -21,6 +21,9 @@ function Header({ onClick }) {
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
+  const BackHome = () => {
+    navigate("/")
+  };
   const toggleVersion = () => {
     navigate("/love");
   };
@@ -34,8 +37,9 @@ function Header({ onClick }) {
             onClick={onClick}
           />
           <img src={img} alt="" className="lg:w-28 w-24 lg:h-24 h-20 lg:mt-0" />
-          <p className="lg:text-6xl text-3xl text-white flex items-center starborn">
-            FUTURE LOVE
+          <p className="lg:text-6xl text-3xl text-white flex items-center starborn"
+          onClick={BackHome}>
+          <Link >FUTURE LOVE</Link> 
           </p>
           <img src={img} alt="" className="lg:w-28 w-24 lg:h-24 h-20" />
         </div>
