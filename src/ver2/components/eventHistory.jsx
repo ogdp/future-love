@@ -10,9 +10,9 @@ import img1 from "../components/image/finish.png";
 import img2 from "../components/image/12.png";
 import bg1 from "../components/image/bg-1.png";
 import bg2 from "../components/image/bg-2.png";
-import bg3 from "../components/image/bg-3.png";
 import vec1 from "../components/image/Vector1.png";
 import vec2 from "../components/image/Vector2.png";
+import bg3 from "../components/image/bg-3.png";
 import moment from "moment";
 
 // import image1 from "../components/image/khung-vien-dep-33-removebg-preview.png"
@@ -53,6 +53,7 @@ function EventHistory(props) {
       console.log(jsonData.list_sukien);
       // console.log("absjadaskdkahdkashdkjashdkjashdkashdkakdj")
       setData(jsonData.list_sukien);
+      console.log(data)
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -71,8 +72,8 @@ function EventHistory(props) {
     }
   };
   useEffect(() => {
-    fetchData(); 
-  }, [ count]);
+    fetchData();
+  }, [count]);
 
   useEffect(() => {
     const loadingTypes = [
@@ -397,68 +398,20 @@ function EventHistory(props) {
                     </div>
                   </div>
                 ) : (
-                  // <div
-                  //   style={{ backgroundImage: `url(${bg3})` }}
-                  //   className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
-                  // >
-                  //   <div className="grid grid-cols-3">
-                      
-                  //       <div className=" w-[290px] h-[300px] overflow-hidden ">
-                  //         <img
-                  //           src={`${array.sukien[array.sukien.length - 1].link_nu_goc}`}
-                  //           alt=""
-                  //           className=" bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32 absolute"
-                  //         />
-                  //       </div>
-                      
-                  //     <div className="flex flex-col justify-center items-center mt-12">
-                  //       {/* image love */}
-                  //       <span
-                  //         key={array.sukien[array.sukien.length - 1].id}
-                  //         to={`/ array / ${array.sukien[array.sukien.length - 1].id
-                  //           }`}
-                  //         className="lg:text-[24px] starborn leading-tight mb-4"
-                  //       >
-                  //         {array.sukien[array.sukien.length - 1].ten_su_kien}
-                  //       </span>
-                  //       <div className="box lg:h-52 h-36 mt-3">
-                  //         <p className="slab font-semibold lg:text-[16px]">
-                  //           {
-                  //             array.sukien[array.sukien.length - 1]
-                  //               .noi_dung_su_kien
-                  //           }
-                  //         </p>
-                  //       </div>
-
-                  //       <div className="my-4 slab font-semibold lg:text-[16px]">
-                  //         <span
-                  //           style={{ fontStyle: "normal", marginTop: 100 }}
-                  //           className="text-time"
-                  //         >
-                  //           {moment(array.sukien[array.sukien.length - 1].real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
-                  //         </span>
-                  //       </div>
-                  //     </div>
-                  //     <div className="flex justify-center items-center">
-                  //       <div
-                  //         style={{ backgroundImage: `url(${array.sukien[array.sukien.length - 1].link_nu_goc})` }}
-                  //         className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
-                  //       ></div>
-                  //     </div>
-                  //   </div>
-                  // </div>
                   <div
                     style={{ backgroundImage: `url(${bg2})` }}
                     className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
                   >
+
+
+
                     <div className="flex flex-col justify-center items-center">
                       {/* image love */}
                       <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
                         <span
                           key={array.sukien[array.sukien.length - 1].id}
-                          to={`/ array / ${
-                            array.sukien[array.sukien.length - 1].id
-                          }`}
+                          to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                            }`}
                           className="lg:text-[24px] starborn"
                         >
                           {array.sukien[array.sukien.length - 1].ten_su_kien}
@@ -481,21 +434,14 @@ function EventHistory(props) {
                           {moment(array.sukien[array.sukien.length - 1].real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
                         </span>
                       </div>
+                      <div >
+                        {/* image swap */}
+                       
+                        
+                      </div>
                     </div>
+
                   </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
                 )}
               </div>
             ))}
@@ -556,7 +502,7 @@ function EventHistory(props) {
           </button>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

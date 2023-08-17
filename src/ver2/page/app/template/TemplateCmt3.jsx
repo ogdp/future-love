@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import bgr from "../img/bg-3.png";
+import moment from "moment";
 
 function TemplateCmt3(props) {
   // const { id } = useParams();
@@ -47,7 +48,7 @@ function TemplateCmt3(props) {
               style={{ fontStyle: "normal" }}
               className="text-time text-3xl text-center"
             >
-              {data.real_time}
+               {moment(data.real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
             </span>
           </div>
         </div>

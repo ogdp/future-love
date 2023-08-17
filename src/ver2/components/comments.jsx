@@ -47,6 +47,10 @@ function Comments() {
   
     return lines.join('\n');
   }
+  const windowWidth = window.innerWidth;
+  const maxLineLength = Math.floor(windowWidth * 0.025); 
+  
+
   
   const fetchData = async () => {
     try {
@@ -134,10 +138,20 @@ function Comments() {
               <span className="text-[18px] font-semibold">
                 {data.user_name}
               </span>
-              <span className="text-[16px] mt-3" style={{ whiteSpace: 'pre-wrap' }} > 
-               {wrapText(data.noi_dung_cmt, 20)}
+              <span className="text-[16px] mt-3 max-w-[25vw] "
+                style={{ whiteSpace: "pre-wrap" }} > 
+               {wrapText(data.noi_dung_cmt, maxLineLength)}
 
               </span>
+              {data.imageattach ? (
+                      <img
+                        className="w-[60px] h-[50px]"
+                        src={data.imageattach}
+                        alt=""
+                      />
+                    ) : (
+                      ""
+                    )}
               <span className="text-base">{data.device_cmt}</span>
             </div>
 

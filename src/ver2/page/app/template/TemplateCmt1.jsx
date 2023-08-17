@@ -4,6 +4,7 @@ import img2 from "../img/phaitren1.png";
 import img3 from "../img/phaiduoi1.png";
 import img4 from "../img/traitren1.png";
 import img5 from "../img/traiduoi1.png";
+import moment from "moment";
 
 function TemplateCmt1(props) {
   // const { id } = useParams();
@@ -51,7 +52,7 @@ function TemplateCmt1(props) {
                   style={{ fontStyle: "normal" }}
                   className="text-time text-3xl"
                 >
-                  {data.real_time}
+                  {moment(data.real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
                 </span>
               </div>
             </div>

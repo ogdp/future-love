@@ -124,6 +124,15 @@ const HistoryCommentList = ({ datas }) => {
                         <h5 className="line-clamp-1 max-lg:text-sm text-base">
                           {item.noi_dung_cmt}
                         </h5>
+                        {item.imageattach ? (
+                          <img
+                            className="w-[60px] h-[50px]"
+                            src={item.imageattach}
+                            alt=""
+                          />
+                        ) : (
+                          ""
+                        )}
                       </div>
                     </div>
                   </Link>

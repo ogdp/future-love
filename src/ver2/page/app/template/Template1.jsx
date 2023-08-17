@@ -6,6 +6,7 @@ import img4 from "../img/traitren1.png";
 import img5 from "../img/traiduoi1.png";
 import CmtPopup from "../CmtPopup";
 import Clock from "../../../components/CLockEvent";
+import moment from "moment";
 
 function Template1(props) {
   // const { id } = useParams();
@@ -22,7 +23,7 @@ function Template1(props) {
   return (
     <div className="h-full flex flex-col items-center justify-center">
       <div className="mb-10 mt-20">
-        <Clock data={data.real_time} />
+        <Clock data={moment(data.real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")} />
       </div>
       <div
         className={`border-8 border-pink-300 w-full lg:h-[550px] bg-white rounded-[36px] flex lg:flex-row flex-col-reverse mt-[50px] items-center justify-center relative gap-x-20 overflow-hidden lg:mb-[180px] mb-[60px]`}
@@ -62,7 +63,7 @@ function Template1(props) {
                 style={{ fontStyle: "normal" }}
                 className="text-time text-3xl mb-4 block"
               >
-                {data.real_time}
+                {moment(data.real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
               </span>
             </div>
           </div>

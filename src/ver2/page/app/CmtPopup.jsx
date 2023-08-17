@@ -19,7 +19,7 @@ const templateComponents = {
 function CmtPopup(props) {
   const param = useParams();
   const [dataCmt, setDataCmt] = useState([]);
-  const [location,setLocation]=useState([])
+  const [location, setLocation] = useState([])
   const user = JSON.parse(localStorage.getItem("user-info"));
   console.log(props);
   const [imgComment, setImgComment] = useState("");
@@ -46,45 +46,49 @@ function CmtPopup(props) {
   useEffect(() => {
     fetchDataCmt();
   }, []);
-  
+
 
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (event) => {
     const newValue = event.target.value;
     setInputValue(newValue);
-    
+
   };
   const ne = window.navigator.userAgent;
   console.log("hii", ne)
-  
+
   const platform = window.navigator.platform;
   console.log("User Operating System:", platform);
   const ipComment = localStorage.getItem("ip")
   useEffect(() => {
     fetch(`https://api.ip.sb/geoip/${ipComment}`)
-        .then(resp => resp.json())
-        .then(data => {
-            setLocation(data);
+      .then(resp => resp.json())
+      .then(data => {
+        setLocation(data);
 
-        })
-        .catch(err => {
-            console.log(err.message);
-        })
-}, [ipComment]);
-  
-  
+      })
+      .catch(err => {
+        console.log(err.message);
+      })
+  }, [ipComment]);
+
+
   const HandleSendCmt = async (e) => {
     const url = "http://61.28.226.120:8989/lovehistory/comment";
     const comment = {
       device_cmt: platform,
       id_toan_bo_su_kien: param.id,
-      ipComment: ipComment ,
+      ipComment: ipComment,
       so_thu_tu_su_kien: props.data.so_thu_tu_su_kien,
       imageattach: imgComment ? imgComment : "",
       id_user: user.id_user,
       location: location.city,
     };
+    if (!inputValue.trim() && !imgComment) {
+      toast.warning("Comment cannot be empty!");
+      return;
+    }
     const data = { ...comment, noi_dung_cmt: inputValue };
     await axios
       .post(url, data, {
@@ -148,7 +152,7 @@ function CmtPopup(props) {
           <div className="w-max h-[85%]">
             <TemplateComponent data={props.data} onClick={handlePopup} />
           </div>
-          <div className="overflow-y-auto ">
+          <div className="overflow-y-auto mt-5">
             {dataCmt.length > 0 &&
               dataCmt.map((cmt, index) => (
                 <div className="flex items-stretch gap-x-4" key={index}>
@@ -160,10 +164,20 @@ function CmtPopup(props) {
                     />
                   </div>
                   <div className="">
-                    <h1 className="lg:text-2xl text-xl font-semibold">
-                      {cmt.user_name ? cmt.user_name : "Guest"}
-                    </h1>
-                    <p className="lg:text-xl text-base"> {cmt.noi_dung_cmt}</p>
+                    <div className="row">
+                      <div className="flex items-center">
+                        <h1 className="lg:text-2xl text-xl font-semibold">
+                          {cmt.user_name ? cmt.user_name : "Guest"}
+                        </h1>
+                        <p className="lg:text-base text-sm ml-2 ">
+                          {cmt.thoi_gian_release}
+                        </p>
+                      </div>
+                    </div>
+                   
+
+
+                    <p className="lg:text-xl text-base font-[Montserrat]"> {cmt.noi_dung_cmt}</p>
                     {cmt.imageattach ? (
                       <img
                         className="w-[60px] h-[50px]"
@@ -173,9 +187,7 @@ function CmtPopup(props) {
                     ) : (
                       ""
                     )}
-                    <p className="lg:text-base text-sm">
-                      {cmt.thoi_gian_release}
-                    </p>
+
                   </div>
                 </div>
               ))}
@@ -198,7 +210,7 @@ function CmtPopup(props) {
                   type="text"
                   value={inputValue}
                   onChange={handleInputChange}
-                  className="w-full h-auto border-none outline-none"
+                  className="w-full h-auto border-none outline-none font-[Montserrat]"
                 ></input>
                 <div className="inline-block relative">
                   <label for="file-input">

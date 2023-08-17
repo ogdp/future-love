@@ -732,7 +732,7 @@ export default function Profile() {
           </div>
         </div>
         {imgdata.length === 0 && (
-          <div className="bg-amber-400 w-screen h-[50px] text-1xl sticky top-[400px] mb-8 -mt-20">
+          <div className="bg-amber-400 w-screen h-[50px] text-1xl  top-[400px] mb-8 -mt-20">
             <div className="flex justify-center pt-6">
               <div className="mt-2">You haven't finished the procedure yet</div>
               <div className="mx-8">

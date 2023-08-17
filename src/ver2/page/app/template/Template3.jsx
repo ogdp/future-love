@@ -3,6 +3,7 @@ import axios from "axios";
 import bgr from "../img/bg-3.png";
 import CmtPopup from "../CmtPopup";
 import Clock from "../../../components/CLockEvent";
+import moment from "moment";
 
 function Template3(props) {
   // const { id } = useParams();
@@ -16,7 +17,7 @@ function Template3(props) {
   return (
     <div className="min-w-full min-h-full">
       <div className="h-[10%] w-[100%] mt-[40px] ml-[30px]">
-        <Clock data={data.real_time} />
+        <Clock data={moment(data.real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")} />
       </div>
       <div>
         <div className="relative top-3 left-3  rounded-[50px] items-center justify-center ml-[50px] mr-2">
@@ -58,13 +59,13 @@ function Template3(props) {
                     style={{ fontStyle: "normal" }}
                     className="text-time text-3xl "
                   >
-                    {data.real_time}
+                    {moment(data.real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
                   </span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="absolute z-10 top-0 left-[-15px] w-1/2 h-[573px] float-left mt-[200px]">
+          <div className="absolute  top-0 left-[-15px] w-1/2 h-[573px] float-left mt-[200px]" style={{zIndex:"9999px"}}>
             <div className=" w-[290px] h-[300px] overflow-hidden">
               <img
                 src={`${data.link_da_swap}`}
