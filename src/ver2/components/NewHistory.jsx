@@ -18,24 +18,36 @@ import { useParams, useNavigate } from "react-router";
 import ReactLoading from "react-loading";
 import noAvatar from "./image/no-avatar.png";
 import { createBrowserHistory } from "history";
-import { useMemo } from "react";
-import { useCallback } from "react";
-export default function NewHistory(props) {
+import CmtPopup from "../page/app/CmtPopup";
+export default function NewHistory() {
   const { id } = useParams();
   const route = useNavigate();
   const [dataUser, setDataUser] = useState(null);
   const [isActive, setIsActive] = useState(1);
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
-  const [dataCmt, setDataCmt] = useState([]);
   const history = createBrowserHistory();
+  const [dataComment, setDataComment] = useState([]);
+  const params = window.location.href;
+  const arrayUrl = params.split("/");
+  const stt_su_kien = arrayUrl[arrayUrl.length - 1];
+  console.log(stt_su_kien);
+  useEffect(() => {
+    axios
+      .get(
+        `http://61.28.226.120:8989/lovehistory/comment/${stt_su_kien}?id_toan_bo_su_kien=${id}`
+      )
+      .then((response) => {
+        setDataComment(response.data.comment);
+        console.log(response.data.comment);
+      });
+  }, [params]);
   const fetchDataUser = async () => {
     try {
       const response = await axios.get(
         `http://61.28.226.120:8989/lovehistory/${id}`
       );
-      const data = await response.data.sukien[0];
-      setDataUser(data);
-      console.log(response.data);
+      setDataUser(response.data.sukien[0]);
+      // console.log(response.data);
       // console.log(data)
     } catch (err) {
       console.log(err);
@@ -44,32 +56,7 @@ export default function NewHistory(props) {
   useEffect(() => {
     fetchDataUser();
   }, []);
-  console.log("====================================");
-  console.log(dataUser);
-  console.log("====================================");
 
-  // useEffect(() => {
-  //   const fetchDataCmt = async () => {
-  //     console.log(1234);
-  //     try {
-  //       const response = await axios.get(
-  //         `http://61.28.226.120:8989/lovehistory/comment/${dataUser.so_thu_tu_su_kien}?id_toan_bo_su_kien=${id}`
-  //       );
-  //       console.log(response.data.comment);
-  //       const data = await response.data.comment;
-  //       console.log("====================================");
-  //       console.log(data);
-  //       console.log("====================================");
-  //       setDataCmt(data);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-  //   fetchDataCmt();
-  // }, [dataUser?.so_thu_tu_su_kien]);
-  // console.log("====================================");
-  // console.log(dataCmt);
-  // console.log("====================================");
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -90,50 +77,6 @@ export default function NewHistory(props) {
   const handleSidebar = () => {
     setIsOpenSidebar(!isOpenSidebar);
   };
-  let content = "";
-  if (isActive === 1) {
-    content = (
-      <aside>
-        <FirstMeet />
-      </aside>
-    );
-  } else if (isActive === 2) {
-    content = (
-      <aside>
-        <FirstDate />
-      </aside>
-    );
-  } else if (isActive === 3) {
-    content = (
-      <aside>
-        <BeingInLove />
-      </aside>
-    );
-  } else if (isActive === 4) {
-    content = (
-      <aside>
-        <BreakingUp />
-      </aside>
-    );
-  } else if (isActive === 5) {
-    content = (
-      <aside>
-        <Marry />
-      </aside>
-    );
-  } else if (isActive === 6) {
-    content = (
-      <aside>
-        <Divorce />
-      </aside>
-    );
-  } else if (isActive === 7) {
-    content = (
-      <aside>
-        <Remarry />
-      </aside>
-    );
-  }
   const renderLoading = (isLoading) => {
     if (isLoading) {
       return (
@@ -186,7 +129,7 @@ export default function NewHistory(props) {
             />
           )}
           <div
-            className={`lg:col-span-3 z-[999] lg:z-[0] bg-menu lg:block ${
+            className={`lg:col-span-3 z-[999] bg-menu lg:block ${
               isOpenSidebar
                 ? "col-span-8 sm:col-span-6 transition-all transform duration-300 ease-linear block opacity-100 absolute top-40 left-0 bottom-0 h-full"
                 : "transition-all transform hidden duration-300 ease-out "
@@ -287,11 +230,92 @@ export default function NewHistory(props) {
             </div>
           </div>
           <div className="lg:col-span-9 col-span-12 bg-D9D9D9 min-h-screen">
-            {content}
-            <div>
-              {dataCmt.map((item) => (
-                <p>{item.noi_dung_cmt}</p>
-              ))}
+            {isActive === 1 ? (
+              <aside>
+                <FirstMeet />
+              </aside>
+            ) : (
+              ""
+            )}
+            {isActive === 2 ? (
+              <aside>
+                <FirstDate />
+              </aside>
+            ) : (
+              ""
+            )}
+            {isActive === 3 ? (
+              <aside>
+                <BeingInLove />
+              </aside>
+            ) : (
+              ""
+            )}
+            {isActive === 4 ? (
+              <aside>
+                <BreakingUp />
+              </aside>
+            ) : (
+              ""
+            )}
+            {isActive === 5 ? (
+              <aside>
+                <Marry />
+              </aside>
+            ) : (
+              ""
+            )}
+            {isActive === 6 ? (
+              <aside>
+                <Divorce />
+              </aside>
+            ) : (
+              ""
+            )}
+            {isActive === 7 ? (
+              <aside>
+                <Remarry />
+              </aside>
+            ) : (
+              ""
+            )}
+            <div className="mt-[-150px] ml-[50px] mb-5">
+              {dataComment.map((item, index) => {
+                if (index < 10) {
+                  return (
+                    <div className="flex mt-[30px]">
+                      <img
+                        src={item.avatar_user}
+                        className="w-[50px] h-[50px] rounded-full"
+                      ></img>
+                      <div className="ml-10 w-[900px]">
+                        <h3 className="text-3xl">{item.user_name}</h3>
+                        <div className="mt-3 w-[700px] break-words">
+                          {item.noi_dung_cmt}
+                        </div>
+                        {item.imageattach ? (
+                          <img
+                            src={item.imageattach}
+                            className="w-[150px] h-[120px] mt-[10px]"
+                          ></img>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                      <div className="float-right">
+                        <p className="text-xl">{item.thoi_gian_release}</p>
+                      </div>
+                    </div>
+                  );
+                }
+              })}
+              {dataComment.length > 0 ? (
+                <div className="flex justify-center items-center mt-[40px] text-2xl">
+                  <a href={`/detail/${id}/${stt_su_kien}`}>View all comment</a>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>
