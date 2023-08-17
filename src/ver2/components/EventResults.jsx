@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 function EventResults() {
   const [listEvent, setListEvent] = useState([]);
   const navigate = useNavigate();
-  const server = "http://61.28.226.120:8989";
+  const server = "http://14.225.7.221:8989";
   const user = window.localStorage.getItem("user-info");
   const dataUser = JSON.parse(user);
   console.log("====================================");

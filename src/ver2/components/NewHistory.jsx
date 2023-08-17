@@ -34,7 +34,7 @@ export default function NewHistory() {
   useEffect(() => {
     axios
       .get(
-        `http://61.28.226.120:8989/lovehistory/comment/${stt_su_kien}?id_toan_bo_su_kien=${id}`
+        `http://14.225.7.221:8989/lovehistory/comment/${stt_su_kien}?id_toan_bo_su_kien=${id}`
       )
       .then((response) => {
         setDataComment(response.data.comment);
@@ -44,7 +44,7 @@ export default function NewHistory() {
   const fetchDataUser = async () => {
     try {
       const response = await axios.get(
-        `http://61.28.226.120:8989/lovehistory/${id}`
+        `http://14.225.7.221:8989/lovehistory/${id}`
       );
       setDataUser(response.data.sukien[0]);
       // console.log(response.data);

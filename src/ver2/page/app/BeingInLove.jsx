@@ -21,7 +21,7 @@ function BeingInLove() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://61.28.226.120:8989/lovehistory/${id}`
+        `http://14.225.7.221:8989/lovehistory/${id}`
       );
       setData(response.data.sukien[2]);
       console.log(response.data.sukien[2]);

@@ -31,7 +31,7 @@ function Historyv2() {
   const onSearch = (value) => {
     console.log(value);
     axios
-      .get(`http://61.28.226.120:8989/search?word=${value}`)
+      .get(`http://14.225.7.221:8989/search?word=${value}`)
       .then((response) => {
         setDataSearch(response.data.list_sukien);
       });
@@ -39,7 +39,7 @@ function Historyv2() {
     //   word: search_w,
     // };
     // await axios
-    //   .get("http://61.28.226.120:8989/search", { params: params })
+    //   .get("http://14.225.7.221:8989/search", { params: params })
     //   .then((response) => {
     //     setDataSearch(response.data?.list_sukien[0]?.sukien);
     //   })

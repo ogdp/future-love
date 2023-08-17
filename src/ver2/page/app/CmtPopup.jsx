@@ -34,7 +34,7 @@ function CmtPopup(props) {
     console.log(1234);
     try {
       const response = await axios.get(
-        `http://61.28.226.120:8989/lovehistory/comment/${props.data.so_thu_tu_su_kien}?id_toan_bo_su_kien=${param.id}`
+        `http://14.225.7.221:8989/lovehistory/comment/${props.data.so_thu_tu_su_kien}?id_toan_bo_su_kien=${param.id}`
       );
       console.log(response.data.comment);
       setDataCmt(response.data.comment);
@@ -71,7 +71,7 @@ function CmtPopup(props) {
   }, [ipComment]);
 
   const HandleSendCmt = async (e) => {
-    const url = "http://61.28.226.120:8989/lovehistory/comment";
+    const url = "http://14.225.7.221:8989/lovehistory/comment";
     const comment = {
       device_cmt: platform,
       id_toan_bo_su_kien: param.id,

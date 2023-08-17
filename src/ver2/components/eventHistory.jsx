@@ -44,7 +44,7 @@ function EventHistory(props) {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `http://61.28.226.120:8989/lovehistory/page/${count}`
+        `http://14.225.7.221:8989/lovehistory/page/${count}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch data");
