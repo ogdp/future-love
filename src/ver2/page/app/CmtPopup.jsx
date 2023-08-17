@@ -55,6 +55,8 @@ function CmtPopup(props) {
     setInputValue(newValue);
     
   };
+  const ne = window.navigator.userAgent;
+  console.log("hii", ne)
   
   const platform = window.navigator.platform;
   console.log("User Operating System:", platform);

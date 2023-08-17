@@ -5,13 +5,16 @@ import { SlMenu } from "react-icons/sl";
 import useEvenStore from "../../utils/store";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
-function Header({ onClick }) {
+function Header({ onSearchChange, onClick }) {
   const [showMenu, setShowMenu] = useState(false);
   const version = useEvenStore((state) => state.version);
   const setVersion = useEvenStore((state) => state.setVersion);
   const navigate = useNavigate();
 
   const user = window.localStorage.getItem("user-info");
+  const BackHome = () => {
+    navigate("/")
+  };
 
   const handleLogout = () => {
     localStorage.clear();
@@ -20,9 +23,6 @@ function Header({ onClick }) {
   };
   const toggleMenu = () => {
     setShowMenu(!showMenu);
-  };
-  const BackHome = () => {
-    navigate("/")
   };
   const toggleVersion = () => {
     navigate("/love");
@@ -52,6 +52,7 @@ function Header({ onClick }) {
               type="search"
               placeholder="Search"
               className="searchTerm rounded-full w-search h-20"
+              onChange={onSearchChange}
             />
           </div>
         </div>
@@ -63,7 +64,12 @@ function Header({ onClick }) {
             className="lg:text-[54px] text-[38px] text-white mt-2 lg:mr-10 mr-5 transition-transform duration-300 hover:scale-125 cursor-pointer"
           />
 
-          <SlMenu className="lg:text-[56px] text-[38px] text-white mt-1 font-black mr-20 cursor-pointer transition-transform duration-300 hover:scale-125" onClick={()=> {setShowMenu(!showMenu)}} />
+          <SlMenu
+            className="lg:text-[56px] text-[38px] text-white mt-1 font-black mr-20 cursor-pointer transition-transform duration-300 hover:scale-125"
+            onClick={() => {
+              setShowMenu(!showMenu);
+            }}
+          />
         </div>
       </div>
 
@@ -86,7 +92,7 @@ function Header({ onClick }) {
                   <NavLink
                     className="pt-16 slab font-extrabold text-[36px]  text-[#FF2C61] px-8 py-2 rounded-2xl hover:bg-[#ED709D] hover:text-white
              "
-                    to="/NewHistory"
+                    to="/viewEvent"
                   >
                     EVENTS
                   </NavLink>

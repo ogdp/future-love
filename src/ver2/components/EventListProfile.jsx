@@ -15,8 +15,7 @@ const EventListProfile = (props) => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-  // console.log(props);
-  // console.log(closeTab);
+  
   if (props.data.length === 0)
     return <div className="text-xl text-center py-3">Loadding ...</div>;
   return (
