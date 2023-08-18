@@ -213,7 +213,7 @@ function EventHistory(props) {
                         <div
                           style={{ backgroundImage: `url(${vec1})` }}
                           className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
-                        ></div>
+                        />
                       </div>
                       <div className="flex flex-col justify-center items-center mt-12">
                         {/* image love */}
@@ -425,10 +425,11 @@ function EventHistory(props) {
                 ) : (
                   <div
                     style={{ backgroundImage: `url(${bg2})` }}
-                    className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
+                    className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full relative"
                   >
-                    <div className="flex flex-col justify-center items-center">
+                    <div className="flex flex-col justify-center items-center relative">
                       {/* image love */}
+
                       <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
                         <span
                           key={array.sukien[array.sukien.length - 1].id}
@@ -461,7 +462,16 @@ function EventHistory(props) {
                             .format("YYYY-MM-DD HH:mm:ss")}
                         </span>
                       </div>
-                      <div>{/* image swap */}</div>
+                      <div className="absolute lg:top-[95%] top-[90%] flex items-center">
+                        <div
+                          style={{ backgroundImage: `url(${vec1})` }}
+                          className="bg-no-repeat bg-cover lg:w-[100px] lg:h-[100px] w-[50px] h-[50px]"
+                        />
+                        <div
+                          style={{ backgroundImage: `url(${vec2})` }}
+                          className="bg-no-repeat bg-cover lg:w-[100px] lg:h-[100px] w-[50px] h-[50px]"
+                        />
+                      </div>
                     </div>
                   </div>
                 )}

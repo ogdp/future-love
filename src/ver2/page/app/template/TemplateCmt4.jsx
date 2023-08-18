@@ -13,7 +13,7 @@ function TemplateCmt4(props) {
   return (
     <div className=" flex overflow-hidden h-full relative">
       <div
-        className={` lg:w-[1019px] w-[380px]  rounded-t-[36px] border-8 border-pink-300  h-[80%] bg-white flex lg:flex-row flex-col gap-y-6 overflow-hidden gap-x-10`}
+        className={` lg:w-[1019px] w-[380px]  rounded-t-[36px] border-8 border-pink-300  h-full bg-white flex lg:flex-row flex-col gap-y-6 overflow-hidden gap-x-10`}
       >
         <div
           className="h-[260px] lg:w-full lg:h-full"

@@ -30,7 +30,6 @@ export default function NewHistory() {
   const params = window.location.href;
   const arrayUrl = params.split("/");
   const stt_su_kien = arrayUrl[arrayUrl.length - 1];
-  console.log(stt_su_kien);
   useEffect(() => {
     axios
       .get(
@@ -230,65 +229,68 @@ export default function NewHistory() {
             </div>
           </div>
           <div className="lg:col-span-9 col-span-12 bg-D9D9D9 min-h-screen">
-            {isActive === 1 ? (
-              <aside>
-                <FirstMeet />
-              </aside>
-            ) : (
-              ""
-            )}
-            {isActive === 2 ? (
-              <aside>
-                <FirstDate />
-              </aside>
-            ) : (
-              ""
-            )}
-            {isActive === 3 ? (
-              <aside>
-                <BeingInLove />
-              </aside>
-            ) : (
-              ""
-            )}
-            {isActive === 4 ? (
-              <aside>
-                <BreakingUp />
-              </aside>
-            ) : (
-              ""
-            )}
-            {isActive === 5 ? (
-              <aside>
-                <Marry />
-              </aside>
-            ) : (
-              ""
-            )}
-            {isActive === 6 ? (
-              <aside>
-                <Divorce />
-              </aside>
-            ) : (
-              ""
-            )}
-            {isActive === 7 ? (
-              <aside>
-                <Remarry />
-              </aside>
-            ) : (
-              ""
-            )}
-            <div className="mt-[-150px] ml-[50px] mb-5">
+            <div>
+              {isActive === 1 ? (
+                <aside>
+                  <FirstMeet />
+                </aside>
+              ) : (
+                ""
+              )}
+              {isActive === 2 ? (
+                <aside>
+                  <FirstDate />
+                </aside>
+              ) : (
+                ""
+              )}
+              {isActive === 3 ? (
+                <aside>
+                  <BeingInLove />
+                </aside>
+              ) : (
+                ""
+              )}
+              {isActive === 4 ? (
+                <aside>
+                  <BreakingUp />
+                </aside>
+              ) : (
+                ""
+              )}
+              {isActive === 5 ? (
+                <aside>
+                  <Marry />
+                </aside>
+              ) : (
+                ""
+              )}
+              {isActive === 6 ? (
+                <aside>
+                  <Divorce />
+                </aside>
+              ) : (
+                ""
+              )}
+              {isActive === 7 ? (
+                <aside>
+                  <Remarry />
+                </aside>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className=" flex flex-col pt-[40px] mb-[100px] w-full">
               {dataComment.map((item, index) => {
                 if (index < 10) {
                   return (
-                    <div className="flex mt-[30px]">
+                    <div className="flex items-center gap-x-10 px-10 py-6 mx-[60px] hover:bg-gray-200">
                       <img
                         src={item.avatar_user}
                         className="w-[50px] h-[50px] rounded-full"
-                      ></img>
-                      <div className="ml-10 w-[900px]">
+                        alt="avt"
+                      />
+                      <div className="">
                         <h3 className="text-3xl">{item.user_name}</h3>
                         <div className="mt-3 w-[700px] break-words">
                           {item.noi_dung_cmt}
@@ -297,12 +299,13 @@ export default function NewHistory() {
                           <img
                             src={item.imageattach}
                             className="w-[150px] h-[120px] mt-[10px]"
-                          ></img>
+                            alt="avt"
+                          />
                         ) : (
                           ""
                         )}
                       </div>
-                      <div className="float-right">
+                      <div className="ml-auto">
                         <p className="text-xl">{item.thoi_gian_release}</p>
                       </div>
                     </div>
@@ -311,7 +314,12 @@ export default function NewHistory() {
               })}
               {dataComment.length > 0 ? (
                 <div className="flex justify-center items-center mt-[40px] text-2xl">
-                  <a href={`/detail/${id}/${stt_su_kien}`}>View all comment</a>
+                  <span
+                    className="cursor-pointer hover:text-blue-700"
+                    onClick={() => {}}
+                  >
+                    View all comments
+                  </span>
                 </div>
               ) : (
                 ""

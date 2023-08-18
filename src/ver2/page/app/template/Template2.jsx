@@ -32,7 +32,7 @@ function Template2(props) {
             .format("YYYY-MM-DD HH:mm:ss")}
         />
       </div>
-      <div className=" lg:w-[1019px] w-[400px] h-[500px] mb-[120px] border-8 border-pink-300  lg:h-[600px] bg-white  rounded-[36px] flex flex-row mt-[50px] overflow-hidden relative">
+      <div className=" lg:w-[1019px] w-[400px] h-[500px] border-8 border-pink-300  lg:h-[600px] bg-white  rounded-[36px] flex flex-row mt-[50px] overflow-hidden relative">
         <div
           style={{ backgroundImage: `url(${link_da_swap})` }}
           className="lg:w-full lg:h-[340px] w-full h-[400px] bg-top  bg-no-repeat bg-cover object-contain  z-20"

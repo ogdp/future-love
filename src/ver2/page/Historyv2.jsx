@@ -61,12 +61,11 @@ function Historyv2() {
       <b className="starborn text-white lg:text-5xl text-3xl ml-12 mb-3 mt-5">
         Events
       </b>
-      <div className="lg:flex lg:mt-0">
-        <div className="flex justify-center lg:w-[50%]">
+      <div className="grid xl:grid-cols-2 sm:grid-cols-1 mx-6 sm:mx-10 lg:mx-6 justify-center">
+        <div className="flex justify-center">
           <EventHistory search={search_w} data={dataSearch} />
         </div>
-        <div></div>
-        <div className="flex justify-center lg:w-[50%]">
+        <div className="">
           <Comments />
         </div>
       </div>

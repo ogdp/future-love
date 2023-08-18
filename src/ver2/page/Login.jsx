@@ -13,15 +13,7 @@ export default function Login() {
   const [emailReset, setEmailReset] = useState("");
 
   const navigate = useNavigate();
-  async function getIPAddress() {
-    try {
-      const response = await axios.get("https://api.ipify.org?format=json");
-      localStorage.setItem("ip", response.data.ip);
-    } catch (error) {
-      console.error("Error getting IP address:", error);
-      return null;
-    }
-  }
+
   const redirect = () => {
     navigate("/register");
   };
@@ -41,7 +33,7 @@ export default function Login() {
           toast.error(response.data.ketqua);
         } else {
           navigate("/");
-          await getIPAddress();
+          // await getIPAddress();
           window.location.reload();
           response.data = JSON.stringify(response.data);
           localStorage.setItem("user-info", response.data);

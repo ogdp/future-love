@@ -107,15 +107,15 @@ function Comments() {
     );
   }
   return (
-    <div className=" lg:w-[100vh] h-max bg-white rounded-[36px] mx-3 slab">
-      <ul className="p-8 ">
+    <div className=" lg:w-full h-max bg-white rounded-[36px] mx-3 slab">
+      <ul className="p-6 ">
         {currentResults.map((data, i) => (
           <li
-            className="flex items-center py-4"
+            className="flex items-center py-4 gap-x-6"
             key={i}
             onClick={() => visitProfile(data.id_toan_bo_su_kien, data.id_user)}
           >
-            <div className="lg:w-[10%] w-[20%]">
+            <div className="">
               {data.avatar_user.split(":")[0] === "https" ? (
                 <img
                   src={data.avatar_user}
@@ -130,12 +130,12 @@ function Comments() {
                 />
               )}
             </div>
-            <div className="flex flex-col lg:w-[70%] w-[60%] gap-x-2">
-              <span className="text-[18px] font-semibold">
+            <div className="flex flex-col gap-x-2">
+              <span className="lg:text-[18px] text-lg font-semibold">
                 {data.user_name}
               </span>
               <span
-                className="text-[16px] mt-3 max-w-[25vw] "
+                className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
                 style={{ whiteSpace: "pre-wrap" }}
               >
                 {wrapText(data.noi_dung_cmt, maxLineLength)}
@@ -149,13 +149,13 @@ function Comments() {
               ) : (
                 ""
               )}
-              <span className="text-base">{data.device_cmt}</span>
+              <span className="lg:text-base text-sm">{data.device_cmt}</span>
             </div>
 
-            <div className="lg:w-[15%] w-[15%] text-[13px]">
+            <div className="lg:text-[13px] text-sm ml-auto">
               {data.thoi_gian_release}
             </div>
-            <div className="lg:w-[15%] w-[20%] text-[13px]">
+            <div className="lg:w-[15%] w-[20%] lg:text-[13px] text-sm">
               <p> {data.dia_chi_ip}</p>
               <p> {data.location}</p>
             </div>

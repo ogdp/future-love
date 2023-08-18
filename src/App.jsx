@@ -34,7 +34,18 @@ import axios from "axios";
 import EventResults from "./ver2/components/EventResults";
 function App() {
   const user = window.localStorage.getItem("user-info");
-
+  useEffect(() => {
+    async function getIPAddress() {
+      try {
+        const response = await axios.get("https://api.ipify.org?format=json");
+        localStorage.setItem("ip", response.data.ip);
+      } catch (error) {
+        console.error("Error getting IP address:", error);
+        return null;
+      }
+    }
+    getIPAddress();
+  }, []);
   if (!user)
     return (
       <Routes>

@@ -44,7 +44,7 @@ function Template4(props) {
         />
       </div>
       <div
-        className={` lg:w-[1019px] w-[400px] h-full  border-8 border-pink-300  bg-white rounded-[36px] flex lg:flex-row flex-col gap-x-10 overflow-hidden mb-[300px]`}
+        className={` lg:w-[1019px] w-[400px] h-full  border-8 border-pink-300  bg-white rounded-[36px] flex lg:flex-row flex-col gap-x-10 overflow-hidden`}
       >
         <div
           className="h-[300px] lg:h-auto lg:w-[60%] w-full"

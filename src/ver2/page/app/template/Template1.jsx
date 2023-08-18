@@ -30,7 +30,7 @@ function Template1(props) {
         />
       </div>
       <div
-        className={`border-8 border-pink-300 w-full lg:h-[550px] bg-white rounded-[36px] flex lg:flex-row flex-col-reverse mt-[50px] items-center justify-center relative gap-x-20 overflow-hidden lg:mb-[180px] mb-[60px]`}
+        className={`border-8 border-pink-300 w-full lg:h-[550px] bg-white rounded-[36px] flex lg:flex-row flex-col-reverse mt-[50px] items-center justify-center relative gap-x-20 overflow-hidden`}
       >
         <div className="-ml-2 bg-no-repeat bg-cover lg:w-[55%] w-full flex flex-col justify-between mt-8">
           <div>
