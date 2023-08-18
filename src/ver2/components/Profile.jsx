@@ -89,7 +89,7 @@ export default function Profile() {
     setShowModal(false);
   };
   // Check height
-  const y = window.innerHeight
+  const y = window.innerHeight;
   //comments
   const [datas, setDatas] = useState([]);
   const setEvent = useEventStore((state) => state.setEvent);
@@ -924,7 +924,7 @@ export default function Profile() {
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         ) : null}
-        {datas.length > 0 && <HistoryCommentList datas={datas} />}
+        {datas.length > 0 && <HistoryCommentList datas={datas.reverse()} />}
         {datas.length === 0 && (
           <div className="w-full text-center py-5 ">
             <h1 className="text-xl lg:text-4xl">

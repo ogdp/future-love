@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 const HistoryCommentList = ({ datas }) => {
+  // console.log(datas);
   const [currentPage, setCurrentPage] = useState(1);
   const [actionCMT, setActionCMT] = useState({ status: false, value: 0 });
   const [count, setCount] = useState(1);
@@ -41,8 +42,8 @@ const HistoryCommentList = ({ datas }) => {
   if (datas.length == 0) {
     return <div className="text-center text-3xl py-3">No comments yet</div>;
   }
-  const dataSort = datas.reverse();
-
+  const dataSort = datas;
+  // const dataSort = datas.reverse();
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
   const currentResults = dataSort.slice(indexOfFirstResult, indexOfLastResult);
@@ -173,7 +174,7 @@ const HistoryCommentList = ({ datas }) => {
                         <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
                       </svg>
                     </button>
-                    {/* {actionCMT.status && actionCMT.value == item.id_comment && (
+                    {actionCMT.status && actionCMT.value == item.id_comment && (
                       <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute mt-[140%] top-0 right-0 z-10 py-2 px-2 rounded-sm bg-slate-100 text-lg text-black">
                         <button className="py-1 px-3 hover:bg-blue-400 hover:text-white w-full">
                           Edit
@@ -182,7 +183,7 @@ const HistoryCommentList = ({ datas }) => {
                           Delete
                         </button>
                       </div>
-                    )} */}
+                    )}
                   </div>
                 </div>
               </div>
