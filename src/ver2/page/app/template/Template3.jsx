@@ -4,16 +4,32 @@ import bgr from "../img/bg-3.png";
 import CmtPopup from "../CmtPopup";
 import Clock from "../../../components/CLockEvent";
 import moment from "moment";
+import { useParams } from "react-router";
 
 function Template3(props) {
-  // const { id } = useParams();
+  const { id } = useParams();
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const data = props.data;
+  const stt = data.so_thu_tu_su_kien
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
   const view =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
-
+    useEffect(() => {
+      if (isOpenPopup) {
+        const formData = new FormData();
+        formData.append("id_toan_bo_su_kien", id);
+        formData.append("so_thu_tu_su_kien", stt);
+  
+        axios.post("http://14.225.7.221:8989/countview", formData)
+          .then(response => {
+            console.log("API response:", response.data.count_view);
+          })
+          .catch(error => {
+            console.error("Lỗi khi gửi request API:", error);
+          });
+      }
+    }, [isOpenPopup, id,stt]);
   return (
     <div className="min-w-full min-h-full">
       <div className="h-[10%] w-[100%] mt-[40px] ml-[30px]">
