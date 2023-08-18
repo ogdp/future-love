@@ -55,13 +55,9 @@ function Comments() {
         `http://14.225.7.221:8989/lovehistory/pageComment/${countCM}`
       );
       const comments = await res.data.comment;
-      setData(res.data.comment);
+      console.log(comments);
+      setData(comments);
       setEvent(res.data);
-      console.log("====================================");
-      console.log(res.data.comment);
-      console.log("====================================");
-      const ipAddress = comments.dia_chi_ip; // Lấy địa chỉ IP từ dữ liệu response
-      console.log(`Địa chỉ IP của bạn là: ${ipAddress}`);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -92,8 +88,8 @@ function Comments() {
 
     return dateB - dateA;
   });
-  const visitProfile = (idsk, id_user) => {
-    navigate(`/detail/${idsk}/${id_user}`);
+  const visitProfile = (idsk, so_thu_tu_su_kien) => {
+    navigate(`/detail/${idsk}/${so_thu_tu_su_kien}`);
   };
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
@@ -111,20 +107,16 @@ function Comments() {
       <ul className="p-8 ">
         {currentResults.map((data, i) => (
           <li
-            className="flex items-center py-4"
+            className="flex items-center py-4 cursor-pointer"
             key={i}
-            onClick={() => visitProfile(data.id_toan_bo_su_kien, data.id_user)}
+            onClick={() =>
+              visitProfile(data.id_toan_bo_su_kien, data.so_thu_tu_su_kien)
+            }
           >
             <div className="lg:w-[10%] w-[20%]">
-              {data.avatar_user.split(":")[0] === "https" ? (
+              {data.avatar_user !== null && (
                 <img
                   src={data.avatar_user}
-                  alt=""
-                  className="w-[60px] h-[60px] border border-3 rounded-[50%]"
-                />
-              ) : (
-                <img
-                  src={no_avatar}
                   alt=""
                   className="w-[60px] h-[60px] border border-3 rounded-[50%]"
                 />
@@ -160,35 +152,7 @@ function Comments() {
               <p> {data.location}</p>
             </div>
           </li>
-
-          // <li className="flex flex-row w-full h-32 lg:justify-between justify-around" key={i}>
-          //   {data.imageattach === null && data.imageattach === undefined && (
-          //     <img src={data.avatar_user} alt="" className="w-20 h-20 rounded-[50%] " />
-          //   )}
-
-          //   <span className="text-[16px]"> {data.device_cmt}</span>
-          //   <span className="text-[16px] max-w-xl">
-          //     {data.noi_dung_cmt.length > 10
-          //       ? data.noi_dung_cmt.slice(0, 50) + "..."
-          //       : data.noi_dung_cmt}
-          //   </span>
-          //   <span className="text-[16px]">
-          //     {data.dia_chi_ip.length > 15
-          //       ? data.dia_chi_ip.slice(0, 15) + "..."
-          //       : data.dia_chi_ip}
-          //   </span>
-          // </li>
         ))}
-
-        {/* {[...Array(25)].map((_, index) => (
-          <li className="flex flex-row w-full h-32 justify-between" key={index}>
-            <img src={girl} alt="" className="w-20 h-20 rounded-[50%]" />
-            <span className="text-[16px] max-w-xl">
-              Love makes every moment brighter, warmer, and infinitel...
-            </span>
-            <span className="text-[16px]">1m</span>
-          </li>
-        ))} */}
       </ul>
       <div className="pagination text-4xl flex justify-center my-6">
         <button
