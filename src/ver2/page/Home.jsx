@@ -19,6 +19,7 @@ import Clock from "../components/clock";
 import * as faceapi from "face-api.js";
 import "../css/AddEvent.css";
 import RenderRandomWaitImage from "../components/randomImages";
+import { async } from "q";
 
 function Home() {
   const Api_key = "ba35005b6d728bd9197bfd95d64e4e39";
@@ -30,6 +31,8 @@ function Home() {
   const [nu2, setNu2] = useState(girlM);
   const [uil, setUil] = useState(uilPlus);
   const [bsHeart, setHeart] = useState(heart);
+  const [nameMale, setNameMale] = useState("");
+  const [nameFemale, setNameFemale] = useState("");
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -146,19 +149,50 @@ function Home() {
       closeUploadImg();
     }
   };
+  const getMyDetailUser = async () => {
+    try {
+      const { data } = await axios.get("https://api.ipify.org/?format=json");
+      // console.log(data);
+      if (data.ip) {
+        const res = await axios.get(`http://ip-api.com/json/${data.ip}`);
+        const browser = window.navigator.userAgent;
+        return {
+          browser: browser,
+          location: res.data,
+        };
+      }
+      return false;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
   const fetchData = async () => {
     if (image1 == null || image2 == null) return setIsModelWarning(true);
+    if (nameFemale == "" || nameMale == "")
+      return setModelAlert({
+        status: true,
+        message: "Name male or female is required",
+      });
     setIsLoading(true);
     try {
+      // Get device
       const res1 = await uploadImage(image1, setImage1);
       if (!res1) return alert("Fail API upload image");
       const res2 = await uploadImage(image2, setImage2);
       if (!res2) return alert("Fail API upload image");
+      const device = await getMyDetailUser();
       setRandomImages([res1.success, res2.success]);
-      const res3 = await createEvent({
-        img1: res1.success,
-        img2: res2.success,
-      });
+      const res3 = await createEvent(
+        {
+          img1: res1.success,
+          img2: res2.success,
+        },
+        device.browser,
+        device.location.query,
+        nameMale,
+        nameFemale
+      );
       if (res3 == false) {
         setModelAlert({
           status: true,
@@ -184,13 +218,13 @@ function Home() {
       console.log(error);
     }
   };
-  const createEvent = async (linkImg) => {
+  const createEvent = async (linkImg, browser, ip, male, female) => {
     const user = JSON.parse(window.localStorage.getItem("user-info"));
     if (!user) return false;
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `${server}?device_them_su_kien=1.1.1.1&ip_them_su_kien=1.1.1.1&id_user=${user.id_user}&ten_nam=NguyenVanA&ten_nu=TranThiB`,
+      url: `${server}?device_them_su_kien=${browser}&ip_them_su_kien=${ip}&id_user=${user.id_user}&ten_nam=${male}&ten_nu=${female}`,
       headers: {
         Link1: String(linkImg.img1),
         Link2: String(linkImg.img2),
@@ -320,7 +354,39 @@ function Home() {
               />
             </div>
             <div className="text-center lg:mt-16 text-3xl slab text-[#7A1E3E] font-semibold">
-              Your Name Here!
+              {/* MALE */}
+              <div className="my-2 border mx-auto w-10/12 justify-center flex items-center rounded-md shadow-md">
+                <div>
+                  <button
+                    type=" submit"
+                    className="flex items-center bg-gray-100 rounded-l-md border border-white justify-center w-[36px] h-[36px] text-white "
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={26}
+                      height={26}
+                      viewBox="0 0 24 24"
+                      style={{
+                        fill: "rgba(0, 0, 0, 1)",
+                        transform: "",
+                        msfilter: "",
+                      }}
+                    >
+                      <circle cx={12} cy={4} r={2} />
+                      <path d="M15 7H9a1 1 0 0 0-1 1v7h2v7h4v-7h2V8a1 1 0 0 0-1-1z" />
+                    </svg>
+                  </button>
+                </div>
+                <div className="w-full">
+                  <input
+                    type="search"
+                    x-model="input1"
+                    className="w-full h-[36px] px-4 py-4 rounded-r-md border border-gray-100 text-gray-800 focus:outline-none"
+                    placeholder="Name Male"
+                    onChange={(e) => setNameMale(e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -384,7 +450,39 @@ function Home() {
             </div>
 
             <div className="text-center lg:mt-16 text-3xl slab text-[#7A1E3E] font-semibold">
-              Her Name Here!
+              {/* FEMALE */}
+              <div className="my-2 border mx-auto w-10/12 justify-center flex items-center rounded-md shadow-md">
+                <div>
+                  <button
+                    type=" submit"
+                    className="flex items-center bg-gray-100 rounded-l-md border border-white justify-center w-[36px] h-[36px] text-white "
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={26}
+                      height={26}
+                      viewBox="0 0 24 24"
+                      style={{
+                        fill: "rgba(0, 0, 0, 1)",
+                        transform: "",
+                        msfilter: "",
+                      }}
+                    >
+                      <circle cx={12} cy={4} r={2} />
+                      <path d="M14.948 7.684A.997.997 0 0 0 14 7h-4a.998.998 0 0 0-.948.684l-2 6 1.775.593L8 18h2v4h4v-4h2l-.827-3.724 1.775-.593-2-5.999z" />
+                    </svg>
+                  </button>
+                </div>
+                <div className="  w-full">
+                  <input
+                    type="search"
+                    x-model="input1"
+                    className="w-full h-[36px] px-4 py-4 rounded-r-md border border-gray-100 text-gray-800 focus:outline-none"
+                    placeholder="Name Female"
+                    onChange={(e) => setNameFemale(e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -428,8 +526,19 @@ function Home() {
             />
           </div>
 
-          <div className="text-center lg:mt-16 text-3xl slab text-[#7A1E3E] font-semibold">
-            Your Name Here!
+          <div className="text-center lg:mt-16 my-3 text-2xl slab text-[#7A1E3E] font-semibold">
+            {/* MALE */}
+            <div className="my-2 border mx-auto w-10/12 justify-center flex items-center rounded-md shadow-md">
+              <div className="w-full max-w-[120px]">
+                <input
+                  type="search"
+                  x-model="input1"
+                  className="w-full h-[28px] px-4 py-4 rounded-r-md border border-gray-100 text-gray-800 focus:outline-none"
+                  placeholder="Male"
+                  onChange={(e) => setNameMale(e.target.value)}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -481,8 +590,19 @@ function Home() {
               }
             />
           </div>
-          <div className="text-center lg:mt-16 text-3xl slab text-[#7A1E3E] font-semibold">
-            Her Name Here!
+          <div className="text-center lg:mt-16 my-3  text-2xl slab text-[#7A1E3E] font-semibold">
+            {/* FEMALE */}
+            <div className="my-2 border mx-auto w-10/12 justify-center flex items-center rounded-md shadow-md">
+              <div className="w-full max-w-[120px]">
+                <input
+                  type="search"
+                  x-model="input1"
+                  className="w-full h-[28px] px-4 py-4 rounded-r-md border border-gray-100 text-gray-800 focus:outline-none"
+                  placeholder="Female"
+                  onChange={(e) => setNameFemale(e.target.value)}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

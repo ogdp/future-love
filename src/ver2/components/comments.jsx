@@ -92,8 +92,8 @@ function Comments() {
 
     return dateB - dateA;
   });
-  const visitProfile = (idsk, id_user) => {
-    navigate(`/detail/${idsk}/${id_user}`);
+  const visitProfile = (idsk, so_thu_tu_su_kien) => {
+    navigate(`/detail/${idsk}/${so_thu_tu_su_kien}`);
   };
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
@@ -111,9 +111,11 @@ function Comments() {
       <ul className="p-6 ">
         {currentResults.map((data, i) => (
           <li
-            className="flex items-center py-4 gap-x-6"
+            className="flex items-center py-4 gap-x-6 cursor-pointer"
             key={i}
-            onClick={() => visitProfile(data.id_toan_bo_su_kien, data.id_user)}
+            onClick={() =>
+              visitProfile(data.id_toan_bo_su_kien, data.so_thu_tu_su_kien)
+            }
           >
             <div className="">
               {data.avatar_user.split(":")[0] === "https" ? (

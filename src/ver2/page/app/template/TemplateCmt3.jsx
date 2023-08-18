@@ -16,11 +16,7 @@ function TemplateCmt3(props) {
       <div
         className={`absolute z-20  min-w-full min-h-full lg:w-full w-[300px] border-8 border-pink-300  lg:h-[380px] rounded-[36px] flex flex-row items-center justify-center `}
       >
-        <img
-          src={bgr}
-          alt=""
-          className=" object-cover w-full rounded-[36px]"
-        />
+        <img src={bgr} alt="" className=" object-cover w-full rounded-[36px]" />
 
         <div className="absolute flex flex-col items-start">
           <span
