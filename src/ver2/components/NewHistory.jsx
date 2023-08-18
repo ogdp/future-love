@@ -18,6 +18,7 @@ import { useParams, useNavigate } from "react-router";
 import ReactLoading from "react-loading";
 import noAvatar from "./image/no-avatar.png";
 import { createBrowserHistory } from "history";
+import CmtPopup from "../page/app/CmtPopup";
 export default function NewHistory() {
   const { id } = useParams();
   const route = useNavigate();
@@ -25,10 +26,25 @@ export default function NewHistory() {
   const [isActive, setIsActive] = useState(1);
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
   const history = createBrowserHistory();
+  const [dataComment, setDataComment] = useState([]);
+  const params = window.location.href;
+  const arrayUrl = params.split("/");
+  const stt_su_kien = arrayUrl[arrayUrl.length - 1];
+  console.log(stt_su_kien);
+  useEffect(() => {
+    axios
+      .get(
+        `http://14.225.7.221:8989/lovehistory/comment/${stt_su_kien}?id_toan_bo_su_kien=${id}`
+      )
+      .then((response) => {
+        setDataComment(response.data.comment);
+        console.log(response.data.comment);
+      });
+  }, [params]);
   const fetchDataUser = async () => {
     try {
       const response = await axios.get(
-        `http://61.28.226.120:8989/lovehistory/${id}`
+        `http://14.225.7.221:8989/lovehistory/${id}`
       );
       setDataUser(response.data.sukien[0]);
       // console.log(response.data);
@@ -263,6 +279,44 @@ export default function NewHistory() {
             ) : (
               ""
             )}
+            <div className="mt-[-150px] ml-[50px] mb-5">
+              {dataComment.map((item, index) => {
+                if (index < 10) {
+                  return (
+                    <div className="flex mt-[30px]">
+                      <img
+                        src={item.avatar_user}
+                        className="w-[50px] h-[50px] rounded-full"
+                      ></img>
+                      <div className="ml-10 w-[900px]">
+                        <h3 className="text-3xl">{item.user_name}</h3>
+                        <div className="mt-3 w-[700px] break-words">
+                          {item.noi_dung_cmt}
+                        </div>
+                        {item.imageattach ? (
+                          <img
+                            src={item.imageattach}
+                            className="w-[150px] h-[120px] mt-[10px]"
+                          ></img>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                      <div className="float-right">
+                        <p className="text-xl">{item.thoi_gian_release}</p>
+                      </div>
+                    </div>
+                  );
+                }
+              })}
+              {dataComment.length > 0 ? (
+                <div className="flex justify-center items-center mt-[40px] text-2xl">
+                  <a href={`/detail/${id}/${stt_su_kien}`}>View all comment</a>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
           </div>
         </div>
       </div>

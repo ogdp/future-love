@@ -3,12 +3,12 @@ import Clock from "../../../components/CLockEvent";
 import img1 from "../img/vien.png";
 import firstdate from "../img/firstdate.png";
 import CmtPopup from "../CmtPopup";
+import moment from "moment/moment";
 function Template2(props) {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
-  // const [isImgPopup, setImgPopup] = useState(false);
   const data = props.data;
   console.log("====================================");
-  console.log(data);
+  console.log(props);
   console.log("====================================");
   const {
     real_time,
@@ -17,17 +17,20 @@ function Template2(props) {
     count_view,
     count_comment,
     ten_su_kien,
-    link_da_swap
+    link_da_swap,
   } = data;
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
   const view =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
-
   return (
     <div className="mt-20 mb-10 flex flex-col items-center">
       <div>
-        <Clock data={real_time} />
+        <Clock
+          data={moment(data.real_time)
+            .add(7, "hours")
+            .format("YYYY-MM-DD HH:mm:ss")}
+        />
       </div>
       <div className=" lg:w-[1019px] w-[400px] h-[500px] mb-[120px] border-8 border-pink-300  lg:h-[600px] bg-white  rounded-[36px] flex flex-row mt-[50px] overflow-hidden relative">
         <div
@@ -57,10 +60,12 @@ function Template2(props) {
                 </div>
               </div>
               <span className="font-bold text-2xl lg:text-3xl">
-                {real_time.split(",")[0]}
+                {moment(data.real_time)
+                  .add(7, "hours")
+                  .format("YYYY-MM-DD HH:mm:ss")}
               </span>
             </div>
-            <p className="max-w-[400px] text-center text-2xl lg:text-3xl">
+            <p className="max-w-[400px] text-center text-2xl lg:text-3xl font-[Montserrat]">
               {noi_dung_su_kien}
             </p>
           </div>

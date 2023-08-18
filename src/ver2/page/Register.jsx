@@ -54,13 +54,16 @@ export default function Register() {
     if (IsValidate()) {
       isLoading(true);
       await uploadImg();
+      console.log("====================================");
+      console.log(imageName);
+      console.log("====================================");
       formData.append("link_avatar", `https://i.ibb.co/vjVvZL5/${imageName}`);
       formData.append("user_name", user_name);
       formData.append("password", password);
       formData.append("email", email);
       try {
         const response = await axios.post(
-          "http://61.28.226.120:8989/register",
+          "http://14.225.7.221:8989/register",
           formData
         );
 
@@ -81,6 +84,7 @@ export default function Register() {
   };
   const handleImage = async (e) => {
     setImageSrc(e.target.files[0]);
+    setImageName(e.target.files[0].name);
   };
   const uploadImg = async (e) => {
     try {
@@ -91,17 +95,15 @@ export default function Register() {
       body.set("key", apiKey);
       body.append("image", imageSrc);
 
-      const upload = await axios({
+      await axios({
         method: "post",
         url: "https://api.imgbb.com/1/upload",
         data: body,
       });
-      setImageName(upload.data.data.thumb.filename);
     } catch (error) {
       throw new Error(error);
     }
   };
-
   return (
     <div
       style={{ backgroundImage: `url(${img2})` }}

@@ -4,10 +4,11 @@ import img2 from "../img/phaitren1.png";
 import img3 from "../img/phaiduoi1.png";
 import img4 from "../img/traitren1.png";
 import img5 from "../img/traiduoi1.png";
+import moment from "moment";
 
 function TemplateCmt1(props) {
   // const { id } = useParams();
-  const data = props.data;
+  const { data, onClick } = props;
 
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
@@ -38,11 +39,11 @@ function TemplateCmt1(props) {
               </p>
               <div className="flex flex-row items-center justify-center">
                 <div className="flex mt-[30px]">
-                  <img className="h-[28px] w-[35px] " src={cmt} />
+                  <img className="h-[28px] w-[35px] " src={cmt} alt="" />
                   <div className="text-2xl ml-[10px]">{data.count_comment}</div>
                 </div>
                 <div className="flex mt-[30px] ml-[100px]">
-                  <img className="h-[28px] w-[35px] " src={view} />
+                  <img className="h-[28px] w-[35px] " src={view} alt="" />
                   <div className="text-2xl ml-[10px]">{data.count_view}</div>
                 </div>
               </div>
@@ -51,7 +52,9 @@ function TemplateCmt1(props) {
                   style={{ fontStyle: "normal" }}
                   className="text-time text-3xl"
                 >
-                  {data.real_time}
+                  {moment(data.real_time)
+                    .add(7, "hours")
+                    .format("YYYY-MM-DD HH:mm:ss")}
                 </span>
               </div>
             </div>
@@ -69,6 +72,7 @@ function TemplateCmt1(props) {
             <div
               style={{ backgroundImage: `url(${data.link_da_swap})` }}
               className=" lg:w-[250px] lg:h-[240px] w-[120px] h-[120px] rounded-full bg-center bg-no-repeat bg-cover"
+              onClick={onClick}
             >
               <div
                 style={{ backgroundImage: `url(${img1})` }}

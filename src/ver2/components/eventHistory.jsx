@@ -12,6 +12,8 @@ import bg1 from "../components/image/bg-1.png";
 import bg2 from "../components/image/bg-2.png";
 import vec1 from "../components/image/Vector1.png";
 import vec2 from "../components/image/Vector2.png";
+import bg3 from "../components/image/bg-3.png";
+import moment from "moment";
 
 // import image1 from "../components/image/khung-vien-dep-33-removebg-preview.png"
 // import image2 from "../components/image/khung-vien-dep-powerpoint_022258315.png"
@@ -42,7 +44,7 @@ function EventHistory(props) {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `http://61.28.226.120:8989/lovehistory/page/${count}`
+        `http://14.225.7.221:8989/lovehistory/page/${count}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -51,6 +53,7 @@ function EventHistory(props) {
       console.log(jsonData.list_sukien);
       // console.log("absjadaskdkahdkashdkjashdkjashdkashdkakdj")
       setData(jsonData.list_sukien);
+      console.log(data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -60,14 +63,15 @@ function EventHistory(props) {
     if (count <= currentPage) {
     }
     setCount(count + 1);
-    fetchData();
   };
   const changePageDown = () => {
     if (count > 1) {
       setCount(count - 1);
-      fetchData();
     }
   };
+  useEffect(() => {
+    fetchData();
+  }, [count]);
 
   useEffect(() => {
     const loadingTypes = [
@@ -173,7 +177,11 @@ function EventHistory(props) {
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
-                            {array.sukien[array.sukien.length - 1].real_time}
+                            {moment(
+                              array.sukien[array.sukien.length - 1].real_time
+                            )
+                              .add(7, "hours")
+                              .format("YYYY-MM-DD HH:mm:ss")}
                           </span>
                         </div>
                       </div>
@@ -232,7 +240,11 @@ function EventHistory(props) {
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
-                            {array.sukien[array.sukien.length - 1].real_time}
+                            {moment(
+                              array.sukien[array.sukien.length - 1].real_time
+                            )
+                              .add(7, "hours")
+                              .format("YYYY-MM-DD HH:mm:ss")}
                           </span>
                         </div>
                       </div>
@@ -276,7 +288,11 @@ function EventHistory(props) {
                           style={{ fontStyle: "normal", marginTop: 100 }}
                           className="text-time"
                         >
-                          {array.sukien[array.sukien.length - 1].real_time}
+                          {moment(
+                            array.sukien[array.sukien.length - 1].real_time
+                          )
+                            .add(7, "hours")
+                            .format("YYYY-MM-DD HH:mm:ss")}
                         </span>
                       </div>
                     </div>
@@ -327,7 +343,11 @@ function EventHistory(props) {
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
-                            {array.sukien[array.sukien.length - 1].real_time}
+                            {moment(
+                              array.sukien[array.sukien.length - 1].real_time
+                            )
+                              .add(7, "hours")
+                              .format("YYYY-MM-DD HH:mm:ss")}
                           </span>
                         </div>
                       </div>
@@ -386,7 +406,11 @@ function EventHistory(props) {
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
-                            {array.sukien[array.sukien.length - 1].real_time}
+                            {moment(
+                              array.sukien[array.sukien.length - 1].real_time
+                            )
+                              .add(7, "hours")
+                              .format("YYYY-MM-DD HH:mm:ss")}
                           </span>
                         </div>
                       </div>
@@ -430,9 +454,14 @@ function EventHistory(props) {
                           style={{ fontStyle: "normal", marginTop: 100 }}
                           className="text-time"
                         >
-                          {array.sukien[array.sukien.length - 1].real_time}
+                          {moment(
+                            array.sukien[array.sukien.length - 1].real_time
+                          )
+                            .add(7, "hours")
+                            .format("YYYY-MM-DD HH:mm:ss")}
                         </span>
                       </div>
+                      <div>{/* image swap */}</div>
                     </div>
                   </div>
                 )}

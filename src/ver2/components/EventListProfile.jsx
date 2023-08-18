@@ -1,9 +1,21 @@
-import React from "react";
+import moment from "moment";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const EventListProfile = (props) => {
-  // console.log(props);
-  // console.log(closeTab);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 30;
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = props.data.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(props.data.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
   if (props.data.length === 0)
     return <div className="text-xl text-center py-3">Loadding ...</div>;
   return (
@@ -51,47 +63,90 @@ const EventListProfile = (props) => {
               </svg>
             </button>
             <div className="w-full h-[80%] overflow-x-hidden text-xl px-3">
-              {props.data.map((item, index) => (
-                <Link
-                  key={index}
-                  to={`http://localhost:3000/detail/${item.sukien[0].id_toan_bo_su_kien}/1`}
-                >
-                  <div
-                    className="h-[150px] flex items-center justify-center bg-cover bg-center bg-no-repeat rounded-lg overflow-x-hidden my-2"
-                    style={{
-                      backgroundImage: 'url("https://i.ibb.co/2t4J5dK/1.png")',
-                    }}
+              {currentData.map((item, index) => (
+                <>
+                  <Link
+                    key={index}
+                    to={`/detail/${item.sukien[0].id_toan_bo_su_kien}/1`}
                   >
-                    <div className="w-full flex justify-around items-center py-6">
-                      <div className="w-[100px] h-[100px] overflow-hidden rounded-full max-lg:hidden">
-                        <img
-                          src={item.sukien[0].link_nam_goc}
-                          alt=""
-                          className="w-full  object-cover"
-                        />
-                      </div>
-                      <div className="max-w-[50%]">
-                        <h1 className="text-4xl text-center my-3">
-                          {item.sukien[0].ten_su_kien}
-                        </h1>
-                        <p className="line-clamp-3 text-2xl">
-                          {item.sukien[0].noi_dung_su_kien}
-                        </p>
-                        <h5 className="text-right py-1 text-2xl">
-                          {item.sukien[0].real_time}
-                        </h5>
-                      </div>
-                      <div className="w-[100px] h-[100px] overflow-hidden rounded-full max-lg:hidden">
-                        <img
-                          src={item.sukien[0].link_nu_goc}
-                          alt=""
-                          className="w-full  object-cover"
-                        />
+                    <div
+                      className="h-[150px] flex items-center justify-center bg-cover bg-center bg-no-repeat rounded-lg overflow-x-hidden my-2"
+                      style={{
+                        backgroundImage: 'url("https://i.ibb.co/2t4J5dK/1.png")',
+                      }}
+                    >
+                      <div className="w-full flex justify-around items-center py-6">
+                        <div className="w-[100px] h-[100px] overflow-hidden rounded-full max-lg:hidden">
+                          <img
+                            src={item.sukien[0].link_nam_goc}
+                            alt=""
+                            className="w-full  object-cover"
+                          />
+                        </div>
+                        <div className="max-w-[50%]">
+                          <h1 className="text-4xl text-center my-3">
+                            {item.sukien[0].ten_su_kien}
+                          </h1>
+                          <p className="line-clamp-3 text-2xl">
+                            {item.sukien[0].noi_dung_su_kien}
+                          </p>
+                          <h5 className="text-right py-1 text-2xl">
+                          {moment(item.sukien[0].real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
+                          </h5>
+                        </div>
+                        <div className="w-[100px] h-[100px] overflow-hidden rounded-full max-lg:hidden">
+                          <img
+                            src={item.sukien[0].link_nu_goc}
+                            alt=""
+                            className="w-full  object-cover"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+
+                </>
               ))}
+              <div className="pagination text-4xl flex justify-center my-6">
+                <button
+                  type="button"
+                  className="py-2 px-3 bg-[#ff9f9f] rounded hover:bg-[#ff9f9f8c]"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <svg
+                    fill="white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                  >
+                    <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z" />
+                    <path d="M13.293 7.293 8.586 12l4.707 4.707 1.414-1.414L11.414 12l3.293-3.293-1.414-1.414z" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  className="mx-3 text-white font-medium py-2 px-4 rounded bg-red-700"
+                >
+                  {currentPage}
+                </button>
+                <button
+                  type="button"
+                  className="py-2 px-3 bg-[#ff9f9f] rounded hover:bg-[#ff9f9f8c]"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  <svg
+                    fill="white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                  >
+                    <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z" />
+                    <path d="M9.293 8.707 12.586 12l-3.293 3.293 1.414 1.414L15.414 12l-4.707-4.707-1.414 1.414z" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>

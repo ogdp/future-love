@@ -28,22 +28,28 @@ function Historyv2() {
     navigate("/love");
   };
 
-  const onSearch = async () => {
-    const params = {
-      word: search_w,
-    };
-    await axios
-      .get("http://61.28.226.120:8989/search", { params: params })
+  const onSearch = (value) => {
+    console.log(value);
+    axios
+      .get(`http://14.225.7.221:8989/search?word=${value}`)
       .then((response) => {
-        setDataSearch(response.data?.list_sukien[0]?.sukien);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+        setDataSearch(response.data.list_sukien);
       });
+    // const params = {
+    //   word: search_w,
+    // };
+    // await axios
+    //   .get("http://14.225.7.221:8989/search", { params: params })
+    //   .then((response) => {
+    //     setDataSearch(response.data?.list_sukien[0]?.sukien);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
   };
-  useEffect(() => {
-    onSearch();
-  }, []);
+  // useEffect(() => {
+  //   onSearch();
+  // }, []);
   return (
     <div
       className="Historyv2 flex flex-col min-h-screen"
@@ -51,7 +57,7 @@ function Historyv2() {
         background: "linear-gradient(to right, #F0A3BF, #A86ED4 )",
       }}
     >
-      <Header />
+      <Header onSearch={onSearch} />
       <b className="starborn text-white lg:text-5xl text-3xl ml-12 mb-3 mt-5">
         Events
       </b>

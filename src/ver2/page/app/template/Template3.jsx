@@ -3,32 +3,31 @@ import axios from "axios";
 import bgr from "../img/bg-3.png";
 import CmtPopup from "../CmtPopup";
 import Clock from "../../../components/CLockEvent";
+import moment from "moment";
 
 function Template3(props) {
   // const { id } = useParams();
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const data = props.data;
-
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
   const view =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
 
   return (
-    <div className="min-w-full min-h-full m-auto">
-      <div className="h-[10%] w-[100%]">
-        <Clock data={data.real_time} />
+    <div className="min-w-full min-h-full">
+      <div className="h-[10%] w-[100%] mt-[40px] ml-[30px]">
+        <Clock
+          data={moment(data.real_time)
+            .add(7, "hours")
+            .format("YYYY-MM-DD HH:mm:ss")}
+        />
       </div>
       <div>
         <div className="relative top-3 left-3  rounded-[50px] items-center justify-center ml-[50px] mr-2">
           <div className="absolute z-20 top-[50px] left-[-40px] right-[100px] min-w-full min-h-full lg:w-[1019px] w-[300px] border-8 border-pink-300 h-[573px] rounded-[50px] flex flex-row items-center justify-center ">
-            <img
-              src={bgr}
-              alt=""
-              className="h-full w-full rounded-[50px]"
-              srcset=""
-            />
-            <div class="absolute top-0  justify-center items-center flex">
+            <img src={bgr} alt="" className="h-full w-full rounded-[50px]" />
+            <div className="absolute top-0  justify-center items-center flex">
               <div
                 className="ml-[400px] mt-[200px] mr-[300px]"
                 onClick={setIsOpenPopup.bind(this, true)}
@@ -40,7 +39,7 @@ function Template3(props) {
                 >
                   {data.ten_su_kien}
                 </span>
-                <p className="text-3xl font-[Montserrat] max-w-lg pt-3 h-[auto] overflow-y-auto h-32 mt-[50px] h-[150px] items-center justify-center">
+                <p className="text-3xl font-[Montserrat] max-w-lg pt-3 overflow-y-auto h-32 mt-[50px] items-center justify-center">
                   {data.noi_dung_su_kien}
                 </p>
                 <div className="flex flex-row ">
@@ -60,29 +59,32 @@ function Template3(props) {
                     style={{ fontStyle: "normal" }}
                     className="text-time text-3xl "
                   >
-                    {data.real_time}
+                    {moment(data.real_time)
+                      .add(7, "hours")
+                      .format("YYYY-MM-DD HH:mm:ss")}
                   </span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="absolute z-10 top-0 left-[-15px] w-1/2 h-[573px] float-left mt-[200px]">
-            <div className="w-[280px] h-[300px] overflow-hidden">
+          <div
+            className="absolute  top-0 left-[-15px] w-1/2 h-[573px] float-left mt-[200px]"
+            style={{ zIndex: "9999px" }}
+          >
+            <div className=" w-[290px] h-[300px] overflow-hidden">
               <img
-                src={`${data.link_nam_goc}`}
+                src={`${data.link_da_swap}`}
                 alt=""
-                srcset=""
-                className="w-full"
+                className=" w-full h-full object-cover"
               />
             </div>
           </div>
           <div className="absolute z-10 top-0 right-0 w-1/2 h-[573px] float-right mt-[200px]">
-            <div className="w-[280px] h-[300px] overflow-hidden ml-[150px]">
+            <div className="w-[330px] h-[300px] overflow-hidden ml-[150px]">
               <img
-                src={`${data.link_nu_goc}`}
+                src={`${data.link_da_swap}`}
                 alt=""
-                srcset=""
-                className="w-[280px] h-[300px]"
+                className="w-full h-full object-cover mt-5"
               />
             </div>
           </div>
