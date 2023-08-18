@@ -139,6 +139,7 @@ function Comments() {
                 style={{ whiteSpace: "pre-wrap" }}
               >
                 {wrapText(data.noi_dung_cmt, maxLineLength)}
+                {/* {data.noi_dung_cmt} */}
               </span>
               {data.imageattach ? (
                 <img

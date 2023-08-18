@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import img1 from "../../../components/image/finish.png";
 import img2 from "../img/phaitren1.png";
 import img3 from "../img/phaiduoi1.png";
@@ -7,11 +7,30 @@ import img5 from "../img/traiduoi1.png";
 import CmtPopup from "../CmtPopup";
 import Clock from "../../../components/CLockEvent";
 import moment from "moment";
+import { useParams } from "react-router";
+import axios from "axios";
 
 function Template1(props) {
-  // const { id } = useParams();
+  const { id } = useParams();
+  
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const data = props.data;
+  const stt = data.so_thu_tu_su_kien;
+  useEffect(() => {
+    if (isOpenPopup) {
+      const formData = new FormData();
+      formData.append("id_toan_bo_su_kien", id);
+      formData.append("so_thu_tu_su_kien", stt);
+
+      axios.post("http://14.225.7.221:8989/countview", formData)
+        .then(response => {
+          console.log("API response:", response.data.count_view);
+        })
+        .catch(error => {
+          console.error("Lỗi khi gửi request API:", error);
+        });
+    }
+  }, [isOpenPopup, id,stt]);
   console.log("====================================");
   console.log(props);
   console.log("====================================");
