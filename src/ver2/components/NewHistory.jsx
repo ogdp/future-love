@@ -19,7 +19,12 @@ import ReactLoading from "react-loading";
 import noAvatar from "./image/no-avatar.png";
 import { createBrowserHistory } from "history";
 import CmtPopup from "../page/app/CmtPopup";
+import no_avatar from "./image/no-avatar.png";
+import ImagePopup from "../page/app/ImagePopup";
 export default function NewHistory() {
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+
   const { id } = useParams();
   const route = useNavigate();
   const [dataUser, setDataUser] = useState(null);
@@ -75,6 +80,11 @@ export default function NewHistory() {
   };
   const handleSidebar = () => {
     setIsOpenSidebar(!isOpenSidebar);
+  };
+
+  const handleOpenImagePopup = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setIsImagePopupOpen(true);
   };
   const renderLoading = (isLoading) => {
     if (isLoading) {
@@ -149,8 +159,10 @@ export default function NewHistory() {
                   src={dataUser?.link_nam_goc}
                   alt=""
                   className="lg:w-[80%] lg:h-[80%] w-[80%] h-[80%] object-cover  rounded-full lg:mt-[25px] lg:ml-[6px] mt-6 ml-2"
+                  onClick={() => handleOpenImagePopup(dataUser.link_nam_goc)}
                 />
               </div>
+
               <div
                 style={{
                   backgroundImage: `url(${nu1})`,
@@ -165,6 +177,7 @@ export default function NewHistory() {
                   src={dataUser?.link_nu_goc}
                   alt=""
                   className="lg:w-[80%] lg:h-[80%] w-[80%] h-[80%] object-fill  rounded-full lg:mt-[25px] ml-6 mt-2 lg:ml-9"
+                  onClick={() => handleOpenImagePopup(dataUser.link_nu_goc)}
                 />
               </div>
             </div>
@@ -285,14 +298,25 @@ export default function NewHistory() {
                 if (index < 10) {
                   return (
                     <div className="flex items-center gap-x-10 px-10 py-6 mx-[60px] hover:bg-gray-200">
-                      <img
-                        src={item.avatar_user}
-                        className="w-[50px] h-[50px] rounded-full"
-                        alt="avt"
-                      />
+                      {item.avatar_user &&
+                      item.avatar_user.startsWith("http") ? (
+                        <img
+                          src={item.avatar_user}
+                          alt=""
+                          className="w-[60px] h-[60px] border border-3 rounded-[50%]"
+                        />
+                      ) : (
+                        <img
+                          src={no_avatar}
+                          alt=""
+                          className="w-[60px] h-[60px] border border-3 rounded-[50%]"
+                        />
+                      )}
                       <div className="">
-                        <h3 className="text-3xl">{item.user_name}</h3>
-                        <div className="mt-3 w-[700px] break-words">
+                        <h3 className="text-3xl font-[Montserrat] ">
+                          {item?.user_name ? item?.user_name : "Guest"}
+                        </h3>
+                        <div className="mt-3 w-[700px] break-words font-[Montserrat] text-2xl">
                           {item.noi_dung_cmt}
                         </div>
                         {item.imageattach ? (
@@ -305,8 +329,15 @@ export default function NewHistory() {
                           ""
                         )}
                       </div>
-                      <div className="ml-auto">
-                        <p className="text-xl">{item.thoi_gian_release}</p>
+                      <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
+                        <p>{item.device_cmt}</p>
+                      </div>
+                      <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
+                        {item.thoi_gian_release}
+                      </div>
+                      <div className="lg:w-[15%] w-[20%] lg:text-[13px] font-[Montserrat] text-sm">
+                        <p> {item.dia_chi_ip}</p>
+                        <p> {item.location}</p>
                       </div>
                     </div>
                   );
@@ -328,6 +359,25 @@ export default function NewHistory() {
           </div>
         </div>
       </div>
+
+      {isImagePopupOpen && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-50">
+          <div className="max-w-screen-xl w-80% p-4 bg-white rounded-lg shadow-lg text-center relative">
+            <button
+              onClick={() => setIsImagePopupOpen(false)}
+              className="mt-2 mr-2 px-2 py-1 bg-red-500 hover:bg-red-600 rounded-lg absolute top-0 right-0 text-sm text-white"
+            >
+              Close
+            </button>
+            <img
+              src={selectedImage}
+              alt="Ảnh lớn"
+              className="w-100 h-auto mx-auto z-99999"
+              style={{ maxHeight: "80vh" }}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 }

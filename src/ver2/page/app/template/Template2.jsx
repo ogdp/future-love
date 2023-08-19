@@ -8,24 +8,26 @@ import { useParams } from "react-router";
 import axios from "axios";
 function Template2(props) {
   const { id } = useParams();
+  const data = props.data;
   const stt = data.so_thu_tu_su_kien;
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
   useEffect(() => {
     if (isOpenPopup) {
       const formData = new FormData();
       formData.append("id_toan_bo_su_kien", id);
       formData.append("so_thu_tu_su_kien", stt);
 
-      axios.post("http://14.225.7.221:8989/countview", formData)
-        .then(response => {
+      axios
+        .post("http://14.225.7.221:8989/countview", formData)
+        .then((response) => {
           console.log("API response:", response.data.count_view);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("Lỗi khi gửi request API:", error);
         });
     }
-  }, [isOpenPopup, id,stt]);
-  const [isOpenPopup, setIsOpenPopup] = useState(false);
-  const data = props.data;
+  }, [isOpenPopup, id, stt]);
+
   console.log("====================================");
   console.log(props);
   console.log("====================================");

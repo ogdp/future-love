@@ -167,20 +167,28 @@ function CmtPopup(props) {
       {isImgPopup ? (
         <ImagePopup imgSrc={props.data.link_da_swap} closeImg={closePopup} />
       ) : (
-        <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-max bg-white gap-y-4">
-          <div className="w-full h-[85%] relative">
+        <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-max bg-white gap-y-4 overflow-y-auto">
+          <div className="w-full h-[95%] relative">
             <TemplateComponent data={props.data} onClick={handlePopup} />
           </div>
-          <div className="overflow-y-auto mt-5 flex flex-col gap-y-2">
+          <div className=" mt-5 flex flex-col gap-y-2 ">
             {dataCmt?.length > 0 &&
               dataCmt.map((cmt, index) => (
                 <div className="flex items-stretch gap-x-4" key={index}>
                   <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
-                    <img
-                      src={cmt?.avatar_user ? cmt?.avatar_user : noAvatar}
-                      alt=""
-                      className="w-[100%] h-[100%] object-cover rounded-[50%]"
-                    />
+                    {cmt.avatar_user && cmt.avatar_user.startsWith("http") ? (
+                      <img
+                        src={cmt.avatar_user}
+                        alt=""
+                        className="w-[100%] h-[100%]  rounded-[50%]"
+                      />
+                    ) : (
+                      <img
+                        src={noAvatar}
+                        alt=""
+                        className="w-[100%] h-[100%]  rounded-[50%]"
+                      />
+                    )}
                   </div>
                   <div className="">
                     <div className="row">
@@ -194,7 +202,7 @@ function CmtPopup(props) {
                       </div>
                     </div>
 
-                    <p className="lg:text-xl text-base font-[Montserrat]">
+                    <p className="lg:text-xl text-base font-[Montserrat] max-w-[75%]">
                       {" "}
                       {cmt?.noi_dung_cmt}
                     </p>

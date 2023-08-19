@@ -3,6 +3,7 @@ import no_avatar from "./image/no-avatar.png";
 import useEventStore from "../../utils/store";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 function Comments() {
   const [isLoading, setIsLoading] = useState(false);
@@ -110,29 +111,32 @@ function Comments() {
     <div className=" lg:w-full h-max bg-white rounded-[36px] mx-3 slab">
       <ul className="p-6 ">
         {currentResults.map((data, i) => (
-          <li
-            className="flex items-center py-4 gap-x-6 cursor-pointer"
-            key={i}
-            onClick={() =>
-              visitProfile(data.id_toan_bo_su_kien, data.so_thu_tu_su_kien)
-            }
-          >
+          <li className="flex items-center py-4 gap-x-6 cursor-pointer" key={i}>
             <div className="">
               {data.avatar_user && data.avatar_user.startsWith("http") ? (
-                <img
-                  src={data.avatar_user}
-                  alt=""
-                  className="w-[60px] h-[60px] border border-3 rounded-[50%]"
-                />
+                <Link to={data.id_user == 0 ? "" : `/user/${data.id_user}`}>
+                  <img
+                    src={data.avatar_user}
+                    alt=""
+                    className="w-[60px] h-[60px] border border-3 rounded-[50%]"
+                  />
+                </Link>
               ) : (
-                <img
-                  src={no_avatar}
-                  alt=""
-                  className="w-[60px] h-[60px] border border-3 rounded-[50%]"
-                />
+                <Link to={data.id_user == 0 ? "" : `/user/${data.id_user}`}>
+                  <img
+                    src={no_avatar}
+                    alt=""
+                    className="w-[60px] h-[60px] border border-3 rounded-[50%]"
+                  />
+                </Link>
               )}
             </div>
-            <div className="flex flex-col gap-x-2">
+            <div
+              onClick={() =>
+                visitProfile(data.id_toan_bo_su_kien, data.so_thu_tu_su_kien)
+              }
+              className="flex flex-col gap-x-2"
+            >
               <span className="lg:text-[18px] text-lg font-semibold">
                 {data.user_name}
               </span>
