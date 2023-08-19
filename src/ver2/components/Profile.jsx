@@ -88,7 +88,8 @@ export default function Profile() {
   const closeModal = () => {
     setShowModal(false);
   };
-
+  // Check height
+  const y = window.innerHeight;
   //comments
   const [datas, setDatas] = useState([]);
   const setEvent = useEventStore((state) => state.setEvent);
@@ -598,7 +599,8 @@ export default function Profile() {
                                                   src={item}
                                                   className="w-[90px] h-[90px] hover:scale-105 transition-all cursor-pointer"
                                                   type="file"
-                                                ></img>
+                                                  alt=""
+                                                />
                                               </div>
                                             ))}
                                           </div>
@@ -732,7 +734,11 @@ export default function Profile() {
           </div>
         </div>
         {imgdata.length === 0 && (
-          <div className="bg-amber-400 w-screen h-[50px] text-1xl sticky top-[400px] mb-8 -mt-20">
+          <div
+            className={`bg-amber-400 w-screen h-[50px] text-1xl ${
+              y > 420 ? "sticky top-0" : "relative top-[400px]"
+            } sticky  mb-8 -mt-20`}
+          >
             <div className="flex justify-center pt-6">
               <div className="mt-2">You haven't finished the procedure yet</div>
               <div className="mx-8">
@@ -918,7 +924,7 @@ export default function Profile() {
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         ) : null}
-        {datas.length > 0 && <HistoryCommentList datas={datas} />}
+        {datas.length > 0 && <HistoryCommentList datas={datas.reverse()} />}
         {datas.length === 0 && (
           <div className="w-full text-center py-5 ">
             <h1 className="text-xl lg:text-4xl">

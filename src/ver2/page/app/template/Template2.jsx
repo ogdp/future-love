@@ -1,12 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Clock from "../../../components/CLockEvent";
 import img1 from "../img/vien.png";
 import firstdate from "../img/firstdate.png";
 import CmtPopup from "../CmtPopup";
 import moment from "moment/moment";
+import { useParams } from "react-router";
+import axios from "axios";
 function Template2(props) {
-  const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const { id } = useParams();
   const data = props.data;
+  const stt = data.so_thu_tu_su_kien;
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
+  useEffect(() => {
+    if (isOpenPopup) {
+      const formData = new FormData();
+      formData.append("id_toan_bo_su_kien", id);
+      formData.append("so_thu_tu_su_kien", stt);
+
+      axios
+        .post("http://14.225.7.221:8989/countview", formData)
+        .then((response) => {
+          console.log("API response:", response.data.count_view);
+        })
+        .catch((error) => {
+          console.error("Lỗi khi gửi request API:", error);
+        });
+    }
+  }, [isOpenPopup, id, stt]);
+
   console.log("====================================");
   console.log(props);
   console.log("====================================");
@@ -32,7 +53,7 @@ function Template2(props) {
             .format("YYYY-MM-DD HH:mm:ss")}
         />
       </div>
-      <div className=" lg:w-[1019px] w-[400px] h-[500px] mb-[120px] border-8 border-pink-300  lg:h-[600px] bg-white  rounded-[36px] flex flex-row mt-[50px] overflow-hidden relative">
+      <div className=" lg:w-[1019px] w-[400px] h-[500px] border-8 border-pink-300  lg:h-[600px] bg-white  rounded-[36px] flex flex-row mt-[50px] overflow-hidden relative">
         <div
           style={{ backgroundImage: `url(${link_da_swap})` }}
           className="lg:w-full lg:h-[340px] w-full h-[400px] bg-top  bg-no-repeat bg-cover object-contain  z-20"

@@ -13,26 +13,28 @@ function Template4(props) {
   const data = props.data;
   console.log("====================================");
   console.log("Props, ", props);
+  const stt = data.so_thu_tu_su_kien
   console.log("====================================");
   const cmt =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
   const view =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
 
-  const handleLinkClick = async () => {
-    const formData = new FormData();
-    formData.append("id_toan_bo_su_kien", id);
-    formData.append("so_thu_tu_su_kien", 2);
-    try {
-      const response = await axios.post(
-        "http://14.225.7.221:8989/countview",
-        formData
-      );
-      console.log("API response:", response.data.count_view);
-    } catch (error) {
-      console.error("Lỗi khi gửi request API:", error);
-    }
-  };
+    useEffect(() => {
+      if (isOpenPopup) {
+        const formData = new FormData();
+        formData.append("id_toan_bo_su_kien", id);
+        formData.append("so_thu_tu_su_kien", stt);
+  
+        axios.post("http://14.225.7.221:8989/countview", formData)
+          .then(response => {
+            console.log("API response:", response.data.count_view);
+          })
+          .catch(error => {
+            console.error("Lỗi khi gửi request API:", error);
+          });
+      }
+    }, [isOpenPopup, id,stt]);
 
   return (
     <div className="flex flex-col items-center ">
@@ -44,7 +46,7 @@ function Template4(props) {
         />
       </div>
       <div
-        className={` lg:w-[1019px] w-[400px] h-full  border-8 border-pink-300  bg-white rounded-[36px] flex lg:flex-row flex-col gap-x-10 overflow-hidden mb-[300px]`}
+        className={` lg:w-[1019px] w-[400px] h-full  border-8 border-pink-300  bg-white rounded-[36px] flex lg:flex-row flex-col gap-x-10 overflow-hidden`}
       >
         <div
           className="h-[300px] lg:h-auto lg:w-[60%] w-full"
@@ -60,7 +62,7 @@ function Template4(props) {
           <span
             key={data.id}
             to={`/ array / ${data.id}`}
-            onClick={handleLinkClick}
+            
             className="lg:text-5xl text-4xl "
           >
             {data.ten_su_kien}
@@ -96,6 +98,7 @@ function Template4(props) {
             data={data}
             TemplateCmt="TemplateCmt4"
             stt={props.stt}
+            
           />
         )}
       </div>

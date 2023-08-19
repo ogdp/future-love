@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import img1 from "../../../components/image/finish.png";
 import img2 from "../img/phaitren1.png";
 import img3 from "../img/phaiduoi1.png";
@@ -7,11 +7,30 @@ import img5 from "../img/traiduoi1.png";
 import CmtPopup from "../CmtPopup";
 import Clock from "../../../components/CLockEvent";
 import moment from "moment";
+import { useParams } from "react-router";
+import axios from "axios";
 
 function Template1(props) {
-  // const { id } = useParams();
+  const { id } = useParams();
+  
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const data = props.data;
+  const stt = data.so_thu_tu_su_kien;
+  useEffect(() => {
+    if (isOpenPopup) {
+      const formData = new FormData();
+      formData.append("id_toan_bo_su_kien", id);
+      formData.append("so_thu_tu_su_kien", stt);
+
+      axios.post("http://14.225.7.221:8989/countview", formData)
+        .then(response => {
+          console.log("API response:", response.data.count_view);
+        })
+        .catch(error => {
+          console.error("Lỗi khi gửi request API:", error);
+        });
+    }
+  }, [isOpenPopup, id,stt]);
   console.log("====================================");
   console.log(props);
   console.log("====================================");
@@ -30,7 +49,7 @@ function Template1(props) {
         />
       </div>
       <div
-        className={`border-8 border-pink-300 w-full lg:h-[550px] bg-white rounded-[36px] flex lg:flex-row flex-col-reverse mt-[50px] items-center justify-center relative gap-x-20 overflow-hidden lg:mb-[180px] mb-[60px]`}
+        className={`border-8 border-pink-300 w-full lg:h-[550px] bg-white rounded-[36px] flex lg:flex-row flex-col-reverse mt-[50px] items-center justify-center relative gap-x-20 overflow-hidden`}
       >
         <div className="-ml-2 bg-no-repeat bg-cover lg:w-[55%] w-full flex flex-col justify-between mt-8">
           <div>
