@@ -4,6 +4,7 @@ import useEventStore from "../../utils/store";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { useRef } from "react";
 
 function Comments() {
   const [isLoading, setIsLoading] = useState(false);
@@ -100,102 +101,103 @@ function Comments() {
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
   const currentResults = dataSort.slice(indexOfFirstResult, indexOfLastResult);
   const totalPages = Math.ceil(dataSort.length / resultsPerPage);
+
+  // Show cmt
+  const [showMore, setShowMore] = useState(false);
+  console.log("====================================");
+  console.log(maxLineLength);
+  console.log("====================================");
+  const showCmt = () => {
+    setShowMore(!showMore);
+  };
+
   if (isLoading) {
     return (
-      <div className="lg:w-[100vh] text-center flex bg-white rounded-[36px] mx-3 slab h-max">
+      <div className=" text-center flex bg-white rounded-[36px] mx-3 slab h-max">
         Loading...
       </div>
     );
   }
   return (
-    <div className=" lg:w-full h-max bg-white rounded-[36px] mx-3 slab">
-      <ul className="p-6 ">
-        {currentResults.map((data, i) => (
-          <li className="flex items-center py-4 gap-x-6 cursor-pointer" key={i}>
-            <div className="">
-              {data.avatar_user && data.avatar_user.startsWith("http") ? (
-                <Link to={data.id_user == 0 ? "" : `/user/${data.id_user}`}>
-                  <img
-                    src={data.avatar_user}
-                    alt=""
-                    className="w-[60px] h-[60px] border border-3 rounded-[50%]"
-                  />
-                </Link>
-              ) : (
-                <Link to={data.id_user == 0 ? "" : `/user/${data.id_user}`}>
-                  <img
-                    src={no_avatar}
-                    alt=""
-                    className="w-[60px] h-[60px] border border-3 rounded-[50%]"
-                  />
-                </Link>
-              )}
-            </div>
-            <div
-              onClick={() =>
-                visitProfile(data.id_toan_bo_su_kien, data.so_thu_tu_su_kien)
-              }
-              className="flex flex-col gap-x-2"
+    <div className="h-max bg-white rounded-[36px] mx-3 slab">
+      <ul className="px-4 py-6">
+        {currentResults.map((data, i) => {
+          return (
+            <li
+              className="flex justify-start py-4 gap-x-6 cursor-pointer"
+              key={i}
             >
-              <span className="lg:text-[18px] text-lg font-semibold">
-                {data.user_name}
-              </span>
-              <span
-                className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
-                style={{ whiteSpace: "pre-wrap" }}
-              >
-                {wrapText(data.noi_dung_cmt, maxLineLength)}
-                {/* {data.noi_dung_cmt} */}
-              </span>
-              {data.imageattach ? (
-                <img
-                  className="w-[60px] h-[50px]"
-                  src={data.imageattach}
-                  alt=""
-                />
-              ) : (
-                ""
-              )}
-              <span className="lg:text-base text-sm">{data.device_cmt}</span>
-            </div>
+              <div className="w-[60px] h-[60px]">
+                {data.avatar_user && data.avatar_user.startsWith("http") ? (
+                  <Link
+                    className="w-full h-full"
+                    to={data.id_user === 0 ? "" : `/user/${data.id_user}`}
+                  >
+                    <img
+                      src={data.avatar_user}
+                      alt=""
+                      className="w-full h-full border border-3 rounded-[50%] object-cover"
+                    />
+                  </Link>
+                ) : (
+                  <Link
+                    className="w-full h-full"
+                    to={data.id_user === 0 ? "" : `/user/${data.id_user}`}
+                  >
+                    <img
+                      src={no_avatar}
+                      alt=""
+                      className="w-full h-full border border-3 rounded-full"
+                    />
+                  </Link>
+                )}
+              </div>
+              <div className="flex flex-col gap-x-2 max-w-[60%] md:max-w-[75%]">
+                <span
+                  className="lg:text-2xl text-lg font-semibold"
+                  onClick={() =>
+                    visitProfile(
+                      data.id_toan_bo_su_kien,
+                      data.so_thu_tu_su_kien
+                    )
+                  }
+                >
+                  {data.user_name ? data.user_name : "Guest"}
+                </span>
+                <span className={`lg:text-lg text-base mt-3`}>
+                  {showMore
+                    ? data.noi_dung_cmt
+                    : `${data.noi_dung_cmt.substring(0, 260)}...`}
+                </span>
+                {data.noi_dung_cmt.length > 256 && (
+                  <span className="text-lg hover:underline" onClick={showCmt}>
+                    {showMore ? "Unless" : "Show more"}
+                  </span>
+                )}
 
-            <div className="lg:text-[13px] text-sm ml-auto">
-              {data.thoi_gian_release}
-            </div>
-            <div className="lg:w-[15%] w-[20%] lg:text-[13px] text-sm">
-              <p> {data.dia_chi_ip}</p>
-              <p> {data.location}</p>
-            </div>
-          </li>
-
-          // <li className="flex flex-row w-full h-32 lg:justify-between justify-around" key={i}>
-          //   {data.imageattach === null && data.imageattach === undefined && (
-          //     <img src={data.avatar_user} alt="" className="w-20 h-20 rounded-[50%] " />
-          //   )}
-
-          //   <span className="text-[16px]"> {data.device_cmt}</span>
-          //   <span className="text-[16px] max-w-xl">
-          //     {data.noi_dung_cmt.length > 10
-          //       ? data.noi_dung_cmt.slice(0, 50) + "..."
-          //       : data.noi_dung_cmt}
-          //   </span>
-          //   <span className="text-[16px]">
-          //     {data.dia_chi_ip.length > 15
-          //       ? data.dia_chi_ip.slice(0, 15) + "..."
-          //       : data.dia_chi_ip}
-          //   </span>
-          // </li>
-        ))}
-
-        {/* {[...Array(25)].map((_, index) => (
-          <li className="flex flex-row w-full h-32 justify-between" key={index}>
-            <img src={girl} alt="" className="w-20 h-20 rounded-[50%]" />
-            <span className="text-[16px] max-w-xl">
-              Love makes every moment brighter, warmer, and infinitel...
-            </span>
-            <span className="text-[16px]">1m</span>
-          </li>
-        ))} */}
+                {data.imageattach ? (
+                  <img
+                    className="w-[60px] h-[60px]"
+                    src={data.imageattach}
+                    alt=""
+                  />
+                ) : (
+                  ""
+                )}
+                <span className="lg:text-base text-sm">{data.device_cmt}</span>
+              </div>
+              <div className="ml-auto">
+                <div className="lg:text-base text-sm ml-auto">
+                  {data.thoi_gian_release}
+                </div>
+                <div className=" lg:text-base text-sm">
+                  <p> {data.dia_chi_ip}</p>
+                  <p> {data.location}</p>
+                </div>
+              </div>
+            </li>
+          );
+        })}
       </ul>
       <div className="pagination text-4xl flex justify-center my-6">
         <button

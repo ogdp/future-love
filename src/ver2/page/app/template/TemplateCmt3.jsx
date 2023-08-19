@@ -14,7 +14,7 @@ function TemplateCmt3(props) {
   return (
     <div className="relative lg:w-[1019px] h-full flex justify-center">
       <div
-        className={`absolute z-20  min-w-full min-h-full lg:w-full w-[300px] border-8 border-pink-300  lg:h-[380px] rounded-[36px] flex flex-row items-center justify-center `}
+        className={`absolute z-20  min-w-full min-h-full lg:w-full w-full border-8 border-pink-300  lg:h-[380px] h-[200px] rounded-[36px] flex flex-row items-center justify-center `}
       >
         <img src={bgr} alt="" className=" object-cover w-full rounded-[36px]" />
 

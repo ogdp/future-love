@@ -86,6 +86,11 @@ export default function NewHistory() {
     setSelectedImage(imageUrl);
     setIsImagePopupOpen(true);
   };
+  // Show cmt
+  const [showMore, setShowMore] = useState(false);
+  const showCmt = () => {
+    setShowMore(!showMore);
+  };
   const renderLoading = (isLoading) => {
     if (isLoading) {
       return (
@@ -293,11 +298,11 @@ export default function NewHistory() {
                 ""
               )}
             </div>
-            <div className=" flex flex-col pt-[40px] mb-[100px] w-full">
+            <div className=" flex flex-col pt-[40px] mb-[100px] w-full mt-[420px]">
               {dataComment.map((item, index) => {
                 if (index < 10) {
                   return (
-                    <div className="flex items-center gap-x-10 px-10 py-6 mx-[60px] hover:bg-gray-200">
+                    <div className="flex  gap-x-10 px-10 py-6 mx-[60px] hover:bg-gray-200">
                       {item.avatar_user &&
                       item.avatar_user.startsWith("http") ? (
                         <img
@@ -316,9 +321,20 @@ export default function NewHistory() {
                         <h3 className="text-3xl font-[Montserrat] ">
                           {item?.user_name ? item?.user_name : "Guest"}
                         </h3>
-                        <div className="mt-3 w-[700px] break-words font-[Montserrat] text-2xl">
-                          {item.noi_dung_cmt}
-                        </div>
+                        <span className={`lg:text-lg text-base mt-3`}>
+                          {showMore
+                            ? item.noi_dung_cmt
+                            : `${item.noi_dung_cmt.substring(0, 260)}...`}
+                        </span>
+                        {item.noi_dung_cmt.length > 256 && (
+                          <span
+                            className="text-lg hover:underline"
+                            onClick={showCmt}
+                          >
+                            {showMore ? "Unless" : "Show more"}
+                          </span>
+                        )}
+
                         {item.imageattach ? (
                           <img
                             src={item.imageattach}

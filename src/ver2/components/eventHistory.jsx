@@ -346,7 +346,7 @@ function EventHistory(props) {
                       className="bg-no-repeat lg:bg-contain bg-center lg:w-full lg:h-full"
                     >
                       <div className="grid grid-cols-2 ">
-                        <div className="lg:w-[300px] flex flex-col justify-center lg:ml-28 ml-5 lg:mt-0 mt-20">
+                        <div className="lg:w-[300px] flex flex-col justify-center lg:ml-28 ml-5 lg:mt-0 mt-20 text-center lg:text-left">
                           {/* image love */}
                           <span
                             key={array.sukien[array.sukien.length - 1].id}
@@ -397,18 +397,17 @@ function EventHistory(props) {
                     </div>
                   ) : array.sukien[array.sukien.length - 1].id_template ===
                     2 ? (
-                    <div
-                      style={{ backgroundImage: `url(${bg2})` }}
-                      className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
-                    >
-                      <div className="grid grid-cols-3">
-                        <div className="flex justify-center items-center">
-                          <div
-                            style={{ backgroundImage: `url(${vec1})` }}
-                            className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
-                          ></div>
-                        </div>
-                        <div className="flex flex-col justify-center items-center mt-12">
+                    <div className="relative rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full overflow-hidden">
+                      {/* second event */}
+                      <div className="absolute z-20 top-[-20px] h-[230px] lg:h-full w-full lg:top-[0px]">
+                        <img
+                          src={bg3}
+                          className="w-full h-full object-cover"
+                          alt=""
+                        />
+                      </div>
+                      <div className="">
+                        <div className="flex flex-col justify-center items-center mt-24 lg:mt-44 mx-6 absolute text-center left-[130px] lg:left-[180px] md:left-[285px] z-20 max-w-[140px] md:max-w-[300px]">
                           {/* image love */}
                           <span
                             key={array.sukien[array.sukien.length - 1].id}
@@ -419,7 +418,7 @@ function EventHistory(props) {
                           >
                             {array.sukien[array.sukien.length - 1].ten_su_kien}
                           </span>
-                          <div className="box lg:h-52 h-36 mt-3">
+                          <div className="box  mt-3 overflow-auto">
                             <p className="slab font-semibold lg:text-[16px]">
                               {
                                 array.sukien[array.sukien.length - 1]
@@ -441,64 +440,84 @@ function EventHistory(props) {
                             </span>
                           </div>
                         </div>
-                        <div className="flex justify-center items-center">
-                          <div
-                            style={{ backgroundImage: `url(${vec2})` }}
-                            className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
-                          ></div>
-                        </div>
+                      </div>
+                      <div className="absolute z-10 w-[120px] h-[120px] lg:w-[200px] lg:h-[200px] md:w-[220px] md:h-[220px] top-20 md:top-4 md:left-5 lg:top-40">
+                        <img
+                          src={
+                            array.sukien[array.sukien.length - 1].link_nam_goc
+                          }
+                          alt="avt nam"
+                        />
+                      </div>
+                      <div className="absolute z-10 w-[120px] h-[120px] left-[70%] top-20 float-right lg:w-[200px] lg:h-[200px] lg:top-40 md:w-[220px] md:h-[220px] md:top-[8px] md:left-[71%]">
+                        <img
+                          src={
+                            array.sukien[array.sukien.length - 1].link_nu_goc
+                          }
+                          alt="avt nu"
+                        />
                       </div>
                     </div>
                   ) : (
-                    <div
-                      style={{ backgroundImage: `url(${bg2})` }}
-                      className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full relative"
-                    >
-                      <div className="flex flex-col justify-center items-center relative">
-                        {/* image love */}
-
-                        <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
+                    <div className="relative rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full overflow-hidden">
+                      {/* second event */}
+                      <div className="absolute z-20 top-[-10px] h-[230px] lg:h-full w-full lg:top-[0px]">
+                        <img
+                          src={bg3}
+                          className="w-full h-full object-cover"
+                          alt=""
+                        />
+                      </div>
+                      <div className="">
+                        <div className="flex flex-col justify-center items-center mt-24 lg:mt-44 mx-6 absolute text-center left-[130px] lg:left-[180px] md:left-[285px] z-20 max-w-[140px] md:max-w-[300px]">
+                          {/* image love */}
                           <span
                             key={array.sukien[array.sukien.length - 1].id}
                             to={`/ array / ${
                               array.sukien[array.sukien.length - 1].id
                             }`}
-                            className="lg:text-[24px] starborn"
+                            className="lg:text-[24px] starborn leading-tight mb-4"
                           >
                             {array.sukien[array.sukien.length - 1].ten_su_kien}
                           </span>
-                          <div className="mt-3">
-                            <p className="slab font-semibold lg:text-[16px]">
+                          <div className="box  mt-3 overflow-auto">
+                            <p className="slab font-semibold lg:text-[14px] max-h-[50px] overflow-auto mx-3">
                               {
                                 array.sukien[array.sukien.length - 1]
                                   .noi_dung_su_kien
                               }
                             </p>
                           </div>
-                        </div>
 
-                        <div className="my-4 slab font-semibold lg:text-[16px]">
-                          <span
-                            style={{ fontStyle: "normal", marginTop: 100 }}
-                            className="text-time"
-                          >
-                            {moment(
-                              array.sukien[array.sukien.length - 1].real_time
-                            )
-                              .add(7, "hours")
-                              .format("YYYY-MM-DD HH:mm:ss")}
-                          </span>
+                          <div className="my-4 slab font-semibold lg:text-[16px]">
+                            <span
+                              style={{ fontStyle: "normal", marginTop: 100 }}
+                              className="text-time"
+                            >
+                              {moment(
+                                array.sukien[array.sukien.length - 1].real_time
+                              )
+                                .add(7, "hours")
+                                .format("YYYY-MM-DD HH:mm:ss")}
+                            </span>
+                          </div>
                         </div>
-                        <div className="absolute lg:top-[95%] top-[90%] flex items-center">
-                          <div
-                            style={{ backgroundImage: `url(${vec1})` }}
-                            className="bg-no-repeat bg-cover lg:w-[100px] lg:h-[100px] w-[50px] h-[50px]"
-                          />
-                          <div
-                            style={{ backgroundImage: `url(${vec2})` }}
-                            className="bg-no-repeat bg-cover lg:w-[100px] lg:h-[100px] w-[50px] h-[50px]"
-                          />
-                        </div>
+                      </div>
+                      <div className="absolute z-10 w-[130px] h-[130px] lg:w-[220px] lg:h-[220px] md:w-[220px] md:h-[220px] top-[60px] md:top-4 md:left-5 lg:top-[100px]">
+                        <img
+                          src={
+                            array.sukien[array.sukien.length - 1].link_nam_goc
+                          }
+                          alt="avt nam"
+                        />
+                      </div>
+                      <div className="absolute z-10 w-[120px] h-[120px] left-[70%] top-20 float-right lg:w-[220px] lg:h-[220px] lg:top-[100px] md:w-[220px] md:h-[220px] md:top-[8px] md:left-[71%]">
+                        <img
+                          src={
+                            array.sukien[array.sukien.length - 1].link_nu_goc
+                          }
+                          alt="avt nu"
+                        />
                       </div>
                     </div>
                   )}

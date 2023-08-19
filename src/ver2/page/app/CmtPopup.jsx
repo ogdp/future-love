@@ -90,17 +90,6 @@ function CmtPopup(props) {
       id_user: user?.id_user,
       location: location.city,
     };
-    //  else {
-    //   comment = {
-    //     device_cmt: platform,
-    //     id_toan_bo_su_kien: param.id,
-    //     ipComment: ipComment,
-    //     so_thu_tu_su_kien: props.data.so_thu_tu_su_kien,
-    //     imageattach: imgComment ? imgComment : "",
-    //     id_user: null,
-    //     location: location.city,
-    //   };
-    // }
     if (!inputValue.trim() && !imgComment) {
       toast.warning("Comment cannot be empty!");
       return;
@@ -147,6 +136,11 @@ function CmtPopup(props) {
   const handlePopup = () => {
     setImgPopup(!isImgPopup);
   };
+  // Handle more comment
+  const [showMore, setShowMore] = useState(false);
+  const showMoreHandler = () => {
+    setShowMore(!showMore);
+  };
   return (
     <div
       style={{
@@ -163,34 +157,43 @@ function CmtPopup(props) {
         zIndex: 9990,
       }}
     >
-      <div className="w-[400px] h-full z-[9999]" onClick={closePopup}></div>
+      <div
+        className="lg:min-w-[400px] w-[170px] h-full z-[9999]"
+        onClick={closePopup}
+      ></div>
       {isImgPopup ? (
         <ImagePopup imgSrc={props.data.link_da_swap} closeImg={closePopup} />
       ) : (
-        <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-max bg-white gap-y-4 overflow-y-auto">
+        <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-max bg-white gap-y-4 overflow-y-auto relative">
           <div className="w-full h-[95%] relative">
             <TemplateComponent data={props.data} onClick={handlePopup} />
           </div>
-          <div className=" mt-5 flex flex-col gap-y-2 ">
+          <button
+            className="absolute top-6 right-10 py-2 px-3 bg-custom-red rounded-lg "
+            onClick={closePopup}
+          >
+            Close
+          </button>
+          <div className=" mt-5 flex flex-col gap-y-2 max-w-full overflow-x-hidden overflow-y-auto">
             {dataCmt?.length > 0 &&
               dataCmt.map((cmt, index) => (
-                <div className="flex items-stretch gap-x-4" key={index}>
-                  <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
+                <div className="flex  gap-x-6 px-4" key={index}>
+                  <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px]">
                     {cmt.avatar_user && cmt.avatar_user.startsWith("http") ? (
                       <img
                         src={cmt.avatar_user}
                         alt=""
-                        className="w-[100%] h-[100%]  rounded-[50%]"
+                        className="w-full h-full object-cover  rounded-[50%]"
                       />
                     ) : (
                       <img
                         src={noAvatar}
                         alt=""
-                        className="w-[100%] h-[100%]  rounded-[50%]"
+                        className="w-full h-full object-cover  rounded-[50%]"
                       />
                     )}
                   </div>
-                  <div className="">
+                  <div className="max-w-[85%]">
                     <div className="row">
                       <div className="flex items-center">
                         <h1 className="lg:text-2xl text-xl font-semibold">
@@ -201,11 +204,21 @@ function CmtPopup(props) {
                         </p>
                       </div>
                     </div>
-
-                    <p className="lg:text-xl text-base font-[Montserrat] max-w-[75%]">
-                      {" "}
-                      {cmt?.noi_dung_cmt}
-                    </p>
+                    <div>
+                      <p className="lg:text-xl text-base font-[Montserrat]">
+                        {showMore
+                          ? cmt?.noi_dung_cmt
+                          : `${cmt?.noi_dung_cmt.substring(0, 240)}...`}
+                      </p>
+                      {cmt.noi_dung_cmt.length > 256 && (
+                        <span
+                          className="cursor-pointer"
+                          onClick={showMoreHandler}
+                        >
+                          {showMore ? "Show less" : "Show more"}
+                        </span>
+                      )}
+                    </div>
                     {cmt?.imageattach ? (
                       <img
                         className="w-[60px] h-[50px]"
@@ -280,7 +293,10 @@ function CmtPopup(props) {
           </div>
         </div>
       )}
-      <div className="w-[400px] h-full z-[9999]" onClick={closePopup}></div>
+      <div
+        className="lg:min-w-[400px] w-[170px] h-full z-[9999]"
+        onClick={closePopup}
+      ></div>
     </div>
   );
 }
