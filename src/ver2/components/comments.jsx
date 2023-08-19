@@ -118,7 +118,7 @@ function Comments() {
             }
           >
             <div className="">
-              {data.avatar_user.split(":")[0] === "https" ? (
+              {data.avatar_user && data.avatar_user.startsWith("http") ? (
                 <img
                   src={data.avatar_user}
                   alt=""
