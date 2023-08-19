@@ -21,7 +21,7 @@ function Comments() {
   const resultsPerPage = 25;
   const [countCM, setCountCM] = useState(1);
   const navigate = useNavigate();
-  console.log(countCM)
+  console.log(countCM);
   function wrapText(text, maxLineLength) {
     const words = text.split(" ");
     const lines = [];
@@ -109,7 +109,6 @@ function Comments() {
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
   const currentResults = dataSort.slice(indexOfFirstResult, indexOfLastResult);
   const totalPages = Math.ceil(dataSort.length / resultsPerPage);
-  
 
   if (isLoading) {
     return (
@@ -130,7 +129,6 @@ function Comments() {
                     src={data.avatar_user}
                     alt=""
                     className="w-[60px] h-[60px] border border-3 rounded-[50%]"
-                    
                   />
                 </Link>
               ) : (
@@ -143,12 +141,9 @@ function Comments() {
                 </Link>
               )}
             </div>
-            <div
-              
-              className="flex flex-col gap-x-2"
-            >
+            <div className="flex flex-col gap-x-2">
               <span className="lg:text-[18px] text-lg font-semibold">
-                {data.user_name ? data.user_name :"Guest"}
+                {data.user_name ? data.user_name : "Guest"}
               </span>
               <span
                 className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
@@ -211,7 +206,7 @@ function Comments() {
           </li>
         ))} */}
       </ul>
-      
+
       {isImagePopupOpen && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-50">
           <div className="max-w-screen-xl w-80% p-4 bg-white rounded-lg shadow-lg text-center relative">
@@ -230,8 +225,6 @@ function Comments() {
           </div>
         </div>
       )}
-        
-      
 
       <div className="pagination text-4xl flex justify-center my-6">
         <button
@@ -272,7 +265,6 @@ function Comments() {
         </button>
       </div>
     </div>
-
   );
 }
 

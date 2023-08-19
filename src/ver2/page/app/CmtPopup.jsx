@@ -30,11 +30,9 @@ function CmtPopup(props) {
   const handleOpenImagePopup = (imageUrl) => {
     setSelectedImage(imageUrl);
     setIsImagePopupOpen(true);
-
   };
   const closePopup = () => {
     props.setIsOpenPopup(false);
-
   };
   const fetchDataCmt = async () => {
     console.log(1234);
@@ -65,13 +63,14 @@ function CmtPopup(props) {
   const userAgent = window.navigator.userAgent;
 
   // Tách thông tin trình duyệt và phiên bản từ chuỗi User-Agent
-  const browserInfo = userAgent.match(/(chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i);
+  const browserInfo = userAgent.match(
+    /(chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i
+  );
   const browserName = browserInfo[1];
   const browserVersion = browserInfo[2];
 
   console.log("Browser:", browserName);
   console.log("Version:", browserVersion);
-
 
   const platform = window.navigator.platform;
   console.log("User Operating System:", platform);
@@ -92,7 +91,6 @@ function CmtPopup(props) {
   }, [ipComment]);
   // const deviceCmt = `${platform}-${browserName}-verson${browserVersion}`;
 
-
   const HandleSendCmt = async (e) => {
     const url = "http://14.225.7.221:8989/lovehistory/comment";
     let comment = {};
@@ -108,7 +106,6 @@ function CmtPopup(props) {
       id_user: user?.id_user,
       location: location.city,
     };
-
     if (!inputValue.trim() && !imgComment) {
       toast.warning("Comment cannot be empty!");
       return;
@@ -198,16 +195,14 @@ function CmtPopup(props) {
                       />
                     )}
                   </div>
-                  <div
-                    className="flex flex-col gap-x-2 font-[Montserrat]"
-                  >
+                  <div className="flex flex-col gap-x-2 font-[Montserrat]">
                     <span className="lg:text-[18px] text-lg font-semibold">
                       {cmt.user_name ? cmt.user_name : "Guest"}
                     </span>
                     <span
                       className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
-                      style={{ whiteSpace: "pre-wrap" }}                      
-                    > 
+                      style={{ whiteSpace: "pre-wrap" }}
+                    >
                       {cmt.noi_dung_cmt}
                     </span>
                     {cmt.imageattach ? (
@@ -220,7 +215,9 @@ function CmtPopup(props) {
                     ) : (
                       ""
                     )}
-                    <span className="lg:text-base text-sm">{cmt.device_cmt}</span>
+                    <span className="lg:text-base text-sm">
+                      {cmt.device_cmt}
+                    </span>
                   </div>
 
                   <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
@@ -230,8 +227,7 @@ function CmtPopup(props) {
                     <p> {cmt.dia_chi_ip}</p>
                     <p> {cmt.location}</p>
                   </div>
-                 </div>
-
+                </div>
               ))}
           </div>
           <div className="flex items-center justify-around mx-3 gap-x-4 rounded-full shadow-sm shadow-slate-300">
@@ -248,7 +244,7 @@ function CmtPopup(props) {
                 onSubmit={onSubmitComment}
                 className="flex items-center gap-x-4"
               >
-                <textarea 
+                <textarea
                   type="text"
                   value={inputValue}
                   onChange={handleInputChange}
@@ -315,7 +311,6 @@ function CmtPopup(props) {
         </div>
       )}
     </div>
-
   );
 }
 

@@ -52,7 +52,7 @@ function App() {
         <Route path="" element={<LayoutGuest />}>
           <Route index element={<Historyv2 />} />
           <Route path="home" element={<Historyv2 />} />
-          <Route path="/event/:id" element={<Historyv2 />} />
+          <Route path="event/:id" element={<Historyv2 />} />
           <Route path="love" element={<Home />} />
           <Route path="detail/:id" element={<NewHistory />}>
             <Route path="1" element={<FirstMeet />} />
@@ -77,6 +77,7 @@ function App() {
       <Route path="" element={<LayoutUser />}>
         <Route index element={<Historyv2 />} />
         <Route path="home" element={<Historyv2 />} />
+        <Route path="event/:id" element={<Historyv2 />} />
         <Route path="love" element={<Home />} />
         <Route path="detail/:id" element={<NewHistory />}>
           <Route path="1" element={<FirstMeet />} />

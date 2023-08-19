@@ -85,7 +85,6 @@ export default function NewHistory() {
   const handleOpenImagePopup = (imageUrl) => {
     setSelectedImage(imageUrl);
     setIsImagePopupOpen(true);
-    
   };
   const renderLoading = (isLoading) => {
     if (isLoading) {
@@ -325,7 +324,9 @@ export default function NewHistory() {
                             src={item.imageattach}
                             className="w-[150px] h-[120px] mt-[10px]"
                             alt="avt"
-                            onClick={() => handleOpenImagePopup(item.imageattach)}
+                            onClick={() =>
+                              handleOpenImagePopup(item.imageattach)
+                            }
                           />
                         ) : (
                           ""

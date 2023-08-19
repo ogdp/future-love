@@ -36,10 +36,10 @@ function Header({ onSearchChange, onSearch, onClick }) {
       <div className="flex items-center justify-between">
         {/* logo */}
         <div className="flex items-center">
-          <SlMenu
+          {/* <SlMenu
             className="text-[38px] text-white mt-1 font-black mr-20 cursor-pointer transition-transform duration-300 hover:scale-125 lg:hidden block"
             onClick={onClick}
-          />
+          /> */}
           <img src={img} alt="" className="lg:w-28 w-24 lg:h-24 h-20 lg:mt-0" />
           <p
             className="lg:text-6xl text-3xl text-white flex items-center starborn"
@@ -49,7 +49,35 @@ function Header({ onSearchChange, onSearch, onClick }) {
           </p>
           <img src={img} alt="" className="lg:w-28 w-24 lg:h-24 h-20" />
         </div>
-
+        <div className=" flex lg:gap-1 justify-center items-center bg-[linear-gradient(165deg,#ea20b7_0%,#ee747c_50%,#d080c8_100%)] rounded-3xl">
+          <div className="max-lg:w-[50px] max-lg:h-[50px] w-[80px] h-[80px] flex justify-center items-center">
+            <Link
+              to={
+                "https://play.google.com/store/apps/details?id=com.thinkdiffai.futurelove"
+              }
+            >
+              <img
+                src="https://cdn.icon-icons.com/icons2/3658/PNG/512/app_store_game_social_media_playstore_google_icon_228385.png"
+                alt=""
+                className="max-lg:w-[35px] max-lg:h-[35px] w-[60px] h-[60px] hover:scale-105 transition-all cursor-pointer"
+              />
+            </Link>
+          </div>
+          <div className="max-lg:w-[50px] max-lg:h-[50px] w-[80px] h-[80px] flex justify-center items-center">
+            <Link
+              to={
+                "https://play.google.com/store/apps/details?id=com.thinkdiffai.futurelove"
+              }
+            >
+              {" "}
+              <img
+                src="https://cdn.icon-icons.com/icons2/3053/PNG/512/app_store_alt_macos_bigsur_icon_190386.png"
+                alt=""
+                className="max-lg:w-[35px] max-lg:h-[35px] w-[60px] h-[60px] hover:scale-105 transition-all cursor-pointer"
+              />
+            </Link>
+          </div>
+        </div>
         {/* search */}
         <div className="lg:block hidden">
           <div className="i-search flex items-center">

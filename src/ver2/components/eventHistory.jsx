@@ -21,7 +21,7 @@ import { useParams } from "react-router";
 
 function EventHistory(props) {
   const { id } = useParams();
-  
+
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingType, setLoadingType] = useState(null);
@@ -30,7 +30,7 @@ function EventHistory(props) {
   const [count, setCount] = useState(1);
   const seenIds = {};
   console.log(id);
-  console.log(count)
+  console.log(count);
 
   const resultsPerPage = 8;
   // useEffect(() => {
@@ -49,7 +49,7 @@ function EventHistory(props) {
   // }
 
   const fetchData = async () => {
-    if(!id){
+    if (!id) {
       try {
         setIsLoading(true);
         const response = await fetch(
@@ -71,8 +71,7 @@ function EventHistory(props) {
       } catch (error) {
         console.log(error);
       }
-    
-    }else{
+    } else {
       try {
         setIsLoading(true);
         const response = await fetch(
@@ -94,24 +93,23 @@ function EventHistory(props) {
       } catch (error) {
         console.log(error);
       }
-
     }
   };
-  console.log(currentPage)
+  console.log(currentPage);
 
   const changePageUp = () => {
     if (count <= currentPage) {
       setCount(count + 1);
       history.push(`/event/${count + 1}`);
-      window.location.reload()
+      window.location.reload();
     }
   };
-  
+
   const changePageDown = () => {
     if (count > 1) {
       setCount(count - 1);
       history.push(`/event/${count - 1}`);
-      window.location.reload()
+      window.location.reload();
     }
   };
   useEffect(() => {
@@ -165,11 +163,12 @@ function EventHistory(props) {
 
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
-  const currentResults = sortedData.slice(indexOfFirstResult, indexOfLastResult);
+  const currentResults = sortedData.slice(
+    indexOfFirstResult,
+    indexOfLastResult
+  );
   const totalPages = Math.ceil(sortedData.length / resultsPerPage);
-  
 
-  
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -187,7 +186,7 @@ function EventHistory(props) {
     <div className="">
       <div className="cursor-pointer">
         {
-          props.data? (
+          props.data ? (
             <div>
               {props.data.map((array, index) => (
                 <div
@@ -581,7 +580,7 @@ function EventHistory(props) {
             type="button"
             className="mx-3 text-white font-medium py-2 px-4 rounded bg-red-700"
           >
-            {id?id:count}
+            {id ? id : count}
           </button>
           <button
             type="button"
