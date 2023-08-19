@@ -248,12 +248,12 @@ function CmtPopup(props) {
                 onSubmit={onSubmitComment}
                 className="flex items-center gap-x-4"
               >
-                <input
+                <textarea 
                   type="text"
                   value={inputValue}
                   onChange={handleInputChange}
-                  className="w-full h-auto border-none outline-none font-[Montserrat]"
-                ></input>
+                  className=" w-full h-[50px] border-none outline-none font-[Montserrat]"
+                ></textarea>
                 <div className="inline-block relative">
                   <label for="file-input">
                     <img
