@@ -4,15 +4,24 @@ import useEventStore from "../../utils/store";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
+import ImagePopup from "../page/app/ImagePopup";
 
 function Comments() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+  const handleOpenImagePopup = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setIsImagePopupOpen(true);
+  };
+
   const [data, setData] = useState([]);
   const setEvent = useEventStore((state) => state.setEvent);
   const [currentPage, setCurrentPage] = useState(1);
   const resultsPerPage = 25;
   const [countCM, setCountCM] = useState(1);
   const navigate = useNavigate();
+  console.log(countCM)
   function wrapText(text, maxLineLength) {
     const words = text.split(" ");
     const lines = [];
@@ -69,7 +78,7 @@ function Comments() {
     }
   };
   const changeUp = () => {
-    if (countCM <= totalPages) {
+    if (countCM <= 20) {
       setCountCM(countCM + 1);
     }
   };
@@ -100,6 +109,8 @@ function Comments() {
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
   const currentResults = dataSort.slice(indexOfFirstResult, indexOfLastResult);
   const totalPages = Math.ceil(dataSort.length / resultsPerPage);
+  
+
   if (isLoading) {
     return (
       <div className="lg:w-[100vh] text-center flex bg-white rounded-[36px] mx-3 slab h-max">
@@ -119,6 +130,7 @@ function Comments() {
                     src={data.avatar_user}
                     alt=""
                     className="w-[60px] h-[60px] border border-3 rounded-[50%]"
+                    
                   />
                 </Link>
               ) : (
@@ -132,17 +144,18 @@ function Comments() {
               )}
             </div>
             <div
-              onClick={() =>
-                visitProfile(data.id_toan_bo_su_kien, data.so_thu_tu_su_kien)
-              }
+              
               className="flex flex-col gap-x-2"
             >
               <span className="lg:text-[18px] text-lg font-semibold">
-                {data.user_name}
+                {data.user_name ? data.user_name :"Guest"}
               </span>
               <span
                 className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
                 style={{ whiteSpace: "pre-wrap" }}
+                onClick={() =>
+                  visitProfile(data.id_toan_bo_su_kien, data.so_thu_tu_su_kien)
+                }
               >
                 {wrapText(data.noi_dung_cmt, maxLineLength)}
                 {/* {data.noi_dung_cmt} */}
@@ -152,6 +165,7 @@ function Comments() {
                   className="w-[60px] h-[50px]"
                   src={data.imageattach}
                   alt=""
+                  onClick={() => handleOpenImagePopup(data.imageattach)}
                 />
               ) : (
                 ""
@@ -197,6 +211,28 @@ function Comments() {
           </li>
         ))} */}
       </ul>
+      
+      {isImagePopupOpen && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-50">
+          <div className="max-w-screen-xl w-80% p-4 bg-white rounded-lg shadow-lg text-center relative">
+            <button
+              onClick={() => setIsImagePopupOpen(false)}
+              className="mt-2 mr-2 px-2 py-1 bg-red-500 hover:bg-red-600 rounded-lg absolute top-0 right-0 text-sm text-white"
+            >
+              Close
+            </button>
+            <img
+              src={selectedImage}
+              alt="Ảnh lớn"
+              className="w-100 h-auto mx-auto z-99999"
+              style={{ maxHeight: "80vh" }}
+            />
+          </div>
+        </div>
+      )}
+        
+      
+
       <div className="pagination text-4xl flex justify-center my-6">
         <button
           type="button"
@@ -236,6 +272,7 @@ function Comments() {
         </button>
       </div>
     </div>
+
   );
 }
 

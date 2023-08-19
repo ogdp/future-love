@@ -85,6 +85,7 @@ export default function NewHistory() {
   const handleOpenImagePopup = (imageUrl) => {
     setSelectedImage(imageUrl);
     setIsImagePopupOpen(true);
+    
   };
   const renderLoading = (isLoading) => {
     if (isLoading) {
@@ -138,7 +139,7 @@ export default function NewHistory() {
             />
           )}
           <div
-            className={`lg:col-span-3 z-[999] bg-menu lg:block ${
+            className={`lg:col-span-3 z-[10] bg-menu lg:block ${
               isOpenSidebar
                 ? "col-span-8 sm:col-span-6 transition-all transform duration-300 ease-linear block opacity-100 absolute top-40 left-0 bottom-0 h-full"
                 : "transition-all transform hidden duration-300 ease-out "
@@ -324,6 +325,7 @@ export default function NewHistory() {
                             src={item.imageattach}
                             className="w-[150px] h-[120px] mt-[10px]"
                             alt="avt"
+                            onClick={() => handleOpenImagePopup(item.imageattach)}
                           />
                         ) : (
                           ""
