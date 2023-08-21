@@ -10,6 +10,7 @@
     transform: scaleX(3) scaleY(1.4);
     opacity: 0.5;
 } */
+
 @media (min-width: 1024px) {
     .img-title {
         position: relative;
