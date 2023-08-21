@@ -113,10 +113,10 @@ const HistoryCommentList = ({ datas }) => {
                         <img
                           src={item.avatar_user}
                           alt=""
-                          className="w-full object-cover"
+                          className="w-full h-full object-contain"
                         />
                       </div>
-                      <div className="max-lg:pl-2 max-lg:pr-2 lg:ml-4 flex flex-col justify-center lg:gap-3 text-left">
+                      <div className="max-lg:pl-2 max-lg:pr-2 lg:w-[65%] lg:ml-4 flex flex-col justify-center lg:gap-3 text-left">
                         <h2 className="line-clamp-1 max-lg:text-xl lg:text-2xl font-medium">
                           {checkId !== undefined ? "His" : "You"} commented on
                           the event of{" "}
@@ -212,6 +212,8 @@ const HistoryCommentList = ({ datas }) => {
           className="mx-3 text-white font-medium py-2 px-4 rounded bg-red-700"
         >
           {count}
+          <span className="text-2xl font-bold px-2">/</span>
+          {totalPages}
         </button>
         <button
           type="button"

@@ -101,7 +101,8 @@ export default function Profile() {
         `${server}/lovehistory/comment/user/${user.id_user}`
       );
       // console.log(res);
-      setDatas(res.data.comment_user);
+      const reverseData = await res.data.comment_user.reverse();
+      setDatas(reverseData);
       setEvent(res.data);
       // console.log(res);
       // const ipAddress = data.dia_chi_ip; // Lấy địa chỉ IP từ dữ liệu response
@@ -924,7 +925,7 @@ export default function Profile() {
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         ) : null}
-        {datas.length > 0 && <HistoryCommentList datas={datas.reverse()} />}
+        {datas.length > 0 && <HistoryCommentList datas={datas} />}
         {datas.length === 0 && (
           <div className="w-full text-center py-5 ">
             <h1 className="text-xl lg:text-4xl">

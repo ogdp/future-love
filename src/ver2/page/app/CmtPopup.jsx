@@ -25,11 +25,14 @@ function CmtPopup(props) {
   console.log(props);
   const [imgComment, setImgComment] = useState("");
   const templateCmt = props.TemplateCmt;
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+  const handleOpenImagePopup = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setIsImagePopupOpen(true);
+  };
   const closePopup = () => {
     props.setIsOpenPopup(false);
-    console.log("====================================");
-    console.log("OKkek");
-    console.log("====================================");
   };
   const fetchDataCmt = async () => {
     console.log(1234);
@@ -57,6 +60,17 @@ function CmtPopup(props) {
   };
   const ne = window.navigator.userAgent;
   console.log("hii", ne);
+  const userAgent = window.navigator.userAgent;
+
+  // Tách thông tin trình duyệt và phiên bản từ chuỗi User-Agent
+  const browserInfo = userAgent.match(
+    /(chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i
+  );
+  const browserName = browserInfo[1];
+  const browserVersion = browserInfo[2];
+
+  console.log("Browser:", browserName);
+  console.log("Version:", browserVersion);
 
   const platform = window.navigator.platform;
   console.log("User Operating System:", platform);
@@ -75,14 +89,16 @@ function CmtPopup(props) {
         console.log(err.message);
       });
   }, [ipComment]);
+  // const deviceCmt = `${platform}-${browserName}-verson${browserVersion}`;
 
   const HandleSendCmt = async (e) => {
     const url = "http://14.225.7.221:8989/lovehistory/comment";
     let comment = {};
     // if (user !== null) {
     // }
+
     comment = {
-      device_cmt: platform,
+      device_cmt: userAgent,
       id_toan_bo_su_kien: param.id,
       ipComment: ipComment,
       so_thu_tu_su_kien: props.data.so_thu_tu_su_kien,
@@ -90,17 +106,6 @@ function CmtPopup(props) {
       id_user: user?.id_user,
       location: location.city,
     };
-    //  else {
-    //   comment = {
-    //     device_cmt: platform,
-    //     id_toan_bo_su_kien: param.id,
-    //     ipComment: ipComment,
-    //     so_thu_tu_su_kien: props.data.so_thu_tu_su_kien,
-    //     imageattach: imgComment ? imgComment : "",
-    //     id_user: null,
-    //     location: location.city,
-    //   };
-    // }
     if (!inputValue.trim() && !imgComment) {
       toast.warning("Comment cannot be empty!");
       return;
@@ -190,31 +195,37 @@ function CmtPopup(props) {
                       />
                     )}
                   </div>
-                  <div className="">
-                    <div className="row">
-                      <div className="flex items-center">
-                        <h1 className="lg:text-2xl text-xl font-semibold">
-                          {cmt?.user_name ? cmt?.user_name : "Guest"}
-                        </h1>
-                        <p className="lg:text-base text-sm ml-2 ">
-                          {cmt?.thoi_gian_release}
-                        </p>
-                      </div>
-                    </div>
-
-                    <p className="lg:text-xl text-base font-[Montserrat] max-w-[75%]">
-                      {" "}
-                      {cmt?.noi_dung_cmt}
-                    </p>
-                    {cmt?.imageattach ? (
+                  <div className="flex flex-col gap-x-2 font-[Montserrat]">
+                    <span className="lg:text-[18px] text-lg font-semibold">
+                      {cmt.user_name ? cmt.user_name : "Guest"}
+                    </span>
+                    <span
+                      className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
+                      style={{ whiteSpace: "pre-wrap" }}
+                    >
+                      {cmt.noi_dung_cmt}
+                    </span>
+                    {cmt.imageattach ? (
                       <img
                         className="w-[60px] h-[50px]"
                         src={cmt.imageattach}
                         alt=""
+                        onClick={() => handleOpenImagePopup(cmt.imageattach)}
                       />
                     ) : (
                       ""
                     )}
+                    <span className="lg:text-base text-sm">
+                      {cmt.device_cmt}
+                    </span>
+                  </div>
+
+                  <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
+                    {cmt.thoi_gian_release}
+                  </div>
+                  <div className="lg:w-[15%] w-[20%] lg:text-[13px] text-sm font-[Montserrat]">
+                    <p> {cmt.dia_chi_ip}</p>
+                    <p> {cmt.location}</p>
                   </div>
                 </div>
               ))}
@@ -233,12 +244,12 @@ function CmtPopup(props) {
                 onSubmit={onSubmitComment}
                 className="flex items-center gap-x-4"
               >
-                <input
+                <textarea
                   type="text"
                   value={inputValue}
                   onChange={handleInputChange}
-                  className="w-full h-auto border-none outline-none font-[Montserrat]"
-                ></input>
+                  className=" w-full h-[50px] border-none outline-none font-[Montserrat]"
+                ></textarea>
                 <div className="inline-block relative">
                   <label for="file-input">
                     <img
@@ -281,6 +292,24 @@ function CmtPopup(props) {
         </div>
       )}
       <div className="w-[400px] h-full z-[9999]" onClick={closePopup}></div>
+      {isImagePopupOpen && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-50">
+          <div className="max-w-screen-xl w-80% p-4 bg-white rounded-lg shadow-lg text-center relative">
+            <button
+              onClick={() => setIsImagePopupOpen(false)}
+              className="mt-2 mr-2 px-2 py-1 bg-red-500 hover:bg-red-600 rounded-lg absolute top-0 right-0 text-sm text-white"
+            >
+              Close
+            </button>
+            <img
+              src={selectedImage}
+              alt="Ảnh lớn"
+              className="w-100 h-auto mx-auto z-99999"
+              style={{ maxHeight: "80vh" }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

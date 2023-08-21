@@ -21,7 +21,7 @@ import { useParams } from "react-router";
 
 function EventHistory(props) {
   const { id } = useParams();
-  console.log(id);
+
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingType, setLoadingType] = useState(null);
@@ -29,11 +29,13 @@ function EventHistory(props) {
   const history = createBrowserHistory();
   const [count, setCount] = useState(1);
   const seenIds = {};
+  console.log(id);
+  console.log(count);
 
   const resultsPerPage = 8;
-  useEffect(() => {
-    fetchData();
-  }, [id]);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [id]);
 
   // const images = [
   //   { url: image1, alt: 'Image 1' },
@@ -47,42 +49,75 @@ function EventHistory(props) {
   // }
 
   const fetchData = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(
-        `http://14.225.7.221:8989/lovehistory/page/${count}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const jsonData = await response.json();
-      console.log(jsonData.list_sukien);
-      const updatedData = jsonData.list_sukien.map((item) => {
-        if (item.sukien.length === 0) {
-          return { ...item, nodata: true };
+    if (!id) {
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          `http://14.225.7.221:8989/lovehistory/page/${count}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
         }
-        return item;
-      });
-      setData(updatedData);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
+        const jsonData = await response.json();
+        console.log(jsonData.list_sukien);
+        const updatedData = jsonData.list_sukien.map((item) => {
+          if (item.sukien.length === 0) {
+            return { ...item, nodata: true };
+          }
+          return item;
+        });
+        setData(updatedData);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          `http://14.225.7.221:8989/lovehistory/page/${id}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const jsonData = await response.json();
+        console.log(jsonData.list_sukien);
+        const updatedData = jsonData.list_sukien.map((item) => {
+          if (item.sukien.length === 0) {
+            return { ...item, nodata: true };
+          }
+          return item;
+        });
+        setData(updatedData);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+  console.log(currentPage);
 
   const changePageUp = () => {
     if (count <= currentPage) {
+      setCount(count + 1);
+      history.push(`/event/${count + 1}`);
+      window.location.reload();
     }
-    setCount(count + 1);
   };
+
   const changePageDown = () => {
     if (count > 1) {
       setCount(count - 1);
+      history.push(`/event/${count - 1}`);
+      window.location.reload();
     }
   };
   useEffect(() => {
     fetchData();
   }, [count]);
+  useEffect(() => {
+    fetchData();
+  }, [id]);
 
   useEffect(() => {
     const loadingTypes = [
@@ -131,10 +166,9 @@ function EventHistory(props) {
   const currentResults = sortedData.slice(
     indexOfFirstResult,
     indexOfLastResult
-    // images
   );
-
   const totalPages = Math.ceil(sortedData.length / resultsPerPage);
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -152,7 +186,7 @@ function EventHistory(props) {
     <div className="">
       <div className="cursor-pointer">
         {
-          props.data && props.search ? (
+          props.data ? (
             <div>
               {props.data.map((array, index) => (
                 <div
@@ -546,7 +580,7 @@ function EventHistory(props) {
             type="button"
             className="mx-3 text-white font-medium py-2 px-4 rounded bg-red-700"
           >
-            {count}
+            {id ? id : count}
           </button>
           <button
             type="button"
