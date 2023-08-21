@@ -42,13 +42,10 @@ function Template1(props) {
   return (
     <div className="h-full flex flex-col items-center justify-center">
       <div className="mb-10 mt-20">
-        <Clock
-          data={moment(data.real_time)
-            .add(7, "hours")
-            .format("YYYY-MM-DD HH:mm:ss")}
-        />
+      <Clock data={moment(data.real_time, "YYYY-MM-DD HH:mm:ss").add(7, "hours").toDate()} />
       </div>
       <div
+      
         className={`border-8 border-pink-300 w-full lg:h-[550px] bg-white rounded-[36px] flex lg:flex-row flex-col-reverse mt-[50px] items-center justify-center relative gap-x-20 overflow-hidden`}
       >
         <div className="-ml-2 bg-no-repeat bg-cover lg:w-[55%] w-full flex flex-col justify-between mt-8">

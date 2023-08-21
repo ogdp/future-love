@@ -27,14 +27,14 @@ function CmtPopup(props) {
   const templateCmt = props.TemplateCmt;
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
+  const [isImageUploading, setIsImageUploading] = useState(false);
+
   const handleOpenImagePopup = (imageUrl) => {
     setSelectedImage(imageUrl);
     setIsImagePopupOpen(true);
-
   };
   const closePopup = () => {
     props.setIsOpenPopup(false);
-
   };
   const fetchDataCmt = async () => {
     console.log(1234);
@@ -65,13 +65,14 @@ function CmtPopup(props) {
   const userAgent = window.navigator.userAgent;
 
   // Tách thông tin trình duyệt và phiên bản từ chuỗi User-Agent
-  const browserInfo = userAgent.match(/(chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i);
+  const browserInfo = userAgent.match(
+    /(chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i
+  );
   const browserName = browserInfo[1];
   const browserVersion = browserInfo[2];
 
   console.log("Browser:", browserName);
   console.log("Version:", browserVersion);
-
 
   const platform = window.navigator.platform;
   console.log("User Operating System:", platform);
@@ -92,8 +93,8 @@ function CmtPopup(props) {
   }, [ipComment]);
   // const deviceCmt = `${platform}-${browserName}-verson${browserVersion}`;
 
-
   const HandleSendCmt = async (e) => {
+    setIsImageUploading(true)
     const url = "http://14.225.7.221:8989/lovehistory/comment";
     let comment = {};
     // if (user !== null) {
@@ -108,7 +109,6 @@ function CmtPopup(props) {
       id_user: user?.id_user,
       location: location.city,
     };
-
     if (!inputValue.trim() && !imgComment) {
       toast.warning("Comment cannot be empty!");
       return;
@@ -127,7 +127,9 @@ function CmtPopup(props) {
         console.log("====================================");
         setDataCmt((prev) => [...prev, response.data.comment]);
         setImgComment("");
+        setIsImageUploading(false)
         toast.success("Commented!!!");
+
       })
       .catch((error) => {
         toast.error("comment failed");
@@ -139,6 +141,7 @@ function CmtPopup(props) {
     event.preventDefault();
   };
   const onChangeImgComment = async (event) => {
+    setIsImageUploading(true);
     const formData = new FormData();
     formData.append("image", event.target.files[0]);
     const apiResponse = await axios.post(
@@ -146,6 +149,7 @@ function CmtPopup(props) {
       formData
     );
     setImgComment(apiResponse.data.data.url);
+    setIsImageUploading(false);
   };
   const removeImgComment = () => {
     setImgComment("");
@@ -172,128 +176,153 @@ function CmtPopup(props) {
       }}
     >
       <div className="w-[400px] h-full z-[9999]" onClick={closePopup}></div>
-      {isImgPopup ? (
-        <ImagePopup imgSrc={props.data.link_da_swap} closeImg={closePopup} />
+      {isImageUploading ? (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          
+          <i
+            className="fas fa-circle-notch fa-spin"
+            style={{ fontSize: "30px", color: "blue" }}
+          />
+        </div>
       ) : (
-        <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-max bg-white gap-y-4 overflow-y-auto">
-          <div className="w-full h-[95%] relative">
-            <TemplateComponent data={props.data} onClick={handlePopup} />
-          </div>
-          <div className=" mt-5 flex flex-col gap-y-2 ">
-            {dataCmt?.length > 0 &&
-              dataCmt.map((cmt, index) => (
-                <div className="flex items-stretch gap-x-4" key={index}>
-                  <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
-                    {cmt.avatar_user && cmt.avatar_user.startsWith("http") ? (
-                      <img
-                        src={cmt.avatar_user}
-                        alt=""
-                        className="w-[100%] h-[100%]  rounded-[50%]"
-                      />
-                    ) : (
-                      <img
-                        src={noAvatar}
-                        alt=""
-                        className="w-[100%] h-[100%]  rounded-[50%]"
-                      />
-                    )}
-                  </div>
-                  <div
-                    className="flex flex-col gap-x-2 font-[Montserrat]"
-                  >
-                    <span className="lg:text-[18px] text-lg font-semibold">
-                      {cmt.user_name ? cmt.user_name : "Guest"}
-                    </span>
-                    <span
-                      className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
-                      style={{ whiteSpace: "pre-wrap" }}                      
-                    > 
-                      {cmt.noi_dung_cmt}
-                    </span>
-                    {cmt.imageattach ? (
-                      <img
-                        className="w-[60px] h-[50px]"
-                        src={cmt.imageattach}
-                        alt=""
-                        onClick={() => handleOpenImagePopup(cmt.imageattach)}
-                      />
-                    ) : (
-                      ""
-                    )}
-                    <span className="lg:text-base text-sm">{cmt.device_cmt}</span>
-                  </div>
+        <>
+          {isImgPopup ? (
+            <ImagePopup imgSrc={props.data.link_da_swap} closeImg={closePopup} />
+          ) : (
+            <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-max bg-white gap-y-4 overflow-y-auto">
+              <div className="w-full h-[95%] relative">
+                <TemplateComponent data={props.data} onClick={handlePopup} />
+              </div>
 
-                  <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
-                    {cmt.thoi_gian_release}
-                  </div>
-                  <div className="lg:w-[15%] w-[20%] lg:text-[13px] text-sm font-[Montserrat]">
-                    <p> {cmt.dia_chi_ip}</p>
-                    <p> {cmt.location}</p>
-                  </div>
-                 </div>
 
-              ))}
-          </div>
-          <div className="flex items-center justify-around mx-3 gap-x-4 rounded-full shadow-sm shadow-slate-300">
-            <div className="overflow-hidden rounded-full w-[50px]">
-              <img
-                src={user?.id_user ? user.link_avatar : noAvatar}
-                alt=""
-                className="w-[100%] h-[100%] object-cover"
-              />
-            </div>
+              <div className=" mt-5 flex flex-col gap-y-2 ">
+                {dataCmt?.length > 0 &&
+                  dataCmt.map((cmt, index) => (
+                    <div className="flex items-stretch gap-x-4" key={index}>
+                      <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
+                        {cmt.avatar_user && cmt.avatar_user.startsWith("http") ? (
+                          <img
+                            src={cmt.avatar_user}
+                            alt=""
+                            className="w-[100%] h-[100%]  rounded-[50%]"
+                          />
+                        ) : (
+                          <img
+                            src={noAvatar}
+                            alt=""
+                            className="w-[100%] h-[100%]  rounded-[50%]"
+                          />
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-x-2 font-[Montserrat]">
+                        <span className="lg:text-[18px] text-lg font-semibold">
+                          {cmt.user_name ? cmt.user_name : "Guest"}
+                        </span>
+                        <span
+                          className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
+                          style={{ whiteSpace: "pre-wrap" }}
+                        >
+                          {cmt.noi_dung_cmt}
+                        </span>
+                        {cmt.imageattach ? (
+                          <img
+                            className="w-[60px] h-[50px]"
+                            src={cmt.imageattach}
+                            alt=""
+                            onClick={() => handleOpenImagePopup(cmt.imageattach)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                        <span className="lg:text-base text-sm">
+                          {cmt.device_cmt}
+                        </span>
+                      </div>
 
-            <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-full">
-              <form
-                onSubmit={onSubmitComment}
-                className="flex items-center gap-x-4"
-              >
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  className="w-full h-auto border-none outline-none font-[Montserrat]"
-                ></input>
-                <div className="inline-block relative">
-                  <label for="file-input">
-                    <img
-                      src="https://cdn-icons-png.flaticon.com/512/685/685655.png"
-                      width="20px"
-                      height="20px"
-                      alt=""
-                    />
-                    <input
-                      type="file"
-                      onChange={onChangeImgComment}
-                      accept=".jpg"
-                      className="absolute left-0 top-0 opacity-0 w-[100%] h-[100%]"
-                    />
-                  </label>
-                </div>
-                <button
-                  className="w-[30px] float-right"
-                  onClick={HandleSendCmt}
-                >
+                      <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
+                        {cmt.thoi_gian_release}
+                      </div>
+                      <div className="lg:w-[15%] w-[20%] lg:text-[13px] text-sm font-[Montserrat]">
+                        <p> {cmt.dia_chi_ip}</p>
+                        <p> {cmt.location}</p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+
+
+              <div className="flex items-center justify-around mx-3 gap-x-4 rounded-full shadow-sm shadow-slate-300">
+                <div className="overflow-hidden rounded-full w-[50px]">
                   <img
-                    src={send}
+                    src={user?.id_user ? user.link_avatar : noAvatar}
                     alt=""
                     className="w-[100%] h-[100%] object-cover"
                   />
-                </button>
-              </form>
+                </div>
+
+                <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-full">
+
+                  <form
+                    onSubmit={onSubmitComment}
+                    className="flex items-center gap-x-4"
+                  >
+                    <textarea
+                      type="text"
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      className=" w-full h-[50px] border-none outline-none font-[Montserrat]"
+                    ></textarea>
+                    <div className="inline-block relative">
+
+                      <label for="file-input">
+                        <img
+                          src="https://cdn-icons-png.flaticon.com/512/685/685655.png"
+                          width="20px"
+                          height="20px"
+                          alt=""
+                        />
+                        <input
+                          type="file"
+                          onChange={onChangeImgComment}
+                          accept=".jpg"
+                          className="absolute left-0 top-0 opacity-0 w-[100%] h-[100%]"
+                        />
+                      </label>
+                    </div>
+                    <button
+                      className="w-[30px] float-right"
+                      onClick={HandleSendCmt}
+                    >
+                      <img
+                        src={send}
+                        alt=""
+                        className="w-[100%] h-[100%] object-cover"
+                      />
+                    </button>
+                  </form>
+
+                </div>
+                {imgComment ? (
+                  <>
+                    <img className="w-[80px] h-[70px]" src={imgComment} />
+                    <button className="mt-[-50px]" onClick={removeImgComment}>
+                      <i className="fas fa-times font-bold" />
+                    </button>
+                  </>
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
-            {imgComment ? (
-              <>
-                <img className="w-[80px] h-[70px]" src={imgComment} />
-                <button className="mt-[-50px]" onClick={removeImgComment}>
-                  <i className="fas fa-times font-bold" />
-                </button>
-              </>
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
+          )}
+        </>
       )}
       <div className="w-[400px] h-full z-[9999]" onClick={closePopup}></div>
       {isImagePopupOpen && (
@@ -315,7 +344,6 @@ function CmtPopup(props) {
         </div>
       )}
     </div>
-
   );
 }
 

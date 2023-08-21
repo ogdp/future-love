@@ -10,9 +10,11 @@ import img1 from "../components/image/finish.png";
 import img2 from "../components/image/12.png";
 import bg1 from "../components/image/bg-1.png";
 import bg2 from "../components/image/bg-2.png";
+import bg4 from "../components/image/bg4.jpeg";
 import vec1 from "../components/image/Vector1.png";
 import vec2 from "../components/image/Vector2.png";
-import bg3 from "../components/image/bg-3.png";
+import vec3 from "../components/image/hoa.png";
+import vec4 from "../components/image/tron2.png";
 import moment from "moment";
 import { useParams } from "react-router";
 
@@ -21,7 +23,8 @@ import { useParams } from "react-router";
 
 function EventHistory(props) {
   const { id } = useParams();
-  
+
+
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingType, setLoadingType] = useState(null);
@@ -30,7 +33,7 @@ function EventHistory(props) {
   const [count, setCount] = useState(1);
   const seenIds = {};
   console.log(id);
-  console.log(count)
+  console.log(count);
 
   const resultsPerPage = 8;
   // useEffect(() => {
@@ -49,7 +52,7 @@ function EventHistory(props) {
   // }
 
   const fetchData = async () => {
-    if(!id){
+    if (!id) {
       try {
         setIsLoading(true);
         const response = await fetch(
@@ -71,8 +74,7 @@ function EventHistory(props) {
       } catch (error) {
         console.log(error);
       }
-    
-    }else{
+    } else {
       try {
         setIsLoading(true);
         const response = await fetch(
@@ -94,24 +96,23 @@ function EventHistory(props) {
       } catch (error) {
         console.log(error);
       }
-
     }
   };
-  console.log(currentPage)
+  console.log(currentPage);
 
   const changePageUp = () => {
     if (count <= currentPage) {
       setCount(count + 1);
       history.push(`/event/${count + 1}`);
-      window.location.reload()
+      window.location.reload();
     }
   };
-  
+
   const changePageDown = () => {
     if (count > 1) {
       setCount(count - 1);
       history.push(`/event/${count - 1}`);
-      window.location.reload()
+      window.location.reload();
     }
   };
   useEffect(() => {
@@ -165,11 +166,12 @@ function EventHistory(props) {
 
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
-  const currentResults = sortedData.slice(indexOfFirstResult, indexOfLastResult);
+  const currentResults = sortedData.slice(
+    indexOfFirstResult,
+    indexOfLastResult
+  );
   const totalPages = Math.ceil(sortedData.length / resultsPerPage);
-  
 
-  
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -187,7 +189,7 @@ function EventHistory(props) {
     <div className="">
       <div className="cursor-pointer">
         {
-          props.data && props.search ? (
+          props.data ? (
             <div>
               {props.data.map((array, index) => (
                 <div
@@ -200,7 +202,7 @@ function EventHistory(props) {
                   className={`lg:w-[100vh] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
                 >
                   {array.sukien[array.sukien.length - 1].id_template === 1 &&
-                  4 ? (
+                    4 ? (
                     <div
                       style={{ backgroundImage: `url(${bg1})` }}
                       className="bg-no-repeat lg:bg-contain bg-center lg:w-full lg:h-full"
@@ -210,9 +212,8 @@ function EventHistory(props) {
                           {/* image love */}
                           <span
                             key={array.sukien[array.sukien.length - 1].id}
-                            to={`/ array / ${
-                              array.sukien[array.sukien.length - 1].id
-                            }`}
+                            to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                              }`}
                             className="lg:text-[24px] starborn mb-4 leading-tight"
                           >
                             {array.sukien[array.sukien.length - 1].ten_su_kien}
@@ -240,10 +241,9 @@ function EventHistory(props) {
                           {/* image swap */}
                           <div
                             style={{
-                              backgroundImage: `url(${
-                                array.sukien[array.sukien.length - 1]
-                                  .link_da_swap
-                              })`,
+                              backgroundImage: `url(${array.sukien[array.sukien.length - 1]
+                                .link_da_swap
+                                })`,
                             }}
                             className=" lg:w-[295px] w-[100px] h-[100px] lg:h-[295px] rounded-full bg-no-repeat bg-cover mt-1"
                           />
@@ -272,9 +272,8 @@ function EventHistory(props) {
                           {/* image love */}
                           <span
                             key={array.sukien[array.sukien.length - 1].id}
-                            to={`/ array / ${
-                              array.sukien[array.sukien.length - 1].id
-                            }`}
+                            to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                              }`}
                             className="lg:text-[24px] starborn leading-tight mb-4"
                           >
                             {array.sukien[array.sukien.length - 1].ten_su_kien}
@@ -319,9 +318,8 @@ function EventHistory(props) {
                         <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
                           <span
                             key={array.sukien[array.sukien.length - 1].id}
-                            to={`/ array / ${
-                              array.sukien[array.sukien.length - 1].id
-                            }`}
+                            to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                              }`}
                             className="lg:text-[24px] starborn mb-4 leading-tight"
                           >
                             {array.sukien[array.sukien.length - 1].ten_su_kien}
@@ -355,6 +353,7 @@ function EventHistory(props) {
               ))}
             </div>
           ) : (
+
             <div>
               {currentResults.map((array, index) => (
                 <div
@@ -365,7 +364,7 @@ function EventHistory(props) {
                     )
                   }
                   key={index}
-                  className={`lg:w-[100vh] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
+                  className={`lg:w-[47vw] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
                 >
                   {array.nodata ? (
                     <span
@@ -385,9 +384,8 @@ function EventHistory(props) {
                           {/* image love */}
                           <span
                             key={array.sukien[array.sukien.length - 1].id}
-                            to={`/ array / ${
-                              array.sukien[array.sukien.length - 1].id
-                            }`}
+                            to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                              }`}
                             className="lg:text-[24px] starborn mb-4 leading-tight"
                           >
                             {array.sukien[array.sukien.length - 1].ten_su_kien}
@@ -415,10 +413,9 @@ function EventHistory(props) {
                           {/* image swap */}
                           <div
                             style={{
-                              backgroundImage: `url(${
-                                array.sukien[array.sukien.length - 1]
-                                  .link_da_swap
-                              })`,
+                              backgroundImage: `url(${array.sukien[array.sukien.length - 1]
+                                .link_nu_goc
+                                })`,
                             }}
                             className=" lg:w-[295px] w-[100px] h-[100px] lg:h-[295px] rounded-full bg-no-repeat bg-cover mt-1"
                           />
@@ -437,19 +434,36 @@ function EventHistory(props) {
                       className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
                     >
                       <div className="grid grid-cols-3">
-                        <div className="flex justify-center items-center">
-                          <div
-                            style={{ backgroundImage: `url(${vec1})` }}
-                            className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
-                          ></div>
+                        <div className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 relative">
+                          < div className="flex justify-center items-center">
+                            <div
+                              style={{
+                                backgroundImage: `url(${vec3})`
+                                , marginTop: "20%"
+                              }}
+                              className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 z-10"
+                            ></div>
+                            <div
+                              style={{
+                                backgroundImage: `url(${array.sukien[array.sukien.length - 1].link_nam_goc})`,
+                                borderRadius: '50%',
+                                backgroundSize: 'cover',
+
+                                marginTop: '20%',  // Thay đổi khoảng cách dọc giữa các ảnh
+                                backgroundPosition: 'center',
+                              }}
+                              className="bg-no-repeat bg-cover lg:w-72 lg:h-72 w-36 h-36 absolute"
+                            ></div>
+                          </div>
+
+
                         </div>
                         <div className="flex flex-col justify-center items-center mt-12">
                           {/* image love */}
                           <span
                             key={array.sukien[array.sukien.length - 1].id}
-                            to={`/ array / ${
-                              array.sukien[array.sukien.length - 1].id
-                            }`}
+                            to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                              }`}
                             className="lg:text-[24px] starborn leading-tight mb-4"
                           >
                             {array.sukien[array.sukien.length - 1].ten_su_kien}
@@ -468,6 +482,7 @@ function EventHistory(props) {
                               style={{ fontStyle: "normal", marginTop: 100 }}
                               className="text-time"
                             >
+                              {/* {array.sukien[array.sukien.length - 1].real_time} */}
                               {moment(
                                 array.sukien[array.sukien.length - 1].real_time
                               )
@@ -476,33 +491,71 @@ function EventHistory(props) {
                             </span>
                           </div>
                         </div>
-                        <div className="flex justify-center items-center">
-                          <div
-                            style={{ backgroundImage: `url(${vec2})` }}
-                            className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
-                          ></div>
+                        <div className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 relative ml-auto">
+                          < div className="flex justify-center items-center">
+                            <div
+                              style={{
+                                backgroundImage: `url(${vec3})`
+                                , marginTop: "20%"
+                              }}
+                              className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 z-10"
+                            ></div>
+                            <div
+                              style={{
+                                backgroundImage: `url(${array.sukien[array.sukien.length - 1].link_nu_goc})`,
+                                borderRadius: '50%',
+                                backgroundSize: 'cover',
+
+                                marginTop: '20%',  // Thay đổi khoảng cách dọc giữa các ảnh
+                                backgroundPosition: 'center',
+                              }}
+                              className="bg-no-repeat bg-cover lg:w-72 lg:h-72 w-36 h-36 absolute"
+                            ></div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   ) : (
                     <div
-                      style={{ backgroundImage: `url(${bg2})` }}
-                      className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full relative"
+                      style={{ backgroundImage: `url(${bg4})` }}
+                      className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
                     >
-                      <div className="flex flex-col justify-center items-center relative">
-                        {/* image love */}
+                      <div className="grid grid-cols-3">
+                        <div className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 relative">
+                          < div className="flex justify-center items-center">
+                            <div
+                              style={{
+                                backgroundImage: `url(${vec4})`
+                                , marginTop: "20%"
+                              }}
+                              className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 z-10"
+                            ></div>
+                            <div
+                              style={{
+                                backgroundImage: `url(${array.sukien[array.sukien.length - 1].link_nam_goc})`,
+                                borderRadius: '50%',
+                                backgroundSize: 'cover',
 
-                        <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
+                                marginTop: '20%',  // Thay đổi khoảng cách dọc giữa các ảnh
+                                backgroundPosition: 'center',
+                              }}
+                              className="bg-no-repeat bg-cover lg:w-72 lg:h-72 w-36 h-36 absolute"
+                            ></div>
+                          </div>
+
+
+                        </div>
+                        <div className="flex flex-col justify-center items-center mt-12">
+                          {/* image love */}
                           <span
                             key={array.sukien[array.sukien.length - 1].id}
-                            to={`/ array / ${
-                              array.sukien[array.sukien.length - 1].id
-                            }`}
-                            className="lg:text-[24px] starborn"
+                            to={`/ array / ${array.sukien[array.sukien.length - 1].id
+                              }`}
+                            className="lg:text-[24px] starborn leading-tight mb-4"
                           >
                             {array.sukien[array.sukien.length - 1].ten_su_kien}
                           </span>
-                          <div className="mt-3">
+                          <div className="box lg:h-52 h-36 mt-3">
                             <p className="slab font-semibold lg:text-[16px]">
                               {
                                 array.sukien[array.sukien.length - 1]
@@ -510,29 +563,42 @@ function EventHistory(props) {
                               }
                             </p>
                           </div>
-                        </div>
 
-                        <div className="my-4 slab font-semibold lg:text-[16px]">
-                          <span
-                            style={{ fontStyle: "normal", marginTop: 100 }}
-                            className="text-time"
-                          >
-                            {moment(
-                              array.sukien[array.sukien.length - 1].real_time
-                            )
-                              .add(7, "hours")
-                              .format("YYYY-MM-DD HH:mm:ss")}
-                          </span>
+                          <div className="my-4 slab font-semibold lg:text-[16px]">
+                            <span
+                              style={{ fontStyle: "normal", marginTop: 100 }}
+                              className="text-time"
+                            >
+                              {/* {array.sukien[array.sukien.length - 1].real_time} */}
+                              {moment(
+                                array.sukien[array.sukien.length - 1].real_time
+                              )
+                                .add(7, "hours")
+                                .format("YYYY-MM-DD HH:mm:ss")}
+                            </span>
+                          </div>
                         </div>
-                        <div className="absolute lg:top-[95%] top-[90%] flex items-center">
-                          <div
-                            style={{ backgroundImage: `url(${vec1})` }}
-                            className="bg-no-repeat bg-cover lg:w-[100px] lg:h-[100px] w-[50px] h-[50px]"
-                          />
-                          <div
-                            style={{ backgroundImage: `url(${vec2})` }}
-                            className="bg-no-repeat bg-cover lg:w-[100px] lg:h-[100px] w-[50px] h-[50px]"
-                          />
+                        <div className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 relative ml-auto">
+                          < div className="flex justify-center items-center">
+                            <div
+                              style={{
+                                backgroundImage: `url(${vec4})`
+                                , marginTop: "20%"
+                              }}
+                              className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 z-10"
+                            ></div>
+                            <div
+                              style={{
+                                backgroundImage: `url(${array.sukien[array.sukien.length - 1].link_nu_goc})`,
+                                borderRadius: '50%',
+                                backgroundSize: 'cover',
+
+                                marginTop: '20%',  // Thay đổi khoảng cách dọc giữa các ảnh
+                                backgroundPosition: 'center',
+                              }}
+                              className="bg-no-repeat bg-cover lg:w-72 lg:h-72 w-36 h-36 absolute"
+                            ></div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -541,27 +607,8 @@ function EventHistory(props) {
               ))}
             </div>
           )
-          // :(
-          //   <span>No data</span>
-          // )
         }
-
-        {/* <div className="pagination text-4xl flex justify-center my-6">
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-              (pageNumber) => (
-                <button
-                  key={pageNumber}
-                  className={`pagination-button ${pageNumber === currentPage ? "active bg-red-700" : ""
-                    } bg-[#ff9f9f] hover:bg-[#ff9f9f8c] text-white font-medium py-2 px-4 rounded ml-2`}
-                  onClick={() => handlePageChange(pageNumber)}
-                >
-                  {pageNumber}
-                </button>
-              )
-            )}
-          </div> */}
-
-        <div className="pagination text-4xl flex justify-center my-6">
+        < div className="pagination text-4xl flex justify-center my-6">
           <button
             type="button"
             className="py-2 px-3 bg-[#ff9f9f] rounded hover:bg-[#ff9f9f8c]"
@@ -581,7 +628,7 @@ function EventHistory(props) {
             type="button"
             className="mx-3 text-white font-medium py-2 px-4 rounded bg-red-700"
           >
-            {id?id:count}
+            {id ? id : count}
           </button>
           <button
             type="button"
@@ -600,7 +647,7 @@ function EventHistory(props) {
           </button>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

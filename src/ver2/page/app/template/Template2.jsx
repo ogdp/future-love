@@ -6,6 +6,9 @@ import CmtPopup from "../CmtPopup";
 import moment from "moment/moment";
 import { useParams } from "react-router";
 import axios from "axios";
+
+
+
 function Template2(props) {
   const { id } = useParams();
   const data = props.data;
@@ -44,16 +47,14 @@ function Template2(props) {
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
   const view =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
+
   return (
     <div className="mt-20 mb-10 flex flex-col items-center">
       <div>
-        <Clock
-          data={moment(data.real_time)
-            .add(7, "hours")
-            .format("YYYY-MM-DD HH:mm:ss")}
-        />
+        <Clock data={moment(data.real_time, "YYYY-MM-DD HH:mm:ss").add(7, "hours").toDate()} />
       </div>
       <div className=" lg:w-[1019px] w-[400px] h-[500px] border-8 border-pink-300  lg:h-[600px] bg-white  rounded-[36px] flex flex-row mt-[50px] overflow-hidden relative">
+
         <div
           style={{ backgroundImage: `url(${link_da_swap})` }}
           className="lg:w-full lg:h-[340px] w-full h-[400px] bg-top  bg-no-repeat bg-cover object-contain  z-20"
@@ -101,7 +102,7 @@ function Template2(props) {
             />
           </div>
         )}
-        {}
+        { }
       </div>
       {/* <img src={data.link_nu_chua_swap} /> */}
     </div>
