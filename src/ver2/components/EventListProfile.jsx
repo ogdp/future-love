@@ -15,7 +15,7 @@ const EventListProfile = (props) => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-  
+
   if (props.data.length === 0)
     return <div className="text-xl text-center py-3">Loadding ...</div>;
   return (
@@ -64,15 +64,13 @@ const EventListProfile = (props) => {
             </button>
             <div className="w-full h-[80%] overflow-x-hidden text-xl px-3">
               {currentData.map((item, index) => (
-                <>
-                  <Link
-                    key={index}
-                    to={`/detail/${item.sukien[0].id_toan_bo_su_kien}/1`}
-                  >
+                <div key={index}>
+                  <Link to={`/detail/${item.sukien[0].id_toan_bo_su_kien}/1`}>
                     <div
                       className="h-[150px] flex items-center justify-center bg-cover bg-center bg-no-repeat rounded-lg overflow-x-hidden my-2"
                       style={{
-                        backgroundImage: 'url("https://i.ibb.co/2t4J5dK/1.png")',
+                        backgroundImage:
+                          'url("https://i.ibb.co/2t4J5dK/1.png")',
                       }}
                     >
                       <div className="w-full flex justify-around items-center py-6">
@@ -91,7 +89,9 @@ const EventListProfile = (props) => {
                             {item.sukien[0].noi_dung_su_kien}
                           </p>
                           <h5 className="text-right py-1 text-2xl">
-                          {moment(item.sukien[0].real_time).add(7, 'hours').format("YYYY-MM-DD HH:mm:ss")}
+                            {moment(item.sukien[0].real_time)
+                              .add(7, "hours")
+                              .format("YYYY-MM-DD HH:mm:ss")}
                           </h5>
                         </div>
                         <div className="w-[100px] h-[100px] overflow-hidden rounded-full max-lg:hidden">
@@ -104,8 +104,7 @@ const EventListProfile = (props) => {
                       </div>
                     </div>
                   </Link>
-
-                </>
+                </div>
               ))}
               <div className="pagination text-4xl flex justify-center my-6">
                 <button
@@ -128,7 +127,9 @@ const EventListProfile = (props) => {
                   type="button"
                   className="mx-3 text-white font-medium py-2 px-4 rounded bg-red-700"
                 >
-                  {currentPage}
+                  {currentPage}{" "}
+                  <span className="text-2xl font-bold px-2">/</span>{" "}
+                  {totalPages}
                 </button>
                 <button
                   type="button"
