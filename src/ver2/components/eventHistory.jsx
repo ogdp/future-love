@@ -10,9 +10,11 @@ import img1 from "../components/image/finish.png";
 import img2 from "../components/image/12.png";
 import bg1 from "../components/image/bg-1.png";
 import bg2 from "../components/image/bg-2.png";
+import bg4 from "../components/image/bg4.jpeg";
 import vec1 from "../components/image/Vector1.png";
 import vec2 from "../components/image/Vector2.png";
-import bg3 from "../components/image/bg-3.png";
+import vec3 from "../components/image/hoa.png";
+import vec4 from "../components/image/tron2.png";
 import moment from "moment";
 import { useParams } from "react-router";
 
@@ -185,156 +187,215 @@ function EventHistory(props) {
   return (
     <div className="">
       <div className="cursor-pointer">
-        {
-          props.data ? (
-            <div>
-              {props.data.map((array, index) => (
-                <div
-                  onClick={() =>
-                    handleEventHistory(
-                      array.sukien[array.sukien.length - 1].id_toan_bo_su_kien
-                    )
-                  }
-                  key={index}
-                  className={`lg:w-[100vh] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
-                >
-                  {array.sukien[array.sukien.length - 1].id_template === 1 &&
+        {props.data ? (
+          <div>
+            {props.data.map((array, index) => (
+              <div
+                onClick={() =>
+                  handleEventHistory(
+                    array.sukien[array.sukien.length - 1].id_toan_bo_su_kien
+                  )
+                }
+                key={index}
+                className={`lg:w-[100vh] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
+              >
+                {array.sukien[array.sukien.length - 1].id_template === 1 &&
+                4 ? (
+                  <div
+                    style={{ backgroundImage: `url(${bg1})` }}
+                    className="bg-no-repeat lg:bg-contain bg-center lg:w-full lg:h-full"
+                  >
+                    <div className="grid grid-cols-2 ">
+                      <div className="lg:w-[300px] flex flex-col justify-center lg:ml-28 ml-5 lg:mt-0 mt-20">
+                        {/* image love */}
+                        <span
+                          key={array.sukien[array.sukien.length - 1].id}
+                          to={`/ array / ${
+                            array.sukien[array.sukien.length - 1].id
+                          }`}
+                          className="lg:text-[24px] starborn mb-4 leading-tight"
+                        >
+                          {array.sukien[array.sukien.length - 1].ten_su_kien}
+                        </span>
+                        <p className="slab font-semibold lg:text-[16px]">
+                          {
+                            array.sukien[array.sukien.length - 1]
+                              .noi_dung_su_kien
+                          }
+                        </p>
+                        <div className="my-4 slab font-semibold lg:text-[16px]">
+                          <span
+                            style={{ fontStyle: "normal", marginTop: 100 }}
+                            className="text-time"
+                          >
+                            {moment(
+                              array.sukien[array.sukien.length - 1].real_time
+                            )
+                              .add(7, "hours")
+                              .format("YYYY-MM-DD HH:mm:ss")}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-center mt-16">
+                        {/* image swap */}
+                        <div
+                          style={{
+                            backgroundImage: `url(${
+                              array.sukien[array.sukien.length - 1].link_da_swap
+                            })`,
+                          }}
+                          className=" lg:w-[295px] w-[100px] h-[100px] lg:h-[295px] rounded-full bg-no-repeat bg-cover mt-1"
+                        />
+                        <div
+                          style={{ backgroundImage: `url(${img1})` }}
+                          className="absolute rounded-full bg-center bg-no-repeat bg-cover lg:w-[320px] w-[120px] h-[120px] lg:h-[320px]"
+                        />
+                      </div>
+                    </div>
+                    {/* first event */}
+                  </div>
+                ) : array.sukien[array.sukien.length - 1].id_template === 2 ? (
+                  <div
+                    style={{ backgroundImage: `url(${bg2})` }}
+                    className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
+                  >
+                    <div className="grid grid-cols-3">
+                      <div className="flex justify-center items-center">
+                        <div
+                          style={{ backgroundImage: `url(${vec1})` }}
+                          className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
+                        />
+                      </div>
+                      <div className="flex flex-col justify-center items-center mt-12">
+                        {/* image love */}
+                        <span
+                          key={array.sukien[array.sukien.length - 1].id}
+                          to={`/ array / ${
+                            array.sukien[array.sukien.length - 1].id
+                          }`}
+                          className="lg:text-[24px] starborn leading-tight mb-4"
+                        >
+                          {array.sukien[array.sukien.length - 1].ten_su_kien}
+                        </span>
+                        <div className="box lg:h-52 h-36 mt-3">
+                          <p className="slab font-semibold lg:text-[16px]">
+                            {
+                              array.sukien[array.sukien.length - 1]
+                                .noi_dung_su_kien
+                            }
+                          </p>
+                        </div>
+
+                        <div className="my-4 slab font-semibold lg:text-[16px]">
+                          <span
+                            style={{ fontStyle: "normal", marginTop: 100 }}
+                            className="text-time"
+                          >
+                            {moment(
+                              array.sukien[array.sukien.length - 1].real_time
+                            )
+                              .add(7, "hours")
+                              .format("YYYY-MM-DD HH:mm:ss")}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-center items-center">
+                        <div
+                          style={{ backgroundImage: `url(${vec2})` }}
+                          className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    style={{ backgroundImage: `url(${bg2})` }}
+                    className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
+                  >
+                    <div className="flex flex-col justify-center items-center">
+                      {/* image love */}
+                      <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
+                        <span
+                          key={array.sukien[array.sukien.length - 1].id}
+                          to={`/ array / ${
+                            array.sukien[array.sukien.length - 1].id
+                          }`}
+                          className="lg:text-[24px] starborn mb-4 leading-tight"
+                        >
+                          {array.sukien[array.sukien.length - 1].ten_su_kien}
+                        </span>
+                        <div className="mt-3">
+                          <p className="slab font-semibold lg:text-[16px]">
+                            {
+                              array.sukien[array.sukien.length - 1]
+                                .noi_dung_su_kien
+                            }
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="my-4 slab font-semibold lg:text-[16px]">
+                        <span
+                          style={{ fontStyle: "normal", marginTop: 100 }}
+                          className="text-time"
+                        >
+                          {moment(
+                            array.sukien[array.sukien.length - 1].real_time
+                          )
+                            .add(7, "hours")
+                            .format("YYYY-MM-DD HH:mm:ss")}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div>
+            {currentResults.map((array, index) => (
+              <div
+                onClick={() =>
+                  handleEventHistory(
+                    array.sukien[array.sukien.length - 1].id_toan_bo_su_kien,
+                    array.sukien[array.sukien.length - 1].id_template
+                  )
+                }
+                key={index}
+                className={`lg:w-[47vw] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
+              >
+                {array.nodata ? (
+                  <span
+                    style={{ marginLeft: "50%" }}
+                    className=" z-99 text-3xl text-center"
+                  >
+                    No data
+                  </span>
+                ) : array.sukien[array.sukien.length - 1].id_template === 1 &&
                   4 ? (
-                    <div
-                      style={{ backgroundImage: `url(${bg1})` }}
-                      className="bg-no-repeat lg:bg-contain bg-center lg:w-full lg:h-full"
-                    >
-                      <div className="grid grid-cols-2 ">
-                        <div className="lg:w-[300px] flex flex-col justify-center lg:ml-28 ml-5 lg:mt-0 mt-20">
-                          {/* image love */}
-                          <span
-                            key={array.sukien[array.sukien.length - 1].id}
-                            to={`/ array / ${
-                              array.sukien[array.sukien.length - 1].id
-                            }`}
-                            className="lg:text-[24px] starborn mb-4 leading-tight"
-                          >
-                            {array.sukien[array.sukien.length - 1].ten_su_kien}
-                          </span>
-                          <p className="slab font-semibold lg:text-[16px]">
-                            {
-                              array.sukien[array.sukien.length - 1]
-                                .noi_dung_su_kien
-                            }
-                          </p>
-                          <div className="my-4 slab font-semibold lg:text-[16px]">
-                            <span
-                              style={{ fontStyle: "normal", marginTop: 100 }}
-                              className="text-time"
-                            >
-                              {moment(
-                                array.sukien[array.sukien.length - 1].real_time
-                              )
-                                .add(7, "hours")
-                                .format("YYYY-MM-DD HH:mm:ss")}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex justify-center mt-16">
-                          {/* image swap */}
-                          <div
-                            style={{
-                              backgroundImage: `url(${
-                                array.sukien[array.sukien.length - 1]
-                                  .link_da_swap
-                              })`,
-                            }}
-                            className=" lg:w-[295px] w-[100px] h-[100px] lg:h-[295px] rounded-full bg-no-repeat bg-cover mt-1"
-                          />
-                          <div
-                            style={{ backgroundImage: `url(${img1})` }}
-                            className="absolute rounded-full bg-center bg-no-repeat bg-cover lg:w-[320px] w-[120px] h-[120px] lg:h-[320px]"
-                          />
-                        </div>
-                      </div>
-                      {/* first event */}
-                    </div>
-                  ) : array.sukien[array.sukien.length - 1].id_template ===
-                    2 ? (
-                    <div
-                      style={{ backgroundImage: `url(${bg2})` }}
-                      className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
-                    >
-                      <div className="grid grid-cols-3">
-                        <div className="flex justify-center items-center">
-                          <div
-                            style={{ backgroundImage: `url(${vec1})` }}
-                            className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
-                          />
-                        </div>
-                        <div className="flex flex-col justify-center items-center mt-12">
-                          {/* image love */}
-                          <span
-                            key={array.sukien[array.sukien.length - 1].id}
-                            to={`/ array / ${
-                              array.sukien[array.sukien.length - 1].id
-                            }`}
-                            className="lg:text-[24px] starborn leading-tight mb-4"
-                          >
-                            {array.sukien[array.sukien.length - 1].ten_su_kien}
-                          </span>
-                          <div className="box lg:h-52 h-36 mt-3">
-                            <p className="slab font-semibold lg:text-[16px]">
-                              {
-                                array.sukien[array.sukien.length - 1]
-                                  .noi_dung_su_kien
-                              }
-                            </p>
-                          </div>
-
-                          <div className="my-4 slab font-semibold lg:text-[16px]">
-                            <span
-                              style={{ fontStyle: "normal", marginTop: 100 }}
-                              className="text-time"
-                            >
-                              {moment(
-                                array.sukien[array.sukien.length - 1].real_time
-                              )
-                                .add(7, "hours")
-                                .format("YYYY-MM-DD HH:mm:ss")}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex justify-center items-center">
-                          <div
-                            style={{ backgroundImage: `url(${vec2})` }}
-                            className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div
-                      style={{ backgroundImage: `url(${bg2})` }}
-                      className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
-                    >
-                      <div className="flex flex-col justify-center items-center">
+                  <div
+                    style={{ backgroundImage: `url(${bg1})` }}
+                    className="bg-no-repeat lg:bg-contain bg-center lg:w-full lg:h-full"
+                  >
+                    <div className="grid grid-cols-2 ">
+                      <div className="lg:w-[300px] flex flex-col justify-center lg:ml-28 ml-5 lg:mt-0 mt-20">
                         {/* image love */}
-                        <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
-                          <span
-                            key={array.sukien[array.sukien.length - 1].id}
-                            to={`/ array / ${
-                              array.sukien[array.sukien.length - 1].id
-                            }`}
-                            className="lg:text-[24px] starborn mb-4 leading-tight"
-                          >
-                            {array.sukien[array.sukien.length - 1].ten_su_kien}
-                          </span>
-                          <div className="mt-3">
-                            <p className="slab font-semibold lg:text-[16px]">
-                              {
-                                array.sukien[array.sukien.length - 1]
-                                  .noi_dung_su_kien
-                              }
-                            </p>
-                          </div>
-                        </div>
-
+                        <span
+                          key={array.sukien[array.sukien.length - 1].id}
+                          to={`/ array / ${
+                            array.sukien[array.sukien.length - 1].id
+                          }`}
+                          className="lg:text-[24px] starborn mb-4 leading-tight"
+                        >
+                          {array.sukien[array.sukien.length - 1].ten_su_kien}
+                        </span>
+                        <p className="slab font-semibold lg:text-[16px]">
+                          {
+                            array.sukien[array.sukien.length - 1]
+                              .noi_dung_su_kien
+                          }
+                        </p>
                         <div className="my-4 slab font-semibold lg:text-[16px]">
                           <span
                             style={{ fontStyle: "normal", marginTop: 100 }}
@@ -348,167 +409,73 @@ function EventHistory(props) {
                           </span>
                         </div>
                       </div>
+                      <div className="flex justify-center mt-16">
+                        {/* image swap */}
+                        <div
+                          style={{
+                            backgroundImage: `url(${
+                              array.sukien[array.sukien.length - 1].link_nu_goc
+                            })`,
+                          }}
+                          className=" lg:w-[295px] w-[100px] h-[100px] lg:h-[295px] rounded-full bg-no-repeat bg-cover mt-1"
+                        />
+                        <div
+                          style={{ backgroundImage: `url(${img1})` }}
+                          className="absolute rounded-full bg-center bg-no-repeat bg-cover lg:w-[320px] w-[120px] h-[120px] lg:h-[320px]"
+                        />
+                      </div>
                     </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div>
-              {currentResults.map((array, index) => (
-                <div
-                  onClick={() =>
-                    handleEventHistory(
-                      array.sukien[array.sukien.length - 1].id_toan_bo_su_kien,
-                      array.sukien[array.sukien.length - 1].id_template
-                    )
-                  }
-                  key={index}
-                  className={`lg:w-[100vh] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
-                >
-                  {array.nodata ? (
-                    <span
-                      style={{ marginLeft: "50%" }}
-                      className=" z-99 text-3xl text-center"
-                    >
-                      No data
-                    </span>
-                  ) : array.sukien[array.sukien.length - 1].id_template === 1 &&
-                    4 ? (
-                    <div
-                      style={{ backgroundImage: `url(${bg1})` }}
-                      className="bg-no-repeat lg:bg-contain bg-center lg:w-full lg:h-full"
-                    >
-                      <div className="grid grid-cols-2 ">
-                        <div className="lg:w-[300px] flex flex-col justify-center lg:ml-28 ml-5 lg:mt-0 mt-20">
-                          {/* image love */}
-                          <span
-                            key={array.sukien[array.sukien.length - 1].id}
-                            to={`/ array / ${
-                              array.sukien[array.sukien.length - 1].id
-                            }`}
-                            className="lg:text-[24px] starborn mb-4 leading-tight"
-                          >
-                            {array.sukien[array.sukien.length - 1].ten_su_kien}
-                          </span>
+                    {/* first event */}
+                  </div>
+                ) : array.sukien[array.sukien.length - 1].id_template === 2 ? (
+                  <div
+                    style={{ backgroundImage: `url(${bg2})` }}
+                    className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
+                  >
+                    <div className="grid grid-cols-3">
+                      <div className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 relative">
+                        <div className="flex justify-center items-center">
+                          <div
+                            style={{
+                              backgroundImage: `url(${vec3})`,
+                              marginTop: "20%",
+                            }}
+                            className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 z-10"
+                          ></div>
+                          <div
+                            style={{
+                              backgroundImage: `url(${
+                                array.sukien[array.sukien.length - 1]
+                                  .link_nam_goc
+                              })`,
+                              borderRadius: "50%",
+                              backgroundSize: "cover",
+
+                              marginTop: "20%", // Thay đổi khoảng cách dọc giữa các ảnh
+                              backgroundPosition: "center",
+                            }}
+                            className="bg-no-repeat bg-cover lg:w-72 lg:h-72 w-36 h-36 absolute"
+                          ></div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col justify-center items-center mt-12">
+                        {/* image love */}
+                        <span
+                          key={array.sukien[array.sukien.length - 1].id}
+                          to={`/ array / ${
+                            array.sukien[array.sukien.length - 1].id
+                          }`}
+                          className="lg:text-[24px] starborn leading-tight mb-4"
+                        >
+                          {array.sukien[array.sukien.length - 1].ten_su_kien}
+                        </span>
+                        <div className="box lg:h-52 h-36 mt-3">
                           <p className="slab font-semibold lg:text-[16px]">
                             {
                               array.sukien[array.sukien.length - 1]
                                 .noi_dung_su_kien
                             }
                           </p>
-                          <div className="my-4 slab font-semibold lg:text-[16px]">
-                            <span
-                              style={{ fontStyle: "normal", marginTop: 100 }}
-                              className="text-time"
-                            >
-                              {moment(
-                                array.sukien[array.sukien.length - 1].real_time
-                              )
-                                .add(7, "hours")
-                                .format("YYYY-MM-DD HH:mm:ss")}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex justify-center mt-16">
-                          {/* image swap */}
-                          <div
-                            style={{
-                              backgroundImage: `url(${
-                                array.sukien[array.sukien.length - 1]
-                                  .link_da_swap
-                              })`,
-                            }}
-                            className=" lg:w-[295px] w-[100px] h-[100px] lg:h-[295px] rounded-full bg-no-repeat bg-cover mt-1"
-                          />
-                          <div
-                            style={{ backgroundImage: `url(${img1})` }}
-                            className="absolute rounded-full bg-center bg-no-repeat bg-cover lg:w-[320px] w-[120px] h-[120px] lg:h-[320px]"
-                          />
-                        </div>
-                      </div>
-                      {/* first event */}
-                    </div>
-                  ) : array.sukien[array.sukien.length - 1].id_template ===
-                    2 ? (
-                    <div
-                      style={{ backgroundImage: `url(${bg2})` }}
-                      className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
-                    >
-                      <div className="grid grid-cols-3">
-                        <div className="flex justify-center items-center">
-                          <div
-                            style={{ backgroundImage: `url(${vec1})` }}
-                            className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
-                          ></div>
-                        </div>
-                        <div className="flex flex-col justify-center items-center mt-12">
-                          {/* image love */}
-                          <span
-                            key={array.sukien[array.sukien.length - 1].id}
-                            to={`/ array / ${
-                              array.sukien[array.sukien.length - 1].id
-                            }`}
-                            className="lg:text-[24px] starborn leading-tight mb-4"
-                          >
-                            {array.sukien[array.sukien.length - 1].ten_su_kien}
-                          </span>
-                          <div className="box lg:h-52 h-36 mt-3">
-                            <p className="slab font-semibold lg:text-[16px]">
-                              {
-                                array.sukien[array.sukien.length - 1]
-                                  .noi_dung_su_kien
-                              }
-                            </p>
-                          </div>
-
-                          <div className="my-4 slab font-semibold lg:text-[16px]">
-                            <span
-                              style={{ fontStyle: "normal", marginTop: 100 }}
-                              className="text-time"
-                            >
-                              {moment(
-                                array.sukien[array.sukien.length - 1].real_time
-                              )
-                                .add(7, "hours")
-                                .format("YYYY-MM-DD HH:mm:ss")}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex justify-center items-center">
-                          <div
-                            style={{ backgroundImage: `url(${vec2})` }}
-                            className="bg-no-repeat bg-cover lg:w-60 lg:h-60 w-32 h-32"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div
-                      style={{ backgroundImage: `url(${bg2})` }}
-                      className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full relative"
-                    >
-                      <div className="flex flex-col justify-center items-center relative">
-                        {/* image love */}
-
-                        <div className=" lg:w-[370px] w-80 lg:mt-36 mt-16">
-                          <span
-                            key={array.sukien[array.sukien.length - 1].id}
-                            to={`/ array / ${
-                              array.sukien[array.sukien.length - 1].id
-                            }`}
-                            className="lg:text-[24px] starborn"
-                          >
-                            {array.sukien[array.sukien.length - 1].ten_su_kien}
-                          </span>
-                          <div className="mt-3">
-                            <p className="slab font-semibold lg:text-[16px]">
-                              {
-                                array.sukien[array.sukien.length - 1]
-                                  .noi_dung_su_kien
-                              }
-                            </p>
-                          </div>
                         </div>
 
                         <div className="my-4 slab font-semibold lg:text-[16px]">
@@ -516,6 +483,7 @@ function EventHistory(props) {
                             style={{ fontStyle: "normal", marginTop: 100 }}
                             className="text-time"
                           >
+                            {/* {array.sukien[array.sukien.length - 1].real_time} */}
                             {moment(
                               array.sukien[array.sukien.length - 1].real_time
                             )
@@ -523,43 +491,131 @@ function EventHistory(props) {
                               .format("YYYY-MM-DD HH:mm:ss")}
                           </span>
                         </div>
-                        <div className="absolute lg:top-[95%] top-[90%] flex items-center">
+                      </div>
+                      <div className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 relative ml-auto">
+                        <div className="flex justify-center items-center">
                           <div
-                            style={{ backgroundImage: `url(${vec1})` }}
-                            className="bg-no-repeat bg-cover lg:w-[100px] lg:h-[100px] w-[50px] h-[50px]"
-                          />
+                            style={{
+                              backgroundImage: `url(${vec3})`,
+                              marginTop: "20%",
+                            }}
+                            className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 z-10"
+                          ></div>
                           <div
-                            style={{ backgroundImage: `url(${vec2})` }}
-                            className="bg-no-repeat bg-cover lg:w-[100px] lg:h-[100px] w-[50px] h-[50px]"
-                          />
+                            style={{
+                              backgroundImage: `url(${
+                                array.sukien[array.sukien.length - 1]
+                                  .link_nu_goc
+                              })`,
+                              borderRadius: "50%",
+                              backgroundSize: "cover",
+
+                              marginTop: "20%", // Thay đổi khoảng cách dọc giữa các ảnh
+                              backgroundPosition: "center",
+                            }}
+                            className="bg-no-repeat bg-cover lg:w-72 lg:h-72 w-36 h-36 absolute"
+                          ></div>
                         </div>
                       </div>
                     </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )
-          // :(
-          //   <span>No data</span>
-          // )
-        }
+                  </div>
+                ) : (
+                  <div
+                    style={{ backgroundImage: `url(${bg4})` }}
+                    className="bg-no-repeat bg-cover rounded-[29px] h-[214px] bg-center lg:w-full lg:h-full"
+                  >
+                    <div className="grid grid-cols-3">
+                      <div className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 relative">
+                        <div className="flex justify-center items-center">
+                          <div
+                            style={{
+                              backgroundImage: `url(${vec4})`,
+                              marginTop: "20%",
+                            }}
+                            className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 z-10"
+                          ></div>
+                          <div
+                            style={{
+                              backgroundImage: `url(${
+                                array.sukien[array.sukien.length - 1]
+                                  .link_nam_goc
+                              })`,
+                              borderRadius: "50%",
+                              backgroundSize: "cover",
 
-        {/* <div className="pagination text-4xl flex justify-center my-6">
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-              (pageNumber) => (
-                <button
-                  key={pageNumber}
-                  className={`pagination-button ${pageNumber === currentPage ? "active bg-red-700" : ""
-                    } bg-[#ff9f9f] hover:bg-[#ff9f9f8c] text-white font-medium py-2 px-4 rounded ml-2`}
-                  onClick={() => handlePageChange(pageNumber)}
-                >
-                  {pageNumber}
-                </button>
-              )
-            )}
-          </div> */}
+                              marginTop: "20%", // Thay đổi khoảng cách dọc giữa các ảnh
+                              backgroundPosition: "center",
+                            }}
+                            className="bg-no-repeat bg-cover lg:w-72 lg:h-72 w-36 h-36 absolute"
+                          ></div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col justify-center items-center mt-12">
+                        {/* image love */}
+                        <span
+                          key={array.sukien[array.sukien.length - 1].id}
+                          to={`/ array / ${
+                            array.sukien[array.sukien.length - 1].id
+                          }`}
+                          className="lg:text-[24px] starborn leading-tight mb-4"
+                        >
+                          {array.sukien[array.sukien.length - 1].ten_su_kien}
+                        </span>
+                        <div className="box lg:h-52 h-36 mt-3">
+                          <p className="slab font-semibold lg:text-[16px]">
+                            {
+                              array.sukien[array.sukien.length - 1]
+                                .noi_dung_su_kien
+                            }
+                          </p>
+                        </div>
 
+                        <div className="my-4 slab font-semibold lg:text-[16px]">
+                          <span
+                            style={{ fontStyle: "normal", marginTop: 100 }}
+                            className="text-time"
+                          >
+                            {/* {array.sukien[array.sukien.length - 1].real_time} */}
+                            {moment(
+                              array.sukien[array.sukien.length - 1].real_time
+                            )
+                              .add(7, "hours")
+                              .format("YYYY-MM-DD HH:mm:ss")}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 relative ml-auto">
+                        <div className="flex justify-center items-center">
+                          <div
+                            style={{
+                              backgroundImage: `url(${vec4})`,
+                              marginTop: "20%",
+                            }}
+                            className="bg-no-repeat bg-cover lg:w-96 lg:h-96 w-48 h-48 z-10"
+                          ></div>
+                          <div
+                            style={{
+                              backgroundImage: `url(${
+                                array.sukien[array.sukien.length - 1]
+                                  .link_nu_goc
+                              })`,
+                              borderRadius: "50%",
+                              backgroundSize: "cover",
+
+                              marginTop: "20%", // Thay đổi khoảng cách dọc giữa các ảnh
+                              backgroundPosition: "center",
+                            }}
+                            className="bg-no-repeat bg-cover lg:w-72 lg:h-72 w-36 h-36 absolute"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
         <div className="pagination text-4xl flex justify-center my-6">
           <button
             type="button"

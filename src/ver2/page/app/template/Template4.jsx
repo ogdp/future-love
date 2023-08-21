@@ -39,11 +39,7 @@ function Template4(props) {
   return (
     <div className="flex flex-col items-center ">
       <div className="my-20">
-        <Clock
-          data={moment(data.real_time)
-            .add(7, "hours")
-            .format("YYYY-MM-DD HH:mm:ss")}
-        />
+      <Clock data={moment(data.real_time, "YYYY-MM-DD HH:mm:ss").add(7, "hours").toDate()} />
       </div>
       <div
         className={` lg:w-[1019px] w-[400px] h-full  border-8 border-pink-300  bg-white rounded-[36px] flex lg:flex-row flex-col gap-x-10 overflow-hidden`}

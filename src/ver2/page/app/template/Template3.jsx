@@ -33,11 +33,7 @@ function Template3(props) {
   return (
     <div className="min-w-full min-h-full">
       <div className="h-[10%] w-[100%] mt-[40px] ml-[30px]">
-        <Clock
-          data={moment(data.real_time)
-            .add(7, "hours")
-            .format("YYYY-MM-DD HH:mm:ss")}
-        />
+      <Clock data={moment(data.real_time, "YYYY-MM-DD HH:mm:ss").add(7, "hours").toDate()} />
       </div>
       <div>
         <div className="relative top-3 left-3  rounded-[50px] items-center justify-center ml-[50px] mr-2">

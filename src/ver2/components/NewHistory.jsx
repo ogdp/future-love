@@ -35,6 +35,14 @@ export default function NewHistory() {
   const params = window.location.href;
   const arrayUrl = params.split("/");
   const stt_su_kien = arrayUrl[arrayUrl.length - 1];
+  // Show cmt
+  const [showMoreStates, setShowMoreStates] = useState({});
+  const showCmt = (id) => {
+    setShowMoreStates((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
+  };
   useEffect(() => {
     axios
       .get(
@@ -295,6 +303,7 @@ export default function NewHistory() {
             </div>
             <div className=" flex flex-col pt-[40px] mb-[100px] w-full">
               {dataComment.map((item, index) => {
+                const isShowingFullText = showMoreStates[item.id_comment];
                 if (index < 10) {
                   return (
                     <div className="flex items-center gap-x-10 px-10 py-6 mx-[60px] hover:bg-gray-200">
@@ -314,10 +323,23 @@ export default function NewHistory() {
                       )}
                       <div className="">
                         <h3 className="text-3xl font-[Montserrat] ">
-                          {item?.user_name ? item?.user_name : "Guest"}
+                          {item.user_name ? item.user_name : "Guest"}
                         </h3>
                         <div className="mt-3 w-[700px] break-words font-[Montserrat] text-2xl">
-                          {item.noi_dung_cmt}
+                          <span className={`lg:text-lg text-base mt-3`}>
+                            {isShowingFullText
+                              ? item.noi_dung_cmt
+                              : `${item.noi_dung_cmt.substring(0, 260)}`}
+                          </span>
+                          {item.noi_dung_cmt.length > 256 && (
+                            <span
+                              className="text-lg hover:underline "
+                              onClick={() => showCmt(item.id_comment)}
+                              style={{ color: "blue" }}
+                            >
+                              {isShowingFullText ? "UnLess" : "Show more"}
+                            </span>
+                          )}
                         </div>
                         {item.imageattach ? (
                           <img

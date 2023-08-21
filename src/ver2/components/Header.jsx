@@ -32,7 +32,8 @@ function Header({ onSearchChange, onSearch, onClick }) {
     onSearch(event.target.value)
   }
   return (
-    <div className="h-40 w-full mx-4 lg:py-7 py-3">
+    <div className="h-40 w-full mx-4 lg:py-7 py-3"
+    >
       <div className="flex items-center justify-between">
         {/* logo */}
         <div className="flex items-center">

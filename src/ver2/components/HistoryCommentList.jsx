@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const HistoryCommentList = ({ datas }) => {
+const HistoryCommentList = (props) => {
   // console.log(datas);
+  const [datas, setDatas] = useState([]);
+  const server = "http://14.225.7.221:8989";
   const [currentPage, setCurrentPage] = useState(1);
   const [actionCMT, setActionCMT] = useState({ status: false, value: 0 });
   const [count, setCount] = useState(1);
   const resultsPerPage = 10;
+
+  useEffect(() => {
+    setDatas(props.datas);
+  }, [props.datas]);
 
   const checkId = useParams().id;
   if (!datas || datas == null)
@@ -88,6 +96,22 @@ const HistoryCommentList = ({ datas }) => {
     }
     return result;
   }
+
+  const onHandleDeleteCmt = async (id) => {
+    try {
+      const res = await axios.delete(
+        `${server}/lovehistory/page/1/${id}/delete`
+      );
+      const newData = datas.filter((item) => item.id_comment !== id);
+      setDatas(newData);
+      if (res && res.data.message == "Comment deleted successfully") {
+        toast.success("Delete comment successfully !!!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-center">
@@ -116,7 +140,7 @@ const HistoryCommentList = ({ datas }) => {
                           className="w-full h-full object-contain"
                         />
                       </div>
-                      <div className="max-lg:pl-2 max-lg:pr-2 lg:w-[65%] lg:ml-4 flex flex-col justify-center lg:gap-3 text-left">
+                      <div className="max-lg:pl-2 max-lg:pr-2 lg:w-[85%] lg:ml-4 flex flex-col justify-center lg:gap-3 text-left">
                         <h2 className="line-clamp-1 max-lg:text-xl lg:text-2xl font-medium">
                           {checkId !== undefined ? "His" : "You"} commented on
                           the event of{" "}
@@ -179,7 +203,16 @@ const HistoryCommentList = ({ datas }) => {
                         <button className="py-1 px-3 hover:bg-blue-400 hover:text-white w-full">
                           Edit
                         </button>
-                        <button className="py-1 px-3 hover:bg-red-400 hover:text-white">
+                        <button
+                          onClick={() => {
+                            onHandleDeleteCmt(item.id_comment);
+                            setActionCMT({
+                              status: false,
+                              value: 0,
+                            });
+                          }}
+                          className="py-1 px-3 hover:bg-red-400 hover:text-white"
+                        >
                           Delete
                         </button>
                       </div>

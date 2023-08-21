@@ -102,6 +102,7 @@ export default function Profile() {
       );
       // console.log(res);
       const reverseData = await res.data.comment_user.reverse();
+      // console.log(reverseData);
       setDatas(reverseData);
       setEvent(res.data);
       // console.log(res);
@@ -363,7 +364,7 @@ export default function Profile() {
   const getAllEventUser = async (idUser) => {
     try {
       const { data } = await axios.get(`${server}/lovehistory/user/${idUser}`);
-      console.log(data);
+      // console.log(data);
       setListEvent(data.list_sukien);
     } catch (error) {
       console.log(error);
