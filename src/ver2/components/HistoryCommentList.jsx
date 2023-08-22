@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const HistoryCommentList = ({ datas }) => {
+const HistoryCommentList = (props) => {
   // console.log(datas);
+  const [datas, setDatas] = useState([]);
+  const server = "http://14.225.7.221:8989";
   const [currentPage, setCurrentPage] = useState(1);
   const [actionCMT, setActionCMT] = useState({ status: false, value: 0 });
   const [count, setCount] = useState(1);
   const resultsPerPage = 10;
+
+  useEffect(() => {
+    setDatas(props.datas);
+  }, [props.datas]);
 
   const checkId = useParams().id;
   if (!datas || datas == null)
@@ -88,6 +96,22 @@ const HistoryCommentList = ({ datas }) => {
     }
     return result;
   }
+
+  const onHandleDeleteCmt = async (id) => {
+    try {
+      const res = await axios.delete(
+        `${server}/lovehistory/page/1/${id}/delete`
+      );
+      const newData = datas.filter((item) => item.id_comment !== id);
+      setDatas(newData);
+      if (res && res.data.message == "Comment deleted successfully") {
+        toast.success("Delete comment successfully !!!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-center">
@@ -179,7 +203,16 @@ const HistoryCommentList = ({ datas }) => {
                         <button className="py-1 px-3 hover:bg-blue-400 hover:text-white w-full">
                           Edit
                         </button>
-                        <button className="py-1 px-3 hover:bg-red-400 hover:text-white">
+                        <button
+                          onClick={() => {
+                            onHandleDeleteCmt(item.id_comment);
+                            setActionCMT({
+                              status: false,
+                              value: 0,
+                            });
+                          }}
+                          className="py-1 px-3 hover:bg-red-400 hover:text-white"
+                        >
                           Delete
                         </button>
                       </div>
