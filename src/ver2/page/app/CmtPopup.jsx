@@ -16,11 +16,14 @@ const templateComponents = {
   TemplateCmt3: TemplateCmt3,
   TemplateCmt4: TemplateCmt4,
 };
+const userInfo = JSON.parse(window.localStorage.getItem("user-info"));
+const idUser = userInfo && userInfo.id_user;
+console.log(idUser)
 
 
 function CmtPopup(props) {
 
-
+  const [actionCMT, setActionCMT] = useState({ status: false, value: 0 });
   const param = useParams();
   const [dataCmt, setDataCmt] = useState([]);
   const [location, setLocation] = useState([]);
@@ -34,6 +37,18 @@ function CmtPopup(props) {
   const [isImageUploading, setIsImageUploading] = useState(false);
   const downloadImg = () => {
     saveAs(selectedImage, "image.png");
+  };
+  //delete cmt
+  const deleteComment = async (idComment) => {
+    try {
+      const response = await axios.delete(
+        `http://14.225.7.221:8989/lovehistory/page/1/${idComment}/delete`
+      );
+      toast.success(response.data.message)
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleOpenImagePopup = (imageUrl) => {
@@ -213,57 +228,122 @@ function CmtPopup(props) {
             <div className="mt-5 flex flex-col gap-y-2 max-h-[60vh] overflow-y-auto">
               {dataCmt?.length > 0 &&
                 dataCmt.map((cmt, index) => (
-                  <div className="flex items-stretch gap-x-4" key={index}>
-                    <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
-                      {cmt.avatar_user && cmt.avatar_user.startsWith("http") ? (
-                        <img
-                          src={cmt.avatar_user}
-                          alt=""
-                          className="w-[100%] h-[100%]  rounded-[50%]"
-                        />
-                      ) : (
-                        <img
-                          src={noAvatar}
-                          alt=""
-                          className="w-[100%] h-[100%]  rounded-[50%]"
-                        />
-                      )}
-                    </div>
-                    <div className="flex flex-col gap-x-2 font-[Montserrat]">
-                      <span className="lg:text-[18px] text-lg font-semibold">
-                        {cmt.user_name ? cmt.user_name : "Guest"}
-                      </span>
-                      <span
-                        className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
-                        style={{ whiteSpace: "pre-wrap" }}
-                      >
-                        {cmt.noi_dung_cmt}
-                      </span>
-                      {cmt.imageattach ? (
-                        <img
-                          className="w-[60px] h-[50px]"
-                          src={cmt.imageattach}
-                          alt=""
-                          onClick={() => handleOpenImagePopup(cmt.imageattach)}
-                        />
-                      ) : (
-                        ""
-                      )}
-                      <span className="lg:text-base text-sm">
-                        {cmt.device_cmt}
-                      </span>
+                  <>
+                    <div className="flex items-stretch gap-x-4 justify-between " key={index}>
+                      <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
+                        {cmt.avatar_user && cmt.avatar_user.startsWith("http") ? (
+                          <img
+                            src={cmt.avatar_user}
+                            alt=""
+                            className="w-[100%] h-[100%]  rounded-[50%]"
+                          />
+                        ) : (
+                          <img
+                            src={noAvatar}
+                            alt=""
+                            className="w-[100%] h-[100%]  rounded-[50%]"
+                          />
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-x-2 font-[Montserrat]">
+                        <span className="lg:text-[18px] text-lg font-semibold">
+                          {cmt.user_name ? cmt.user_name : "Guest"}
+                        </span>
+                        <span
+                          className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
+                          style={{ whiteSpace: "pre-wrap" }}
+                        >
+                          {cmt.noi_dung_cmt}
+                        </span>
+                        {cmt.imageattach ? (
+                          <img
+                            className="w-[60px] h-[50px]"
+                            src={cmt.imageattach}
+                            alt=""
+                            onClick={() => handleOpenImagePopup(cmt.imageattach)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                        <span className="lg:text-base text-sm">
+                          {cmt.device_cmt}
+                        </span>
+                      </div>
+
+                      <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
+                        {cmt.thoi_gian_release}
+                      </div>
+                      <div className="lg:w-[15%] w-[20%] lg:text-[13px] text-sm font-[Montserrat]">
+                        <p> {cmt.dia_chi_ip}</p>
+                        <p> {cmt.location}</p>
+                      </div>
+                      <div className="lg:text-[13px] text-sm font-[Montserrat]">
+                        <button
+                          className="lg:text-[5px] max-lg:text-[3px] flex gap-1 py-3"
+                          onClick={() =>
+                            setActionCMT({
+                              status: !actionCMT.status,
+                              value: cmt.id_comment,
+                            })
+                          }
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="1em"
+                            viewBox="0 0 512 512"
+                          >
+                            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+                          </svg>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="1em"
+                            viewBox="0 0 512 512"
+                          >
+                            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+                          </svg>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="1em"
+                            viewBox="0 0 512 512"
+                          >
+                            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+                          </svg>
+                        </button>
+                        {idUser === cmt.id_user ? (
+                          actionCMT.status && actionCMT.value == cmt.id_comment && (
+                            <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute  rounded-sm bg-slate-100 text-lg text-black">
+                              <button
+                                className="py-1 px-3 hover:bg-blue-400 hover:text-white w-full">
+                                Edit
+                              </button>
+                              <button className="py-1 px-3 hover:bg-red-400 hover:text-white w-full"
+                                onClick={() => deleteComment(cmt.id_comment)}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          )
+                        ) : (
+                          actionCMT.status && actionCMT.value == cmt.id_comment && (
+                            <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute  rounded-sm bg-slate-100 text-lg text-black">
+
+                              <button className="py-1 px-3 hover:bg-red-400 hover:text-white w-full"
+
+                              >
+                                Report2
+                              </button>
+                            </div>
+                          ))}
+
+
+                      </div>
                     </div>
 
-                    <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
-                      {cmt.thoi_gian_release}
-                    </div>
-                    <div className="lg:w-[15%] w-[20%] lg:text-[13px] text-sm font-[Montserrat]">
-                      <p> {cmt.dia_chi_ip}</p>
-                      <p> {cmt.location}</p>
-                    </div>
-                  </div>
+
+                  </>
                 ))}
             </div>
+
 
 
             <div className="flex items-center justify-around mx-3 gap-x-4 rounded-full shadow-sm shadow-slate-300">
