@@ -159,19 +159,20 @@ function Comments() {
                   </Link>
                 )}
               </div>
-              <div className="flex flex-col gap-x-2 max-w-[60%] md:max-w-[75%]">
+              <div className="flex flex-col gap-x-2 max-w-[60%] md:max-w-[75%]"
+              onClick={() =>
+                visitProfile(
+                  data.id_toan_bo_su_kien,
+                  data.so_thu_tu_su_kien
+                )
+              }>
                 <span
                   className="lg:text-2xl text-lg font-semibold"
-                  onClick={() =>
-                    visitProfile(
-                      data.id_toan_bo_su_kien,
-                      data.so_thu_tu_su_kien
-                    )
-                  }
+
                 >
                   {data.user_name ? data.user_name : "Guest"}
                 </span>
-                <span className={`lg:text-lg text-base mt-3`}>
+                <span className={`lg:text-lg text-base mt-3`} >
                   {isShowingFullText
                     ? data.noi_dung_cmt
                     : `${data.noi_dung_cmt.substring(0, 260)}`}
@@ -180,7 +181,7 @@ function Comments() {
                   <span
                     className="text-lg hover:underline"
                     onClick={() => showCmt(data.id_comment)}
-                    style={{color:"blue"}}
+                    style={{ color: "blue" }}
                   >
                     {isShowingFullText ? "UnLess" : "Show more"}
                   </span>
@@ -191,7 +192,12 @@ function Comments() {
                     className="w-[60px] h-[60px]"
                     src={data.imageattach}
                     alt=""
-                    onClick={() => handleOpenImagePopup(data.imageattach)}
+                    onClick={() =>
+                      visitProfile(
+                        data.id_toan_bo_su_kien,
+                        data.so_thu_tu_su_kien
+                      )
+                    }
                   />
                 ) : (
                   ""
@@ -249,24 +255,7 @@ function Comments() {
           </svg>
         </button>
       </div>
-      {isImagePopupOpen && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-50">
-          <div className="max-w-screen-xl w-80% p-4 bg-white rounded-lg shadow-lg text-center relative">
-            <button
-              onClick={() => setIsImagePopupOpen(false)}
-              className="mt-2 mr-2 px-2 py-1 bg-red-500 hover:bg-red-600 rounded-lg absolute top-0 right-0 text-sm text-white"
-            >
-              Close
-            </button>
-            <img
-              src={selectedImage}
-              alt="Ảnh lớn"
-              className="w-100 h-auto mx-auto z-99999"
-              style={{ maxHeight: "80vh" }}
-            />
-          </div>
-        </div>
-      )}
+
     </div>
 
   );

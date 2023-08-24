@@ -21,17 +21,21 @@ import { createBrowserHistory } from "history";
 import CmtPopup from "../page/app/CmtPopup";
 import no_avatar from "./image/no-avatar.png";
 import ImagePopup from "../page/app/ImagePopup";
+
 export default function NewHistory() {
+
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
 
   const { id } = useParams();
   const route = useNavigate();
+  const [idUser, setIdUser] = useState(0)
   const [dataUser, setDataUser] = useState(null);
   const [isActive, setIsActive] = useState(1);
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
   const history = createBrowserHistory();
   const [dataComment, setDataComment] = useState([]);
+  const [scrollPosition, setScrollPosition] = useState(0);
   const params = window.location.href;
   const arrayUrl = params.split("/");
   const stt_su_kien = arrayUrl[arrayUrl.length - 1];
@@ -43,6 +47,58 @@ export default function NewHistory() {
       [id]: !prevState[id],
     }));
   };
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPages = 5
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      history.push(`/detail/${id}/${newPage}`);
+    }
+  }
+
+
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      history.push(`/detail/${id}/${newPage}`);
+    }
+  }
+  const pagesToHandleScroll = [1, 2, 3, 4, 5, 6];
+  useEffect(() => {
+    fetchDataUser();
+
+    const handleScroll = () => {
+      const currentScrollPosition = window.scrollY;
+      setScrollPosition(currentScrollPosition);
+
+      const isAtBottom = currentScrollPosition >= (document.body.scrollHeight - window.innerHeight);
+      const isAtTop = currentScrollPosition === 0;
+
+      if (isAtBottom && pagesToHandleScroll.includes(isActive)) {
+        const nextPage = isActive + 1;
+        redirect(nextPage);
+      }
+
+      // if (isAtTop && isActive > 1) {
+      //   const previousPage = isActive - 1;
+      //   redirect(previousPage);
+      // } else if (isAtTop && isActive === 1) {
+      //   window.scrollTo(0, 1); // Ngăn chặn cuộn từ trang 1 thẳng đến trang 4
+      // }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isActive]);
+
+
+
   useEffect(() => {
     axios
       .get(
@@ -53,21 +109,22 @@ export default function NewHistory() {
         console.log(response.data.comment);
       });
   }, [params]);
+
   const fetchDataUser = async () => {
     try {
       const response = await axios.get(
         `http://14.225.7.221:8989/lovehistory/${id}`
       );
       setDataUser(response.data.sukien[0]);
-      // console.log(response.data);
-      // console.log(data)
+      setIdUser(response.data.sukien[0].user_name_tao_sk
+      );
+      console.log(response.data)
+
     } catch (err) {
       console.log(err);
     }
   };
-  useEffect(() => {
-    fetchDataUser();
-  }, []);
+  console.log(idUser)
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -77,15 +134,16 @@ export default function NewHistory() {
   };
   const redirect = (e) => {
     setIsActive(e);
-    scrollToTop();
     setIsOpenSidebar(false);
-    console.log("====================================");
-    console.log(id);
-    console.log("====================================");
-    history.replace({
-      pathname: `/detail/${id}/${e}`,
-    });
+    const newUrl = `/detail/${id}/${e}`;
+    history.replace(newUrl);
   };
+
+  useEffect(() => {
+    fetchDataUser();
+    const currentTab = parseInt(stt_su_kien);
+    setIsActive(currentTab);
+  }, []);
   const handleSidebar = () => {
     setIsOpenSidebar(!isOpenSidebar);
   };
@@ -94,6 +152,8 @@ export default function NewHistory() {
     setSelectedImage(imageUrl);
     setIsImagePopupOpen(true);
   };
+
+
   const renderLoading = (isLoading) => {
     if (isLoading) {
       return (
@@ -114,19 +174,11 @@ export default function NewHistory() {
     }
     return null;
   };
-  // const checkUser = () => {
-  //   const user = JSON.parse(window.localStorage.getItem("user-info"));
-  //   console.log(user);
-  //   if (user == null) {
-  //     alert("Đăng nhập để tiếp tục");
-  //     return (window.location.href = "/login");
-  //   }
-  // };
-  // if (dataUser == null) return <>{renderLoading(true)}</>;
+
   return (
     <>
       <div
-        className=" min-h-screen"
+        className=" min-h-screen overflow-hidden"
         style={{ background: "linear-gradient(to right, pink, violet)" }}
       >
         <Header onClick={handleSidebar} />
@@ -147,8 +199,8 @@ export default function NewHistory() {
           )}
           <div
             className={`lg:col-span-3 z-[10] bg-menu lg:block ${isOpenSidebar
-                ? "col-span-8 sm:col-span-6 transition-all transform duration-300 ease-linear block opacity-100 absolute top-40 left-0 bottom-0 h-full"
-                : "transition-all transform hidden duration-300 ease-out "
+              ? "col-span-8 sm:col-span-6 transition-all transform duration-300 ease-linear block opacity-100 absolute top-40 left-0 bottom-0 h-full"
+              : "transition-all transform hidden duration-300 ease-out "
               }`}
           >
             <div className=" lg:h-[30%] lg:w-[100%] flex items-center justify-center mt-4">
@@ -187,48 +239,56 @@ export default function NewHistory() {
                   onClick={() => handleOpenImagePopup(dataUser.link_nu_goc)}
                 />
               </div>
+              
+
             </div>
+            <div
+                className=" lg:text-[26px] font-[Montserrat] mb-8 text-2xl flex justify-center font-bold text-[#FFFFFF]">
+                Event creator:{idUser}
+              </div>
             <div className="slab lg:text-[26px] text-2xl font-bold text-[#FFFFFF]">
               <div className=" flex justify-center">
-                <ul className="flex flex-col gap-y-8 w-full">
+                <ul className="flex flex-col gap-y-8 w-full ">
+
                   <li
-                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
+                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 1 ? 'bg-[#782353] text-white' : ''}`}
+
                     onClick={() => redirect(1)}
                   >
                     First Meet
                   </li>
                   <li
-                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
+                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 2 ? 'bg-[#782353] text-white' : ''}`}
                     onClick={() => redirect(2)}
                   >
                     First date
                   </li>
                   <li
-                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
+                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 3 ? 'bg-[#782353] text-white' : ''}`}
                     onClick={() => redirect(3)}
                   >
                     Being in love
                   </li>
                   <li
-                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
+                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 4 ? 'bg-[#782353] text-white' : ''}`}
                     onClick={() => redirect(4)}
                   >
                     Breking up
                   </li>
                   <li
-                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
+                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 5 ? 'bg-[#782353] text-white' : ''}`}
                     onClick={() => redirect(5)}
                   >
                     Marry
                   </li>
                   <li
-                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
+                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 6 ? 'bg-[#782353] text-white' : ''}`}
                     onClick={() => redirect(6)}
                   >
                     Divorce
                   </li>
                   <li
-                    className="cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2"
+                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 7 ? 'bg-[#782353] text-white' : ''}`}
                     onClick={() => redirect(7)}
                   >
                     Remarry
@@ -300,88 +360,98 @@ export default function NewHistory() {
                 ""
               )}
             </div>
-            <div className=" flex flex-col pt-[40px] mb-[100px] w-full">
+            <div style={{ justifyContent: "center" }} className="flex gap-x-2">
+              <button
+                className="text-blue-700 cursor-pointer  lg:hidden "
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1} // Disable nút Previous nếu đang ở trang đầu tiên
+              >
+                Previous
+              </button>
+              <button
+                className="text-blue-700 cursor-pointer  lg:hidden"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages} // Disable nút Next nếu đang ở trang cuối cùng
+              >
+                Next
+              </button>
+            </div>
+            <div className="flex flex-col pt-10 mb-16 w-full font-[Montserrat] ">
               {dataComment.map((item, index) => {
                 const isShowingFullText = showMoreStates[item.id_comment];
-                if (index < 10) {
+                if (index < 1) {
                   return (
-                    <div className="flex items-center gap-x-10 px-10 py-6 mx-[60px] hover:bg-gray-200">
-                      {item.avatar_user &&
-                        item.avatar_user.startsWith("http") ? (
-                        <img
-                          src={item.avatar_user}
-                          alt=""
-                          className="w-[60px] h-[60px] border border-3 rounded-[50%]"
-                        />
-                      ) : (
-                        <img
-                          src={no_avatar}
-                          alt=""
-                          className="w-[60px] h-[60px] border border-3 rounded-[50%]"
-                        />
-                      )}
-                      <div className="">
-                        <h3 className="text-3xl font-[Montserrat] ">
-                        {item.user_name ? item.user_name : "Guest"}
-
-                        </h3>
-                        <div className="mt-3 w-[700px] break-words font-[Montserrat] text-2xl">
-                        <span className={`lg:text-lg text-base mt-3`}>
-                            {isShowingFullText
-                              ? item.noi_dung_cmt
-                              : `${item.noi_dung_cmt.substring(0, 260)}`}
-                          </span>
-                          {item.noi_dung_cmt.length > 256 && (
-                            
-                            <span
-                              className="text-lg hover:underline "
-                              onClick={() => showCmt(item.id_comment)}
-                              style={{color:"blue"}}
-                            >
-                              {isShowingFullText ? "UnLess" : "Show more"}
-                            </span>
-                          )}
-                        </div>
-                        {item.imageattach ? (
+                    <div className="flex flex-col gap-y-4 px-4 py-3 mx-4 border border-gray-400 rounded-md shadow-md hover:bg-gray-100">
+                      <div className="flex items-center gap-x-4">
+                        {item.avatar_user && item.avatar_user.startsWith("http") ? (
                           <img
-                            src={item.imageattach}
-                            className="w-[150px] h-[120px] mt-[10px]"
-                            alt="avt"
-                            onClick={() =>
-                              handleOpenImagePopup(item.imageattach)
-                            }
+                            src={item.avatar_user}
+                            alt=""
+                            className="w-16 h-16 rounded-full"
                           />
                         ) : (
-                          ""
+                          <img
+                            src={no_avatar}
+                            alt=""
+                            className="w-16 h-16 rounded-full"
+                          />
                         )}
+                        <div className="flex-grow">
+                          <h3 className="text-3xl font-semibold">
+                            {item.user_name ? item.user_name : "Guest"}
+                          </h3>
+                          <div className="text-2xl font-normal break-words">
+                            <span className={isShowingFullText ? "text-base" : "text-xl"}>
+                              {isShowingFullText
+                                ? item.noi_dung_cmt
+                                : `${item.noi_dung_cmt.substring(0, 260)}`}
+                            </span>
+                            {item.noi_dung_cmt.length > 256 && (
+                              <span
+                                className="text-base hover:underline cursor-pointer"
+                                onClick={() => showCmt(item.id_comment)}
+                                style={{ color: "blue" }}
+                              >
+                                {isShowingFullText ? "UnLess" : "Show more"}
+                              </span>
+                            )}
+                          </div>
+                          {item.imageattach && (
+                            <img
+                              src={item.imageattach}
+                              className="w-[150px] h-[120px] mt-[10px] cursor-pointer"
+                              alt="avt"
+                              onClick={() => handleOpenImagePopup(item.imageattach)}
+                            />
+                          )}
+                        </div>
                       </div>
-                      <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
-                        <p>{item.device_cmt}</p>
+                      <div className="flex flex-row justify-end gap-x-4">
+                        <div className="text-lg text-gray-600">
+                          {item.device_cmt}
+                        </div>
+                        <div className="text-lg text-gray-600">
+                          {item.thoi_gian_release}
+                        </div>
+                        <div className="text-lg text-gray-600">
+                          <p>{item.dia_chi_ip}</p>
+                          <p>{item.location}</p>
+                        </div>
                       </div>
-                      <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
-                        {item.thoi_gian_release}
-                      </div>
-                      <div className="lg:w-[15%] w-[20%] lg:text-[13px] font-[Montserrat] text-sm">
-                        <p> {item.dia_chi_ip}</p>
-                        <p> {item.location}</p>
-                      </div>
+
                     </div>
                   );
                 }
               })}
-              {dataComment.length > 0 ? (
-                <div className="flex justify-center items-center mt-[40px] text-2xl">
-                  <span
-                    className="cursor-pointer hover:text-blue-700"
-                    onClick={() => { }}
-                  >
+              {dataComment.length > 10 && (
+                <div className="flex justify-center items-center mt-4 text-lg">
+                  <span className="text-blue-700 cursor-pointer">
                     View all comments
                   </span>
                 </div>
-              ) : (
-                ""
               )}
             </div>
+
           </div>
         </div>
       </div>

@@ -101,20 +101,19 @@ function EventHistory(props) {
   console.log(currentPage);
 
   const changePageUp = () => {
-    if (count <= currentPage) {
+    if (count < totalPages) {
       setCount(count + 1);
       history.push(`/event/${count + 1}`);
-      window.location.reload();
     }
   };
-
+  
   const changePageDown = () => {
     if (count > 1) {
       setCount(count - 1);
       history.push(`/event/${count - 1}`);
-      window.location.reload();
     }
   };
+  
   useEffect(() => {
     fetchData();
   }, [count]);
@@ -171,6 +170,7 @@ function EventHistory(props) {
     indexOfLastResult
   );
   const totalPages = Math.ceil(sortedData.length / resultsPerPage);
+  
 
   if (isLoading) {
     return (

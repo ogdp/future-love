@@ -9,6 +9,7 @@ import ImagePopup from "./ImagePopup";
 import { useNavigate, useParams } from "react-router-dom";
 import noAvatar from "../app/img/no-avatar.png";
 import { toast } from "react-toastify";
+import { saveAs } from "file-saver";
 const templateComponents = {
   TemplateCmt1: TemplateCmt1,
   TemplateCmt2: TemplateCmt2,
@@ -16,7 +17,10 @@ const templateComponents = {
   TemplateCmt4: TemplateCmt4,
 };
 
+
 function CmtPopup(props) {
+
+
   const param = useParams();
   const [dataCmt, setDataCmt] = useState([]);
   const [location, setLocation] = useState([]);
@@ -28,6 +32,9 @@ function CmtPopup(props) {
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const [isImageUploading, setIsImageUploading] = useState(false);
+  const downloadImg = () => {
+    saveAs(selectedImage, "image.png");
+  };
 
   const handleOpenImagePopup = (imageUrl) => {
     setSelectedImage(imageUrl);
@@ -91,7 +98,7 @@ function CmtPopup(props) {
         console.log(err.message);
       });
   }, [ipComment]);
-  // const deviceCmt = `${platform}-${browserName}-verson${browserVersion}`;
+
 
   const HandleSendCmt = async (e) => {
     setIsImageUploading(true)
@@ -170,12 +177,13 @@ function CmtPopup(props) {
         right: 0,
         overflow: "auto",
         display: "flex",
+        // flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         zIndex: 9990,
       }}
     >
-      <div className="w-[400px] h-full z-[9999]" onClick={closePopup}></div>
+      <div className="w-[full] h-full z-[9999]" onClick={closePopup}></div>
       {isImageUploading ? (
         <div
           style={{
@@ -185,7 +193,7 @@ function CmtPopup(props) {
             transform: "translate(-50%, -50%)",
           }}
         >
-          
+
           <i
             className="fas fa-circle-notch fa-spin"
             style={{ fontSize: "30px", color: "blue" }}
@@ -193,144 +201,156 @@ function CmtPopup(props) {
         </div>
       ) : (
         <>
-          {isImgPopup ? (
+          {/* {isImgPopup ? (
             <ImagePopup imgSrc={props.data.link_da_swap} closeImg={closePopup} />
-          ) : (
-            <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-max bg-white gap-y-4 overflow-y-auto">
-              <div className="w-full h-[95%] relative">
-                <TemplateComponent data={props.data} onClick={handlePopup} />
-              </div>
-
-
-              <div className=" mt-5 flex flex-col gap-y-2 ">
-                {dataCmt?.length > 0 &&
-                  dataCmt.map((cmt, index) => (
-                    <div className="flex items-stretch gap-x-4" key={index}>
-                      <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
-                        {cmt.avatar_user && cmt.avatar_user.startsWith("http") ? (
-                          <img
-                            src={cmt.avatar_user}
-                            alt=""
-                            className="w-[100%] h-[100%]  rounded-[50%]"
-                          />
-                        ) : (
-                          <img
-                            src={noAvatar}
-                            alt=""
-                            className="w-[100%] h-[100%]  rounded-[50%]"
-                          />
-                        )}
-                      </div>
-                      <div className="flex flex-col gap-x-2 font-[Montserrat]">
-                        <span className="lg:text-[18px] text-lg font-semibold">
-                          {cmt.user_name ? cmt.user_name : "Guest"}
-                        </span>
-                        <span
-                          className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
-                          style={{ whiteSpace: "pre-wrap" }}
-                        >
-                          {cmt.noi_dung_cmt}
-                        </span>
-                        {cmt.imageattach ? (
-                          <img
-                            className="w-[60px] h-[50px]"
-                            src={cmt.imageattach}
-                            alt=""
-                            onClick={() => handleOpenImagePopup(cmt.imageattach)}
-                          />
-                        ) : (
-                          ""
-                        )}
-                        <span className="lg:text-base text-sm">
-                          {cmt.device_cmt}
-                        </span>
-                      </div>
-
-                      <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
-                        {cmt.thoi_gian_release}
-                      </div>
-                      <div className="lg:w-[15%] w-[20%] lg:text-[13px] text-sm font-[Montserrat]">
-                        <p> {cmt.dia_chi_ip}</p>
-                        <p> {cmt.location}</p>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-
-
-              <div className="flex items-center justify-around mx-3 gap-x-4 rounded-full shadow-sm shadow-slate-300">
-                <div className="overflow-hidden rounded-full w-[50px]">
-                  <img
-                    src={user?.id_user ? user.link_avatar : noAvatar}
-                    alt=""
-                    className="w-[100%] h-[100%] object-cover"
-                  />
-                </div>
-
-                <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-full">
-
-                  <form
-                    onSubmit={onSubmitComment}
-                    className="flex items-center gap-x-4"
-                  >
-                    <textarea
-                      type="text"
-                      value={inputValue}
-                      onChange={handleInputChange}
-                      className=" w-full h-[50px] border-none outline-none font-[Montserrat]"
-                    ></textarea>
-                    <div className="inline-block relative">
-
-                      <label for="file-input">
-                        <img
-                          src="https://cdn-icons-png.flaticon.com/512/685/685655.png"
-                          width="20px"
-                          height="20px"
-                          alt=""
-                        />
-                        <input
-                          type="file"
-                          onChange={onChangeImgComment}
-                          accept=".jpg"
-                          className="absolute left-0 top-0 opacity-0 w-[100%] h-[100%]"
-                        />
-                      </label>
-                    </div>
-                    <button
-                      className="w-[30px] float-right"
-                      onClick={HandleSendCmt}
-                    >
-                      <img
-                        src={send}
-                        alt=""
-                        className="w-[100%] h-[100%] object-cover"
-                      />
-                    </button>
-                  </form>
-
-                </div>
-                {imgComment ? (
-                  <>
-                    <img className="w-[80px] h-[70px]" src={imgComment} />
-                    <button className="mt-[-50px]" onClick={removeImgComment}>
-                      <i className="fas fa-times font-bold" />
-                    </button>
-                  </>
-                ) : (
-                  ""
-                )}
-              </div>
+          ) : ( */}
+          <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-max bg-white gap-y-4 overflow-y-auto">
+            <div className="w-full h-[95%] relative" onClick={() => handleOpenImagePopup(props.data.link_da_swap)}>
+              <TemplateComponent data={props.data} onClick={handlePopup} />
             </div>
-          )}
+
+
+            <div className="mt-5 flex flex-col gap-y-2 max-h-[60vh] overflow-y-auto">
+              {dataCmt?.length > 0 &&
+                dataCmt.map((cmt, index) => (
+                  <div className="flex items-stretch gap-x-4" key={index}>
+                    <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
+                      {cmt.avatar_user && cmt.avatar_user.startsWith("http") ? (
+                        <img
+                          src={cmt.avatar_user}
+                          alt=""
+                          className="w-[100%] h-[100%]  rounded-[50%]"
+                        />
+                      ) : (
+                        <img
+                          src={noAvatar}
+                          alt=""
+                          className="w-[100%] h-[100%]  rounded-[50%]"
+                        />
+                      )}
+                    </div>
+                    <div className="flex flex-col gap-x-2 font-[Montserrat]">
+                      <span className="lg:text-[18px] text-lg font-semibold">
+                        {cmt.user_name ? cmt.user_name : "Guest"}
+                      </span>
+                      <span
+                        className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
+                        style={{ whiteSpace: "pre-wrap" }}
+                      >
+                        {cmt.noi_dung_cmt}
+                      </span>
+                      {cmt.imageattach ? (
+                        <img
+                          className="w-[60px] h-[50px]"
+                          src={cmt.imageattach}
+                          alt=""
+                          onClick={() => handleOpenImagePopup(cmt.imageattach)}
+                        />
+                      ) : (
+                        ""
+                      )}
+                      <span className="lg:text-base text-sm">
+                        {cmt.device_cmt}
+                      </span>
+                    </div>
+
+                    <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
+                      {cmt.thoi_gian_release}
+                    </div>
+                    <div className="lg:w-[15%] w-[20%] lg:text-[13px] text-sm font-[Montserrat]">
+                      <p> {cmt.dia_chi_ip}</p>
+                      <p> {cmt.location}</p>
+                    </div>
+                  </div>
+                ))}
+            </div>
+
+
+            <div className="flex items-center justify-around mx-3 gap-x-4 rounded-full shadow-sm shadow-slate-300">
+
+              <div className="overflow-hidden rounded-full w-[50px]">
+                <img
+                  src={user?.id_user ? user.link_avatar : noAvatar}
+                  alt=""
+                  className="w-[100%] h-[100%] object-cover"
+                />
+              </div>
+
+              <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-full">
+
+                <form
+                  onSubmit={onSubmitComment}
+                  className="flex items-center gap-x-4"
+                >
+                  <textarea
+                    type="text"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    className=" w-full h-[50px] border-none outline-none font-[Montserrat]"
+                  ></textarea>
+                  <div className="inline-block relative">
+
+                    <label for="file-input">
+                      <img
+                        src="https://cdn-icons-png.flaticon.com/512/685/685655.png"
+                        width="20px"
+                        height="20px"
+                        alt=""
+                      />
+                      <input
+                        type="file"
+                        onChange={onChangeImgComment}
+                        accept=".jpg"
+                        className="absolute left-0 top-0 opacity-0 w-[100%] h-[100%]"
+                      />
+                    </label>
+                  </div>
+                  <button
+                    className="w-[30px] float-right"
+                    onClick={HandleSendCmt}
+                  >
+                    <img
+                      src={send}
+                      alt=""
+                      className="w-[100%] h-[100%] object-cover"
+                    />
+                  </button>
+                </form>
+
+              </div>
+              {imgComment ? (
+                <>
+                  <img className="w-[80px] h-[70px]" src={imgComment} />
+                  <button className="mt-[-50px]" onClick={removeImgComment}>
+                    <i className="fas fa-times font-bold" />
+                  </button>
+                </>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+          {/* )} */}
         </>
       )}
-      <div className="w-[400px] h-full z-[9999]" onClick={closePopup}></div>
+      <div className=" h-full z-[9999]" onClick={closePopup}>
+        <button
+          onClick={closePopup}
+          className="mt-2 mr-2 px-2 py-1 bg-red-500 hover:bg-red-600 rounded-lg absolute top-0 right-0 text-sm text-white"
+          style={{ zIndex: 1 }} // Đảm bảo nút close có độ ưu tiên cao hơn các phần tử khác
+        >
+          Close
+        </button>
+      </div>
+
+
       {isImagePopupOpen && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-50">
           <div className="max-w-screen-xl w-80% p-4 bg-white rounded-lg shadow-lg text-center relative">
             <button
               onClick={() => setIsImagePopupOpen(false)}
               className="mt-2 mr-2 px-2 py-1 bg-red-500 hover:bg-red-600 rounded-lg absolute top-0 right-0 text-sm text-white"
+              style={{ zIndex: 1 }} // Đảm bảo nút close có độ ưu tiên cao hơn các phần tử khác
             >
               Close
             </button>
@@ -338,11 +358,20 @@ function CmtPopup(props) {
               src={selectedImage}
               alt="Ảnh lớn"
               className="w-100 h-auto mx-auto z-99999"
-              style={{ maxHeight: "80vh" }}
+              style={{ maxHeight: "80vh", zIndex: 0 }} // Đảm bảo ảnh có độ ưu tiên thấp hơn nút close
             />
+            <button
+              onClick={downloadImg}
+              className="mt-2 mr-2 px-2 py-1 bg-blue-500 hover:bg-blue-600 rounded-lg text-sm text-white"
+              style={{ zIndex: 1 }} // Đảm bảo nút download có độ ưu tiên cao hơn các phần tử khác
+            >
+              Download
+            </button>
           </div>
         </div>
       )}
+
+
     </div>
   );
 }

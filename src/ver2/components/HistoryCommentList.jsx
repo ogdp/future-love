@@ -1,6 +1,8 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const HistoryCommentList = ({ datas }) => {
   // console.log(datas);
@@ -8,6 +10,7 @@ const HistoryCommentList = ({ datas }) => {
   const [actionCMT, setActionCMT] = useState({ status: false, value: 0 });
   const [count, setCount] = useState(1);
   const resultsPerPage = 10;
+  const [nameUser, setNameUser] = useState()
 
   const checkId = useParams().id;
   if (!datas || datas == null)
@@ -43,6 +46,22 @@ const HistoryCommentList = ({ datas }) => {
     return <div className="text-center text-3xl py-3">No comments yet</div>;
   }
   const dataSort = datas;
+  console.log(dataSort)
+  console.log(dataSort.id_toan_bo_su_kien)
+
+  const deleteComment = async (idComment) => {
+    try {
+      const response = await axios.delete(
+        `http://14.225.7.221:8989/lovehistory/page/1/${idComment}/delete`
+      );
+      toast.success(response.data.message)
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+
   // const dataSort = datas.reverse();
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
@@ -80,14 +99,28 @@ const HistoryCommentList = ({ datas }) => {
     // Tạo kết quả dựa trên số ngày, giờ và phút
     let result = "";
     if (days > 0) {
-      result = `${days} ngày`;
+      result = `${days} days`;
     } else if (hours > 0) {
-      result = `${hours} giờ`;
+      result = `${hours} hours`;
     } else {
-      result = `${minutes} phút`;
+      result = `${minutes} minutes`;
     }
     return result;
   }
+  // const fetchDataUser = async (id_toan_bo_su_kien) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `http://14.225.7.221:8989/lovehistory/${id_toan_bo_su_kien}`
+  //     );
+
+  //     setNameUser(response.data.sukien[0].user_name_tao_sk
+  //     );
+  //     console.log(response.data)
+
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
   return (
     <>
       <div className="flex justify-center">
@@ -120,7 +153,7 @@ const HistoryCommentList = ({ datas }) => {
                         <h2 className="line-clamp-1 max-lg:text-xl lg:text-2xl font-medium">
                           {checkId !== undefined ? "His" : "You"} commented on
                           the event of{" "}
-                          <span className="underline">{item.user_name}</span>
+                          <span className="underline">{item.user_taosk}</span>
                         </h2>
                         <h5 className="line-clamp-1 max-lg:text-sm text-base">
                           {item.noi_dung_cmt}
@@ -176,10 +209,14 @@ const HistoryCommentList = ({ datas }) => {
                     </button>
                     {actionCMT.status && actionCMT.value == item.id_comment && (
                       <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute mt-[140%] top-0 right-0 z-10 py-2 px-2 rounded-sm bg-slate-100 text-lg text-black">
-                        <button className="py-1 px-3 hover:bg-blue-400 hover:text-white w-full">
+                        <button
+                          className="py-1 px-3 hover:bg-blue-400 hover:text-white w-full"
+
+                        >
                           Edit
                         </button>
-                        <button className="py-1 px-3 hover:bg-red-400 hover:text-white">
+                        <button className="py-1 px-3 hover:bg-red-400 hover:text-white"
+                        onClick={()=> deleteComment(item.id_comment)}>
                           Delete
                         </button>
                       </div>
