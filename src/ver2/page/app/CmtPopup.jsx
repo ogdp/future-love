@@ -22,6 +22,7 @@ console.log(idUser)
 
 
 function CmtPopup(props) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const [actionCMT, setActionCMT] = useState({ status: false, value: 0 });
   const param = useParams();
@@ -38,6 +39,56 @@ function CmtPopup(props) {
   const downloadImg = () => {
     saveAs(selectedImage, "image.png");
   };
+  //edit cmt
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editedComment, setEditedComment] = useState("");
+
+  const startEdit = (comment) => {
+    setIsEditing(true);
+    setEditingCommentId(comment.id_comment);
+    setEditedComment(comment.noi_dung_cmt);
+    setActionCMT({ status: false, value: 0 });
+  };
+
+  const cancelEdit = () => {
+    setIsEditing(false);
+    setEditingCommentId(null);
+    setEditedComment("");
+  };
+
+  const handleEditInputChange = (event) => {
+    const newValue = event.target.value;
+    setEditedComment(newValue);
+  };
+  console.log(editingCommentId)
+  const updateComment = async () => {
+    try {
+      const response = await axios.patch(
+        `http://14.225.7.221:8989/lovehistory/page/1/${editingCommentId}`,
+        { content: editedComment }
+      );
+
+
+      const updatedDataCmt = dataCmt.map((comment) => {
+        if (comment.id_comment === editingCommentId) {
+          return {
+            ...comment,
+            noi_dung_cmt: editedComment,
+          };
+        }
+        return comment;
+      });
+
+      setDataCmt(updatedDataCmt);
+      cancelEdit();
+      toast.success(response.data.message);
+    } catch (error) {
+      console.error("Lỗi khi cập nhật comment:", error);
+      toast.error("Cập nhật comment thất bại");
+    }
+  };
+
   //delete cmt
   const deleteComment = async (idComment) => {
     try {
@@ -229,7 +280,7 @@ function CmtPopup(props) {
               {dataCmt?.length > 0 &&
                 dataCmt.map((cmt, index) => (
                   <>
-                    <div className="flex items-stretch gap-x-4 justify-between " key={index}>
+                    <div className="flex items-stretch gap-x-4 justify-between relative" key={index}>
                       <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
                         {cmt.avatar_user && cmt.avatar_user.startsWith("http") ? (
                           <img
@@ -249,26 +300,31 @@ function CmtPopup(props) {
                         <span className="lg:text-[18px] text-lg font-semibold">
                           {cmt.user_name ? cmt.user_name : "Guest"}
                         </span>
-                        <span
-                          className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
-                          style={{ whiteSpace: "pre-wrap" }}
-                        >
-                          {cmt.noi_dung_cmt}
-                        </span>
-                        {cmt.imageattach ? (
-                          <img
-                            className="w-[60px] h-[50px]"
-                            src={cmt.imageattach}
-                            alt=""
-                            onClick={() => handleOpenImagePopup(cmt.imageattach)}
-                          />
-                        ) : (
-                          ""
-                        )}
-                        <span className="lg:text-base text-sm">
-                          {cmt.device_cmt}
-                        </span>
+
+                        <>
+                          <span
+                            className="lg:text-[16px] text-base mt-3 max-w-[25vw] "
+                            style={{ whiteSpace: "pre-wrap" }}
+                          >
+                            {cmt.noi_dung_cmt}
+                          </span>
+                          {cmt.imageattach ? (
+                            <img
+                              className="w-[60px] h-[50px]"
+                              src={cmt.imageattach}
+                              alt=""
+                              onClick={() => handleOpenImagePopup(cmt.imageattach)}
+                            />
+                          ) : (
+                            ""
+                          )}
+                          <span className="lg:text-base text-sm">
+                            {cmt.device_cmt}
+                          </span>
+                        </>
+
                       </div>
+
 
                       <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
                         {cmt.thoi_gian_release}
@@ -277,7 +333,7 @@ function CmtPopup(props) {
                         <p> {cmt.dia_chi_ip}</p>
                         <p> {cmt.location}</p>
                       </div>
-                      <div className="lg:text-[13px] text-sm font-[Montserrat]">
+                      <div className="lg:text-[13px] text-sm font-[Montserrat] relative flex gap-3">
                         <button
                           className="lg:text-[5px] max-lg:text-[3px] flex gap-1 py-3"
                           onClick={() =>
@@ -309,32 +365,34 @@ function CmtPopup(props) {
                             <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
                           </svg>
                         </button>
-                        {idUser === cmt.id_user ? (
-                          actionCMT.status && actionCMT.value == cmt.id_comment && (
-                            <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute  rounded-sm bg-slate-100 text-lg text-black">
-                              <button
-                                className="py-1 px-3 hover:bg-blue-400 hover:text-white w-full">
-                                Edit
-                              </button>
-                              <button className="py-1 px-3 hover:bg-red-400 hover:text-white w-full"
-                                onClick={() => deleteComment(cmt.id_comment)}
-                              >
-                                Delete
-                              </button>
-                            </div>
-                          )
-                        ) : (
-                          actionCMT.status && actionCMT.value == cmt.id_comment && (
-                            <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute  rounded-sm bg-slate-100 text-lg text-black">
+                        <div className="flex gap-3">
+                          {idUser === cmt.id_user ? (
+                            actionCMT.status && actionCMT.value == cmt.id_comment && (
+                              <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute  right-10   rounded-sm bg-slate-100 text-lg text-black">
+                                <button
+                                  className=" flex gap-3 py-1 px-3 hover:bg-blue-400 hover:text-white w-full"
+                                  onClick={() => startEdit(cmt)}>
+                                  Edit
+                                </button>
+                                <button className="py-1 px-3 flex gap-3 hover:bg-red-400 hover:text-white w-full"
+                                  onClick={() => deleteComment(cmt.id_comment)}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            )
+                          ) : (
+                            actionCMT.status && actionCMT.value == cmt.id_comment && (
+                              <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute bottom-0 right-5 rounded-sm bg-slate-100 text-lg text-black">
 
-                              <button className="py-1 px-3 hover:bg-red-400 hover:text-white w-full"
+                                <button className="py-1 px-3 hover:bg-red-400 hover:text-white w-full"
 
-                              >
-                                Report2
-                              </button>
-                            </div>
-                          ))}
-
+                                >
+                                  Report2
+                                </button>
+                              </div>
+                            ))}
+                        </div>
 
                       </div>
                     </div>
@@ -343,11 +401,7 @@ function CmtPopup(props) {
                   </>
                 ))}
             </div>
-
-
-
             <div className="flex items-center justify-around mx-3 gap-x-4 rounded-full shadow-sm shadow-slate-300">
-
               <div className="overflow-hidden rounded-full w-[50px]">
                 <img
                   src={user?.id_user ? user.link_avatar : noAvatar}
@@ -355,62 +409,94 @@ function CmtPopup(props) {
                   className="w-[100%] h-[100%] object-cover"
                 />
               </div>
-
-              <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-full">
-
-                <form
-                  onSubmit={onSubmitComment}
-                  className="flex items-center gap-x-4"
-                >
-                  <textarea
-                    type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    className=" w-full h-[50px] border-none outline-none font-[Montserrat]"
-                  ></textarea>
-                  <div className="inline-block relative">
-
-                    <label for="file-input">
+              {isEditing  ? (
+                <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-full ">
+                  <form onSubmit={onSubmitComment} className="flex items-center gap-x-4">
+                    <textarea
+                      type="text"
+                      value={editedComment}
+                      onChange={handleEditInputChange}
+                      className="w-full h-[50px] border-none outline-none font-[Montserrat]"
+                    ></textarea>
+                    <div className="inline-block relative">
+                      <label htmlFor="edit-file-input">
+                        <img
+                          src="https://cdn-icons-png.flaticon.com/512/685/685655.png"
+                          width="20px"
+                          height="20px"
+                          alt=""
+                        />
+                        <input
+                          type="file"
+                          onChange={onChangeImgComment}
+                          accept=".jpg"
+                          id="edit-file-input"
+                          className="absolute left-0 top-0 opacity-0 w-[100%] h-[100%]"
+                        />
+                      </label>
+                    </div>
+                    <button className="w-[30px] float-right" onClick={updateComment}>
                       <img
-                        src="https://cdn-icons-png.flaticon.com/512/685/685655.png"
-                        width="20px"
-                        height="20px"
+                        src={send}
                         alt=""
+                        className="w-[100%] h-[100%] object-cover"
                       />
-                      <input
-                        type="file"
-                        onChange={onChangeImgComment}
-                        accept=".jpg"
-                        className="absolute left-0 top-0 opacity-0 w-[100%] h-[100%]"
-                      />
-                    </label>
-                  </div>
-                  <button
-                    className="w-[30px] float-right"
-                    onClick={HandleSendCmt}
-                  >
-                    <img
-                      src={send}
-                      alt=""
-                      className="w-[100%] h-[100%] object-cover"
-                    />
-                  </button>
-                </form>
-
-              </div>
-              {imgComment ? (
-                <>
-                  <img className="w-[80px] h-[70px]" src={imgComment} />
-                  <button className="mt-[-50px]" onClick={removeImgComment}>
-                    <i className="fas fa-times font-bold" />
-                  </button>
-                </>
+                    </button>
+                  </form>
+                  {imgComment && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <img className="w-[80px] h-[70px]" src={imgComment} alt="Uploaded" />
+                      <button className="mt-[-50px]" onClick={removeImgComment}>
+                        <i className="fas fa-times font-bold" />
+                      </button>
+                    </div>
+                  )}
+                </div>
               ) : (
-                ""
+                <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-full">
+                  <form onSubmit={onSubmitComment} className="flex items-center gap-x-4">
+                    <textarea
+                      type="text"
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      className="w-full h-[50px] border-none outline-none font-[Montserrat]"
+                    ></textarea>
+                    <div className="inline-block relative">
+                      <label htmlFor="file-input">
+                        <img
+                          src="https://cdn-icons-png.flaticon.com/512/685/685655.png"
+                          width="20px"
+                          height="20px"
+                          alt=""
+                        />
+                        <input
+                          type="file"
+                          onChange={onChangeImgComment}
+                          accept=".jpg"
+                          className="absolute left-0 top-0 opacity-0 w-[100%] h-[100%]"
+                        />
+                      </label>
+                    </div>
+                    <button className="w-[30px] float-right" onClick={HandleSendCmt}>
+                      <img
+                        src={send}
+                        alt=""
+                        className="w-[100%] h-[100%] object-cover"
+                      />
+                    </button>
+                  </form>
+                  {imgComment && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <img className="w-[80px] h-[70px]" src={imgComment} />
+                      <button className="mt-[-50px]" onClick={removeImgComment}>
+                        <i className="fas fa-times font-bold" />
+                      </button>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           </div>
-          {/* )} */}
         </>
       )}
       <div className=" h-full z-[9999]" onClick={closePopup}>
