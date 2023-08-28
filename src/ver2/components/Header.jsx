@@ -7,7 +7,9 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineNotification } from "react-icons/ai";
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import axios from "axios";
+// const userInfo = window.localStorage.getItem("user-info");
 const userInfo = JSON.parse(window.localStorage.getItem("user-info"));
+console.log(userInfo)
 const idUser = userInfo && userInfo.id_user;
 console.log(idUser)
 function reverseSortByDateTime(notifications) {

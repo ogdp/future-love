@@ -67,37 +67,39 @@ export default function NewHistory() {
       history.push(`/detail/${id}/${newPage}`);
     }
   }
+
+  //cuon trang
   const pagesToHandleScroll = [1, 2, 3, 4, 5, 6];
-  useEffect(() => {
-    fetchDataUser();
+  const isMobileDevice = window.innerWidth <= 768; // Kích thước màn hình dưới 768px coi như là điện thoại
 
-    const handleScroll = () => {
-      const currentScrollPosition = window.scrollY;
-      setScrollPosition(currentScrollPosition);
+useEffect(() => {
+  fetchDataUser();
 
-      const isAtBottom = currentScrollPosition >= (document.body.scrollHeight - window.innerHeight);
-      const isAtTop = currentScrollPosition === 0;
+  const handleScroll = () => {
+    const currentScrollPosition = window.scrollY;
+    setScrollPosition(currentScrollPosition);
 
-      if (isAtBottom && pagesToHandleScroll.includes(isActive)) {
-        const nextPage = isActive + 1;
-        redirect(nextPage);
-      }
+    const isAtBottom = currentScrollPosition >= (document.body.scrollHeight - window.innerHeight);
+    const isAtTop = currentScrollPosition === 0;
 
-      // if (isAtTop && isActive > 1) {
-      //   const previousPage = isActive - 1;
-      //   redirect(previousPage);
-      // } else if (isAtTop && isActive === 1) {
-      //   window.scrollTo(0, 1); // Ngăn chặn cuộn từ trang 1 thẳng đến trang 4
-      // }
-    };
+    if (!isMobileDevice && isAtBottom && pagesToHandleScroll.includes(isActive)) {
+      const nextPage = isActive + 1;
+      redirect(nextPage);
+    }
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [isActive]);
+    // if (!isMobileDevice && isAtTop && isActive > 1) {
+    //   const previousPage = isActive - 1;
+    //   redirect(previousPage);
+    // } else if (!isMobileDevice && isAtTop && isActive === 1) {
+    //   window.scrollTo(0, 1); // Ngăn chặn cuộn từ trang 1 thẳng đến trang 4
+    // }
+  };
 
-
+  window.addEventListener("scroll", handleScroll);
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, [isActive, isMobileDevice]);
 
   useEffect(() => {
     axios
@@ -109,6 +111,8 @@ export default function NewHistory() {
         console.log(response.data.comment);
       });
   }, [params]);
+
+
 
   const fetchDataUser = async () => {
     try {
@@ -123,8 +127,8 @@ export default function NewHistory() {
     } catch (err) {
       console.log(err);
     }
-  };
-  console.log(idUser)
+  }
+
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -152,6 +156,7 @@ export default function NewHistory() {
     setSelectedImage(imageUrl);
     setIsImagePopupOpen(true);
   };
+
 
 
   const renderLoading = (isLoading) => {
@@ -239,13 +244,13 @@ export default function NewHistory() {
                   onClick={() => handleOpenImagePopup(dataUser.link_nu_goc)}
                 />
               </div>
-              
+
 
             </div>
             <div
-                className=" lg:text-[26px] font-[Montserrat] mb-8 text-2xl flex justify-center font-bold text-[#FFFFFF]">
-                Event creator:{idUser}
-              </div>
+              className=" lg:text-[26px] font-[Montserrat] mb-8 text-2xl flex justify-center font-bold text-[#FFFFFF]">
+              Event creator:{idUser}
+            </div>
             <div className="slab lg:text-[26px] text-2xl font-bold text-[#FFFFFF]">
               <div className=" flex justify-center">
                 <ul className="flex flex-col gap-y-8 w-full ">
@@ -295,14 +300,14 @@ export default function NewHistory() {
                   </li>
                   <li>
                     {/* mobile search */}
-                    <div className="flex gap-x-4 mx-4 items-center py-3 px-4  lg:hidden  border rounded-full bg-white">
+                    {/* <div className="flex gap-x-4 mx-4 items-center py-3 px-4  lg:hidden  border rounded-full bg-white">
                       <i className="fa fa-search lg:text-4xl text-2xl text-black" />
                       <input
                         type="search"
                         placeholder="Search"
                         className="placeholder:text-xl border-none outline-none w-full h-full"
                       />
-                    </div>
+                    </div> */}
                   </li>
                 </ul>
               </div>
@@ -360,22 +365,67 @@ export default function NewHistory() {
                 ""
               )}
             </div>
-            <div style={{ justifyContent: "center" }} className="flex gap-x-2">
+            <div className="flex justify-between items-center lg:hidden">
+              <div
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 1 ? 'bg-[#782353] text-white' : ''}`}
+                onClick={() => redirect(1)}
+              >
+                First Meet
+              </div>
+              <div
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 2 ? 'bg-[#782353] text-white' : ''}`}
+                onClick={() => redirect(2)}
+              >
+                First date
+              </div>
+              <div
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 3 ? 'bg-[#782353] text-white' : ''}`}
+                onClick={() => redirect(3)}
+              >
+                Being in love
+              </div>
+              <div
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 4 ? 'bg-[#782353] text-white' : ''}`}
+                onClick={() => redirect(4)}
+              >
+                Breking up
+              </div>
+              <div
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 5 ? 'bg-[#782353] text-white' : ''}`}
+                onClick={() => redirect(5)}
+              >
+                Marry
+              </div>
+              <div
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 6 ? 'bg-[#782353] text-white' : ''}`}
+                onClick={() => redirect(6)}
+              >
+                Divorce
+                </div>
+              <div
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 7 ? 'bg-[#782353] text-white' : ''}`}
+                onClick={() => redirect(7)}
+              >
+                Remarry
+              </div>
+
+            </div>
+            {/* <div style={{ justifyContent: "center" }} className="flex gap-x-2">
               <button
-                className="text-blue-700 cursor-pointer  lg:hidden "
+                // className="text-blue-700 cursor-pointer  lg:hidden "
                 onClick={handlePreviousPage}
                 disabled={currentPage === 1} // Disable nút Previous nếu đang ở trang đầu tiên
               >
                 Previous
               </button>
               <button
-                className="text-blue-700 cursor-pointer  lg:hidden"
+                // className="text-blue-700 cursor-pointer  lg:hidden"
                 onClick={handleNextPage}
                 disabled={currentPage === totalPages} // Disable nút Next nếu đang ở trang cuối cùng
               >
                 Next
               </button>
-            </div>
+            </div> */}
             <div className="flex flex-col pt-10 mb-16 w-full font-[Montserrat] ">
               {dataComment.map((item, index) => {
                 const isShowingFullText = showMoreStates[item.id_comment];

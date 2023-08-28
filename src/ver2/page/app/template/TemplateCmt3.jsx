@@ -13,12 +13,13 @@ function TemplateCmt3(props) {
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
 
   return (
-    <div className="relative lg:w-[1024px] h-full flex justify-center overflow-hidden">
+    <div className="relative  lg:w-[1024px] h-full flex justify-center overflow-hidden">
       <div
         style={{ backgroundImage: `url(${bgr})`,
        }}
         className={
-          "absolute z-20  min-w-full min-h-full lg:w-full w-[auto] border-8 border-pink-300  lg:h-[380px] rounded-[36px] flex flex-row items-center justify-center overflow-visible"
+          // "absolute z-20  min-w-full min-h-full lg:w-full w-[auto] border-8 border-pink-300  lg:h-[380px] rounded-[36px] flex flex-row items-center justify-center overflow-visible"
+          "lg:w-full w-[auto] flex flex-row items-center justify-center h-full border-8 border-pink-300  bg-white  rounded-[36px] overflow-hidden"
         }
       >
         <div className="grid grid-cols-3" >

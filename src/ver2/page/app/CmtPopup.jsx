@@ -39,6 +39,29 @@ function CmtPopup(props) {
   const downloadImg = () => {
     saveAs(selectedImage, "image.png");
   };
+
+  
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (event) => {
+    const newValue = event.target.value;
+    setInputValue(newValue);
+  };
+
+  const maxRows = 10; // Số dòng tối đa cho <textarea>
+  const [numLines, setNumLines] = useState(1);
+
+  // Sử dụng useEffect để tính số dòng và cập nhật chiều cao
+  useEffect(() => {
+    const numNewLines = inputValue.split("\n").length;
+    setNumLines(numNewLines > maxRows ? maxRows : numNewLines);
+  }, [inputValue, maxRows]);
+
+  // Sử dụng numLines để tính chiều cao dựa trên số dòng
+  const textareaStyle = {
+    height: `${numLines * 20}px`, // Chiều cao được tính dựa trên số dòng và độ cao mỗi dòng
+  };
+
   //edit cmt
   const [isEditing, setIsEditing] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState(null);
@@ -127,12 +150,7 @@ function CmtPopup(props) {
     fetchDataCmt();
   }, []);
 
-  const [inputValue, setInputValue] = useState("");
 
-  const handleInputChange = (event) => {
-    const newValue = event.target.value;
-    setInputValue(newValue);
-  };
   const ne = window.navigator.userAgent;
   console.log("hii", ne);
   const userAgent = window.navigator.userAgent;
@@ -368,7 +386,7 @@ function CmtPopup(props) {
                         <div className="flex gap-3">
                           {idUser === cmt.id_user ? (
                             actionCMT.status && actionCMT.value == cmt.id_comment && (
-                              <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute  right-10   rounded-sm bg-slate-100 text-lg text-black">
+                              <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute  right-12   rounded-sm bg-slate-100 text-lg text-black">
                                 <button
                                   className=" flex gap-3 py-1 px-3 hover:bg-blue-400 hover:text-white w-full"
                                   onClick={() => startEdit(cmt)}>
@@ -383,12 +401,11 @@ function CmtPopup(props) {
                             )
                           ) : (
                             actionCMT.status && actionCMT.value == cmt.id_comment && (
-                              <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute bottom-0 right-5 rounded-sm bg-slate-100 text-lg text-black">
+                              <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute right-12 rounded-sm bg-slate-100 text-lg text-black">
 
                                 <button className="py-1 px-3 hover:bg-red-400 hover:text-white w-full"
-
                                 >
-                                  Report2
+                                  Report
                                 </button>
                               </div>
                             ))}
@@ -409,7 +426,7 @@ function CmtPopup(props) {
                   className="w-[100%] h-[100%] object-cover"
                 />
               </div>
-              {isEditing  ? (
+              {isEditing ? (
                 <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-full ">
                   <form onSubmit={onSubmitComment} className="flex items-center gap-x-4">
                     <textarea
@@ -453,13 +470,14 @@ function CmtPopup(props) {
                   )}
                 </div>
               ) : (
-                <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-full">
+                <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-2xl mb-2">
                   <form onSubmit={onSubmitComment} className="flex items-center gap-x-4">
                     <textarea
+                      style={textareaStyle} // Sử dụng style để cập nhật chiều cao
                       type="text"
                       value={inputValue}
                       onChange={handleInputChange}
-                      className="w-full h-[50px] border-none outline-none font-[Montserrat]"
+                      className="w-full h-[100px] h-max-[400px] border-none outline-none font-[Montserrat]"
                     ></textarea>
                     <div className="inline-block relative">
                       <label htmlFor="file-input">

@@ -34,6 +34,7 @@ function Template3(props) {
   const handlePopupClick = () => {
     setIsOpenPopup(true);
   };
+  console.log(data.real_time)
 
   const handleClosePopup = () => {
     setIsOpenPopup(false);
@@ -45,8 +46,8 @@ function Template3(props) {
         <Clock data={moment(data.real_time, "YYYY-MM-DD HH:mm:ss").add(7, "hours").toDate()} />
       </div>
       <div
-        style={{ backgroundImage: `url(${bg1})`,marginLeft:"10%" }}
-        className="border-8 border-pink-300 w-[80%] lg:h-[550px] bg-white rounded-[36px] flex lg:flex-row flex-col-reverse mt-[50px] items-center justify-center relative gap-x-20 overflow-hidden"
+        style={{ backgroundImage: `url(${bg1})` }}
+        className={`border-8 border-pink-300 w-full lg:h-[550px] bg-white rounded-[36px] flex lg:flex-row flex-col-reverse mt-[50px] items-center justify-center relative gap-x-20 overflow-hidden`}
         onClick={handlePopupClick}
       >
         <div className="grid grid-cols-3" >
