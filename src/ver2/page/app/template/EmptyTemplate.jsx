@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import tron1 from "../img/tron2.png";
 
 function EmptyTemplate() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [imageSrc, setImageSrc] = useState(null);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -9,6 +11,16 @@ function EmptyTemplate() {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+  const handleImageChange = (event) => {
+    // Lấy thông tin về tệp ảnh đã chọn
+    const selectedImage = event.target.files[0];
+
+    if (selectedImage) {
+      // Tạo URL cho ảnh đã chọn
+      const imageUrl = URL.createObjectURL(selectedImage);
+      setImageSrc(imageUrl);
+    }
   };
 
   return (
@@ -59,19 +71,45 @@ function EmptyTemplate() {
               <textarea type="text" className="border rounded p-3 w-[80%] h-[150px]" />
             </div>
             <div className="flex flex-row mt-10 w-full h-[30%]">
-              
-                <div className="col-4 text-center justify-center items-center">
-                  Phuc
+
+              <div className="col-4 text-center justify-center items-center mt-20 ">
+
+                <input type="text" placeholder="Name Male" className="border rounded p-3 w-[60%] justify-center" />
+              </div>
+              <div className="col-4 text-center mt-10">
+                <div className="flex justify-center">
+                  <div className="relative w-72 h-72">
+                    <label htmlFor="imageInput" className="block w-full h-full cursor-pointer">
+                      <input
+                        type="file"
+                        id="imageInput"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleImageChange}
+                      />
+                      {/* Hiển thị khung tròn bọc ngoài */}
+                      <div className="absolute inset-0 bg-cover bg-center rounded-full hover:bg-opacity-20 transition-all duration-300">
+                        <div className="w-full h-full bg-cover bg-center rounded-full" style={{ backgroundImage: `url(${tron1})` }}></div>
+                      </div>
+                      {/* Hiển thị ảnh chọn hoặc mặc định */}
+                      <div className="absolute inset-0 bg-cover bg-center rounded-full" style={{ backgroundImage: `url(${imageSrc || "about:blank"})` }}></div>
+                    </label>
+                  </div>
                 </div>
-                <div className="col-4 text-center justify-center items-center">
-                  Phuc
-                </div>
-                <div className="col-4 text-center justify-center items-center">
-                  Phuc
-                </div>
+              </div>
+
+
+
+
+
+              <div className="col-4 text-center justify-center items-center mt-20 ">
+
+                <input type="text" placeholder="Name Female" className="border rounded p-3 w-[60%] justify-center" />
+              </div>
             </div>
 
           </div>
+
         </div>
 
       )}

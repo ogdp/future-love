@@ -151,28 +151,19 @@ function Header({ onSearchChange, onSearch, onClick }) {
             </div>
           : (<span></span>)
           }
-
-
-
           <BsFillHeartFill
             onClick={toggleVersion}
             className="lg:text-[54px] text-[38px] text-white mt-2 lg:mr-10 mr-5 transition-transform duration-300 hover:scale-125 cursor-pointer"
           />
-
           <SlMenu
             className="lg:text-[56px] text-[38px] text-white mt-1 font-black mr-10 cursor-pointer transition-transform duration-300 hover:scale-125"
             onClick={() => {
               setShowMenu(!showMenu);
             }}
           />
-
-
         </div>
-
       </div>
-
       {/* navLink */}
-
       {showNotifications && (
         <div className={`absolute top-36 right-10 z-50 bg-[#FFF2EB] rounded-[16px] shadow-lg p-4 transition-all duration-300 font-[Montserrat] ${(fetchSuccess && notifications.comment.length > 0) ? 'w-[400px]' : 'w-[400px]'
           } ${(fetchSuccess && notifications.comment.length > 0) ? 'h-[300px]' : 'h-[80px]'

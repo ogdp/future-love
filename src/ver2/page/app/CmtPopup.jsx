@@ -40,7 +40,7 @@ function CmtPopup(props) {
     saveAs(selectedImage, "image.png");
   };
 
-  
+
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (event) => {
@@ -48,19 +48,23 @@ function CmtPopup(props) {
     setInputValue(newValue);
   };
 
+  const maxCharsPerLine = 100; // Số ký tự tối đa cho mỗi dòng
   const maxRows = 10; // Số dòng tối đa cho <textarea>
+ 
   const [numLines, setNumLines] = useState(1);
 
   // Sử dụng useEffect để tính số dòng và cập nhật chiều cao
   useEffect(() => {
-    const numNewLines = inputValue.split("\n").length;
-    setNumLines(numNewLines > maxRows ? maxRows : numNewLines);
-  }, [inputValue, maxRows]);
+    const numNewLines = Math.ceil(inputValue.length / maxCharsPerLine);
+    setNumLines(numNewLines > maxRows ? maxRows : numNewLines || 1); // Đảm bảo numLines luôn là ít nhất là 1
+  }, [inputValue, maxRows, maxCharsPerLine]);
 
   // Sử dụng numLines để tính chiều cao dựa trên số dòng
   const textareaStyle = {
     height: `${numLines * 20}px`, // Chiều cao được tính dựa trên số dòng và độ cao mỗi dòng
   };
+
+
 
   //edit cmt
   const [isEditing, setIsEditing] = useState(false);

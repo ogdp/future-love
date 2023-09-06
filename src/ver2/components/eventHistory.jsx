@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import girl from "./image/girl.jpg";
-import { AiFillHeart } from "react-icons/ai";
 import ReactLoading from "react-loading";
 import { format } from "date-fns";
-import Historyv2 from "../../ver2/page/Historyv2";
 import { createBrowserHistory } from "history";
 import "../css/Header.css";
 import img1 from "../components/image/finish.png";
-import img2 from "../components/image/12.png";
 import bg1 from "../components/image/bg-1.png";
 import bg2 from "../components/image/bg-2.png";
 import bg4 from "../components/image/bg4.jpeg";
@@ -17,9 +13,6 @@ import vec3 from "../components/image/hoa.png";
 import vec4 from "../components/image/tron2.png";
 import moment from "moment";
 import { useParams } from "react-router";
-
-// import image1 from "../components/image/khung-vien-dep-33-removebg-preview.png"
-// import image2 from "../components/image/khung-vien-dep-powerpoint_022258315.png"
 
 function EventHistory(props) {
   const { id } = useParams();
@@ -36,20 +29,7 @@ function EventHistory(props) {
   console.log(count);
 
   const resultsPerPage = 8;
-  // useEffect(() => {
-  //   fetchData();
-  // }, [id]);
 
-  // const images = [
-  //   { url: image1, alt: 'Image 1' },
-  //   { url: image2, alt: 'Image 2' },
-  // ];
-
-  // for (let i = 0; i < images.length; i++) {
-  //   const image = images[i];
-  //   // console.log(`Image URL: ${image.url}`);
-  //   // console.log(`Image Alt: ${image.alt}`);
-  // }
 
   const fetchData = async () => {
     if (!id) {
@@ -78,7 +58,7 @@ function EventHistory(props) {
       try {
         setIsLoading(true);
         const response = await fetch(
-          `https://14.225.7.221:8989/lovehistory/page/${id}`
+          `http://14.225.7.221:8989/lovehistory/page/${id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -101,7 +81,7 @@ function EventHistory(props) {
   console.log(currentPage);
 
   const changePageUp = () => {
-    if (count < totalPages) {
+    if (count < 200) {
       setCount(count + 1);
       history.push(`/event/${count + 1}`);
     }
@@ -137,10 +117,7 @@ function EventHistory(props) {
     const randomType = loadingTypes[randomIndex];
     setLoadingType(randomType);
   }, []);
-  // const eventData = data.find(event => event.id === id);
-  // if (!eventData) {
-  //   return <div>Sự kiện không tồn tại</div>;
-  // }
+
 
   const formatDateTime = (dateTime) => {
     return format(new Date(dateTime), "HH:mm:ss dd/MM/yyyy");

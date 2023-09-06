@@ -72,34 +72,34 @@ export default function NewHistory() {
   const pagesToHandleScroll = [1, 2, 3, 4, 5, 6];
   const isMobileDevice = window.innerWidth <= 768; // Kích thước màn hình dưới 768px coi như là điện thoại
 
-useEffect(() => {
-  fetchDataUser();
+  useEffect(() => {
+    fetchDataUser();
 
-  const handleScroll = () => {
-    const currentScrollPosition = window.scrollY;
-    setScrollPosition(currentScrollPosition);
+    const handleScroll = () => {
+      const currentScrollPosition = window.scrollY;
+      setScrollPosition(currentScrollPosition);
 
-    const isAtBottom = currentScrollPosition >= (document.body.scrollHeight - window.innerHeight);
-    const isAtTop = currentScrollPosition === 0;
+      const isAtBottom = currentScrollPosition >= (document.body.scrollHeight - window.innerHeight);
+      const isAtTop = currentScrollPosition === 0;
 
-    if (!isMobileDevice && isAtBottom && pagesToHandleScroll.includes(isActive)) {
-      const nextPage = isActive + 1;
-      redirect(nextPage);
-    }
+      if (!isMobileDevice && isAtBottom && pagesToHandleScroll.includes(isActive)) {
+        const nextPage = isActive + 1;
+        redirect(nextPage);
+      }
 
-    // if (!isMobileDevice && isAtTop && isActive > 1) {
-    //   const previousPage = isActive - 1;
-    //   redirect(previousPage);
-    // } else if (!isMobileDevice && isAtTop && isActive === 1) {
-    //   window.scrollTo(0, 1); // Ngăn chặn cuộn từ trang 1 thẳng đến trang 4
-    // }
-  };
+      // if (!isMobileDevice && isAtTop && isActive > 1) {
+      //   const previousPage = isActive - 1;
+      //   redirect(previousPage);
+      // } else if (!isMobileDevice && isAtTop && isActive === 1) {
+      //   window.scrollTo(0, 1); // Ngăn chặn cuộn từ trang 1 thẳng đến trang 4
+      // }
+    };
 
-  window.addEventListener("scroll", handleScroll);
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
-  };
-}, [isActive, isMobileDevice]);
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isActive, isMobileDevice]);
 
   useEffect(() => {
     axios
@@ -118,6 +118,8 @@ useEffect(() => {
     try {
       const response = await axios.get(
         `http://14.225.7.221:8989/lovehistory/${id}`
+        
+
       );
       setDataUser(response.data.sukien[0]);
       setIdUser(response.data.sukien[0].user_name_tao_sk
@@ -401,7 +403,7 @@ useEffect(() => {
                 onClick={() => redirect(6)}
               >
                 Divorce
-                </div>
+              </div>
               <div
                 className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 7 ? 'bg-[#782353] text-white' : ''}`}
                 onClick={() => redirect(7)}
