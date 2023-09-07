@@ -161,7 +161,9 @@ function Home() {
       const { data } = await axios.get("https://api.ipify.org/?format=json");
       // console.log(data);
       if (data.ip) {
-        const res = await axios.get(`http://ip-api.com/json/${data.ip}`);
+        const res = await axios.get(
+          `http://ip-api.com/json/${data.ip}?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query`
+        );
         const browser = window.navigator.userAgent;
         return {
           browser: browser,
