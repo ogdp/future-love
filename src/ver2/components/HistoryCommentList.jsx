@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,6 +12,7 @@ const HistoryCommentList = (props) => {
   const [actionCMT, setActionCMT] = useState({ status: false, value: 0 });
   const [count, setCount] = useState(1);
   const resultsPerPage = 10;
+  const [nameUser, setNameUser] = useState();
 
   useEffect(() => {
     setDatas(props.datas);
@@ -51,6 +52,21 @@ const HistoryCommentList = (props) => {
     return <div className="text-center text-3xl py-3">No comments yet</div>;
   }
   const dataSort = datas;
+  console.log(dataSort);
+  console.log(dataSort.id_toan_bo_su_kien);
+
+  const deleteComment = async (idComment) => {
+    try {
+      const response = await axios.delete(
+        `http://14.225.7.221:8989/lovehistory/page/1/${idComment}/delete`
+      );
+      toast.success(response.data.message);
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   // const dataSort = datas.reverse();
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
@@ -88,30 +104,28 @@ const HistoryCommentList = (props) => {
     // Tạo kết quả dựa trên số ngày, giờ và phút
     let result = "";
     if (days > 0) {
-      result = `${days} ngày`;
+      result = `${days} days`;
     } else if (hours > 0) {
-      result = `${hours} giờ`;
+      result = `${hours} hours`;
     } else {
-      result = `${minutes} phút`;
+      result = `${minutes} minutes`;
     }
     return result;
   }
+  // const fetchDataUser = async (id_toan_bo_su_kien) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `http://14.225.7.221:8989/lovehistory/${id_toan_bo_su_kien}`
+  //     );
 
-  const onHandleDeleteCmt = async (id) => {
-    try {
-      const res = await axios.delete(
-        `${server}/lovehistory/page/1/${id}/delete`
-      );
-      const newData = datas.filter((item) => item.id_comment !== id);
-      setDatas(newData);
-      if (res && res.data.message == "Comment deleted successfully") {
-        toast.success("Delete comment successfully !!!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     setNameUser(response.data.sukien[0].user_name_tao_sk
+  //     );
+  //     console.log(response.data)
 
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
   return (
     <>
       <div className="flex justify-center">
@@ -144,7 +158,7 @@ const HistoryCommentList = (props) => {
                         <h2 className="line-clamp-1 max-lg:text-xl lg:text-2xl font-medium">
                           {checkId !== undefined ? "His" : "You"} commented on
                           the event of{" "}
-                          <span className="underline">{item.user_name}</span>
+                          <span className="underline">{item.user_taosk}</span>
                         </h2>
                         <h5 className="line-clamp-1 max-lg:text-sm text-base">
                           {item.noi_dung_cmt}
@@ -204,14 +218,8 @@ const HistoryCommentList = (props) => {
                           Edit
                         </button>
                         <button
-                          onClick={() => {
-                            onHandleDeleteCmt(item.id_comment);
-                            setActionCMT({
-                              status: false,
-                              value: 0,
-                            });
-                          }}
                           className="py-1 px-3 hover:bg-red-400 hover:text-white"
+                          onClick={() => deleteComment(item.id_comment)}
                         >
                           Delete
                         </button>

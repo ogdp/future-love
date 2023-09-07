@@ -22,11 +22,12 @@ function BreakingUp() {
     try {
       const response = await axios.get(
         `http://14.225.7.221:8989/lovehistory/${id}`
+        
       );
-      setData(response.data.sukien[1]);
-      console.log(response.data.sukien[1]);
-      setTemplate("Template" + response.data.sukien[1].id_template);
-      console.log("Template" + response.data.sukien[1].id_template);
+      setData(response.data.sukien[3]);
+      console.log(response.data.sukien[3]);
+      setTemplate("Template" + response.data.sukien[3].id_template);
+      console.log("Template" + response.data.sukien[3].id_template);
       // console.log(data)
     } catch (err) {
       console.log(err);

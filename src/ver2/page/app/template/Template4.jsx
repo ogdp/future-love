@@ -37,7 +37,7 @@ function Template4(props) {
     }, [isOpenPopup, id,stt]);
 
   return (
-    <div className="flex flex-col items-center ">
+    <div className="flex flex-col items-center overflow-hidden ">
       <div className="my-20">
       <Clock data={moment(data.real_time, "YYYY-MM-DD HH:mm:ss").add(7, "hours").toDate()} />
       </div>
