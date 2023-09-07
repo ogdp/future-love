@@ -36,7 +36,7 @@ function EventHistory(props) {
       try {
         setIsLoading(true);
         const response = await fetch(
-          `http://14.225.7.221:8989/lovehistory/page/${count}`
+          `https://sakaivn.online/lovehistory/page/${count}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -58,7 +58,7 @@ function EventHistory(props) {
       try {
         setIsLoading(true);
         const response = await fetch(
-          `http://14.225.7.221:8989/lovehistory/page/${id}`
+          `https://sakaivn.online/lovehistory/page/${id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");

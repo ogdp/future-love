@@ -63,7 +63,7 @@ export default function Register() {
       formData.append("email", email);
       try {
         const response = await axios.post(
-          "http://14.225.7.221:8989/register",
+          "https://sakaivn.online/register",
           formData
         );
 

@@ -58,7 +58,7 @@ const HistoryCommentList = (props) => {
   const deleteComment = async (idComment) => {
     try {
       const response = await axios.delete(
-        `http://14.225.7.221:8989/lovehistory/page/1/${idComment}/delete`
+        `https://sakaivn.online/lovehistory/page/1/${idComment}/delete`
       );
       toast.success(response.data.message);
       window.location.reload();
@@ -115,7 +115,7 @@ const HistoryCommentList = (props) => {
   // const fetchDataUser = async (id_toan_bo_su_kien) => {
   //   try {
   //     const response = await axios.get(
-  //       `http://14.225.7.221:8989/lovehistory/${id_toan_bo_su_kien}`
+  //       `https://sakaivn.online/lovehistory/${id_toan_bo_su_kien}`
   //     );
 
   //     setNameUser(response.data.sukien[0].user_name_tao_sk

@@ -13,7 +13,7 @@ function ViewResult() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://14.225.7.221:8989/lovehistory/${id}`
+        `https://sakaivn.online/lovehistory/${id}`
       );
       setData(response.data);
       setEvent(response.data);

@@ -31,13 +31,13 @@ function Historyv2() {
   const onSearch = (value) => {
     if (value === "") {
       axios
-        .get(`http://14.225.7.221:8989/lovehistory/page/1`)
+        .get(`https://sakaivn.online/lovehistory/page/1`)
         .then((response) => {
           setDataSearch(response.data.list_sukien);
         });
     }
     axios
-      .get(`http://14.225.7.221:8989/search?word=${value}`)
+      .get(`https://sakaivn.online/search?word=${value}`)
       .then((response) => {
         setDataSearch(response.data.list_sukien);
       });

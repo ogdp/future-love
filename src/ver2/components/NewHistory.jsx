@@ -108,7 +108,7 @@ export default function NewHistory() {
   useEffect(() => {
     axios
       .get(
-        `http://14.225.7.221:8989/lovehistory/comment/${stt_su_kien}?id_toan_bo_su_kien=${id}`
+        `https://sakaivn.online/lovehistory/comment/${stt_su_kien}?id_toan_bo_su_kien=${id}`
       )
       .then((response) => {
         setDataComment(response.data.comment);
@@ -119,7 +119,7 @@ export default function NewHistory() {
   const fetchDataUser = async () => {
     try {
       const response = await axios.get(
-        `http://14.225.7.221:8989/lovehistory/${id}`
+        `https://sakaivn.online/lovehistory/${id}`
       );
       setSk1(response.data.sukien[0].ten_su_kien);
       setSk2(response.data.sukien[1].ten_su_kien);

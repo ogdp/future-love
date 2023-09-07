@@ -12,7 +12,7 @@ import { getFullFaceDescription, createMatcher, loadModels } from "../api/face";
 function About() {
   // const Api_key = "4b92af7f16b0fb074cc5e1c7adfa512a";
   const Api_key = "c9b98b0eb1ba623a2fcb1c3fe6b1f35b";
-  const server = "http://14.225.7.221:8989/getdata";
+  const server = "https://sakaivn.online/getdata";
 
   // Import face profile
   const JSON_PROFILE = require("../descriptors/bnk48.json");

@@ -110,7 +110,7 @@ function CmtPopup(props) {
   const updateComment = async () => {
     try {
       const response = await axios.patch(
-        `http://14.225.7.221:8989/lovehistory/page/1/${editingCommentId}`,
+        `https://sakaivn.online/lovehistory/page/1/${editingCommentId}`,
         { content: editedComment }
       );
 
@@ -137,7 +137,7 @@ function CmtPopup(props) {
   const deleteComment = async (idComment) => {
     try {
       const response = await axios.delete(
-        `http://14.225.7.221:8989/lovehistory/page/1/${idComment}/delete`
+        `https://sakaivn.online/lovehistory/page/1/${idComment}/delete`
       );
       toast.success(response.data.message);
       window.location.reload();
@@ -157,7 +157,7 @@ function CmtPopup(props) {
     console.log(1234);
     try {
       const response = await axios.get(
-        `http://14.225.7.221:8989/lovehistory/comment/${props.data.so_thu_tu_su_kien}?id_toan_bo_su_kien=${param.id}`
+        `https://sakaivn.online/lovehistory/comment/${props.data.so_thu_tu_su_kien}?id_toan_bo_su_kien=${param.id}`
       );
       const data = await response.data.comment;
       console.log(response.data.comment);
@@ -205,7 +205,7 @@ function CmtPopup(props) {
 
   const HandleSendCmt = async (e) => {
     setIsImageUploading(true);
-    const url = "http://14.225.7.221:8989/lovehistory/comment";
+    const url = "https://sakaivn.online/lovehistory/comment";
     let comment = {};
     // if (user !== null) {
     // }

@@ -82,7 +82,7 @@ function Comments() {
     try {
       setIsLoading(true);
       const res = await axios.get(
-        `http://14.225.7.221:8989/lovehistory/pageComment/${countCM}`
+        `https://sakaivn.online/lovehistory/pageComment/${countCM}`
       );
       const comments = await res.data.comment;
       setData(res.data.comment);
@@ -181,20 +181,16 @@ function Comments() {
                   </Link>
                 )}
               </div>
-              <div className="flex flex-col gap-x-2 max-w-[60%] md:max-w-[75%]"
-              onClick={() =>
-                visitProfile(
-                  data.id_toan_bo_su_kien,
-                  data.so_thu_tu_su_kien
-                )
-              }>
-                <span
-                  className="lg:text-2xl text-lg font-semibold"
-
-                >
+              <div
+                className="flex flex-col gap-x-2 max-w-[60%] md:max-w-[75%]"
+                onClick={() =>
+                  visitProfile(data.id_toan_bo_su_kien, data.so_thu_tu_su_kien)
+                }
+              >
+                <span className="lg:text-2xl text-lg font-semibold">
                   {data.user_name ? data.user_name : "Guest"}
                 </span>
-                <span className={`lg:text-lg text-base mt-3`} >
+                <span className={`lg:text-lg text-base mt-3`}>
                   {isShowingFullText
                     ? data.noi_dung_cmt
                     : `${data.noi_dung_cmt.substring(0, 260)}`}
@@ -228,7 +224,7 @@ function Comments() {
               </div>
               <div className="ml-auto">
                 <div className="lg:text-base text-sm ml-auto">
-                {getTime(data.thoi_gian_release)}
+                  {getTime(data.thoi_gian_release)}
                 </div>
                 <div className=" lg:text-base text-sm">
                   <p> {data.dia_chi_ip}</p>
@@ -277,7 +273,6 @@ function Comments() {
           </svg>
         </button>
       </div>
-
     </div>
   );
 }

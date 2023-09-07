@@ -36,7 +36,7 @@ function Header({ onSearchChange, onSearch, onClick }) {
 
   useEffect(() => {
     axios
-      .get(`http://14.225.7.221:8989/notification/${idUser}`)
+      .get(`https://sakaivn.online/notification/${idUser}`)
       .then((response) => {
         setNotifications(response.data);
         setFetchSuccess(true); // Đánh dấu fetching thành công

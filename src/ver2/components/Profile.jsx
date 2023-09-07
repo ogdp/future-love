@@ -26,7 +26,7 @@ export default function Profile() {
   const [listEvent, setListEvent] = useState([]);
 
   const api_key = "ba35005b6d728bd9197bfd95d64e4e39";
-  const server = "http://14.225.7.221:8989";
+  const server = "https://sakaivn.online";
   const [notiImage, setNotiImage] = React.useState({
     status: false,
     value: null,
