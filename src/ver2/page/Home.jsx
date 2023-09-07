@@ -100,10 +100,15 @@ function Home() {
       imageElement.src = image;
       const netInput = imageElement;
       // console.log(netInput); // object img with src = blob:....
-      const detections = await faceapi
+      let detections = await faceapi
+        .detectAllFaces(netInput, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceExpressions();
+      const detections2 = await faceapi
         .detectAllFaces(netInput, new faceapi.SsdMobilenetv1Options())
         .withFaceLandmarks()
         .withFaceExpressions();
+      if (detections2.length == 0) return detections2;
       return detections;
     } catch (error) {
       console.log(error);
@@ -128,7 +133,7 @@ function Home() {
     try {
       if (!URL.createObjectURL(file)) return setShowModal(true);
       const res = await validImage(URL.createObjectURL(file));
-      // console.log(res);
+      console.log(res);
       setIsLoading(false);
       if (validateImgage(res) == undefined) return;
       // console.log("hợp lê ::", res);
@@ -212,7 +217,9 @@ function Home() {
         return window.location.reload();
       }
       toast.success("Upload and save data completed successfully");
-      navigate("/detail/" + res3.success.data.sukien[0].id_toan_bo_su_kien+"/1");
+      navigate(
+        "/detail/" + res3.success.data.sukien[0].id_toan_bo_su_kien + "/1"
+      );
     } catch (error) {
       setRandomImages(null);
       setIsLoading(false);

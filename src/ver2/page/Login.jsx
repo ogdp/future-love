@@ -37,7 +37,6 @@ export default function Login() {
           window.location.reload();
           response.data = JSON.stringify(response.data);
           localStorage.setItem("user-info", response.data);
-          
         }
       } catch (error) {
         console.log("sda", error);

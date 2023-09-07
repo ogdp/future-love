@@ -5,13 +5,13 @@ import { SlMenu } from "react-icons/sl";
 import useEvenStore from "../../utils/store";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineNotification } from "react-icons/ai";
-import { IoIosNotificationsOutline } from 'react-icons/io';
+import { IoIosNotificationsOutline } from "react-icons/io";
 import axios from "axios";
 // const userInfo = window.localStorage.getItem("user-info");
 const userInfo = JSON.parse(window.localStorage.getItem("user-info"));
-console.log(userInfo)
+console.log(userInfo);
 const idUser = userInfo && userInfo.id_user;
-console.log(idUser)
+console.log(idUser);
 function reverseSortByDateTime(notifications) {
   return notifications.slice().sort((a, b) => {
     const timeA = new Date(a.time);
@@ -35,20 +35,18 @@ function Header({ onSearchChange, onSearch, onClick }) {
   };
 
   useEffect(() => {
-
-    axios.get(`http://14.225.7.221:8989/notification/${idUser}`)
-      .then(response => {
+    axios
+      .get(`http://14.225.7.221:8989/notification/${idUser}`)
+      .then((response) => {
         setNotifications(response.data);
         setFetchSuccess(true); // Đánh dấu fetching thành công
-        console.log(response.data)
+        console.log(response.data);
       })
-      .catch(error => {
-        console.error('Error fetching notifications:', error);
+      .catch((error) => {
+        console.error("Error fetching notifications:", error);
         setError(error); // Lưu thông tin lỗi vào state
         setFetchSuccess(false); // Đánh dấu fetching thất bại
       });
-
-
   }, []);
 
   const user = window.localStorage.getItem("user-info");
@@ -69,11 +67,13 @@ function Header({ onSearchChange, onSearch, onClick }) {
   };
   const onChangeSearch = (event) => {
     console.log(event.target.value);
-    onSearch(event.target.value)
-  }
+    onSearch(event.target.value);
+  };
 
   return (
-    <div className=" h-40 w-full  lg:py-7 py-3" style={{ background: "linear-gradient(to right, #F0A3BF, #A86ED4)" }}
+    <div
+      className=" h-40 w-full  lg:py-7 py-3"
+      style={{ background: "linear-gradient(to right, #F0A3BF, #A86ED4)" }}
     >
       {/* fixed top-0 left-0  z-20 */}
       <div className="flex items-center justify-between">
@@ -138,8 +138,7 @@ function Header({ onSearchChange, onSearch, onClick }) {
         {/* menu */}
 
         <div className="flex">
-
-          {idUser ?
+          {idUser ? (
             <div className="relative">
               <IoIosNotificationsOutline
                 className="lg:text-[56px] text-[38px] text-white mt-1 font-black mr-10 cursor-pointer transition-transform duration-300 hover:scale-125"
@@ -151,8 +150,9 @@ function Header({ onSearchChange, onSearch, onClick }) {
                 </span>
               )}
             </div>
-            : (<span></span>)
-          }
+          ) : (
+            <span></span>
+          )}
           <BsFillHeartFill
             onClick={toggleVersion}
             className="lg:text-[54px] text-[38px] text-white mt-2 lg:mr-10 mr-5 transition-transform duration-300 hover:scale-125 cursor-pointer"
@@ -167,33 +167,59 @@ function Header({ onSearchChange, onSearch, onClick }) {
       </div>
       {/* navLink */}
       {showNotifications && (
-        <div className={`absolute top-36 right-10 z-50 bg-[#FFF2EB] rounded-[16px] shadow-lg p-4 transition-all duration-300 font-[Montserrat] ${(fetchSuccess && notifications.comment.length > 0) ? 'w-[400px]' : 'w-[400px]'
-          } ${(fetchSuccess && notifications.comment.length > 0) ? 'h-[300px]' : 'h-[80px]'
+        <div
+          className={`absolute top-36 right-10 z-50 bg-[#FFF2EB] rounded-[16px] shadow-lg p-4 transition-all duration-300 font-[Montserrat] ${
+            fetchSuccess && notifications.comment.length > 0
+              ? "w-[400px]"
+              : "w-[400px]"
+          } ${
+            fetchSuccess && notifications.comment.length > 0
+              ? "h-[300px]"
+              : "h-[80px]"
           }`}
         >
-          <h2 className="bg-[#FF6B3D] text-white py-2 px-4 rounded-t-[16px] text-center text-2xl">Notifications</h2>
+          <h2 className="bg-[#FF6B3D] text-white py-2 px-4 rounded-t-[16px] text-center text-2xl">
+            Notifications
+          </h2>
           {error ? (
-            <p className="text-red-500 mt-4 text-lg">Error fetching notifications: {error.message}</p>
+            <p className="text-red-500 mt-4 text-lg">
+              Error fetching notifications: {error.message}
+            </p>
           ) : (
             <ul className="w-full h-[250px] overflow-y-auto">
-              {reverseSortByDateTime(notifications.comment).map((notification, index) => {
-                const time = new Date(notification.time);
-                const formattedTime = `${time.getHours()}:${time.getMinutes()} day ${time.getDate()}/${time.getMonth() + 1}`;
-                return (
-                  <li key={index} className="py-3 text-left border-b border-gray-300">
-                    <div className="flex items-center">
-                      <div className="w-12 h-12 rounded-full bg-[#FF6B3D] flex justify-center items-center text-white font-semibold text-lg mr-4">
-                        {notification.user_name_cmt ? notification.user_name_cmt.charAt(0) : "G"}
+              {reverseSortByDateTime(notifications.comment).map(
+                (notification, index) => {
+                  const time = new Date(notification.time);
+                  const formattedTime = `${time.getHours()}:${time.getMinutes()} day ${time.getDate()}/${
+                    time.getMonth() + 1
+                  }`;
+                  return (
+                    <li
+                      key={index}
+                      className="py-3 text-left border-b border-gray-300"
+                    >
+                      <div className="flex items-center">
+                        <div className="w-12 h-12 rounded-full bg-[#FF6B3D] flex justify-center items-center text-white font-semibold text-lg mr-4">
+                          {notification.user_name_cmt
+                            ? notification.user_name_cmt.charAt(0)
+                            : "G"}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-2xl">
+                            {notification.user_name_cmt
+                              ? notification.user_name_cmt
+                              : "Guest"}
+                          </p>
+                          <p className=" text-gray-500 text-xl">
+                            {formattedTime}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-semibold text-2xl">{notification.user_name_cmt ? notification.user_name_cmt : "Guest"}</p>
-                        <p className=" text-gray-500 text-xl">{formattedTime}</p>
-                      </div>
-                    </div>
-                    <p className="mt-2 text-2xl">{`commented on your post`}</p>
-                  </li>
-                );
-              })}
+                      <p className="mt-2 text-2xl">{`commented on your post`}</p>
+                    </li>
+                  );
+                }
+              )}
             </ul>
           )}
         </div>
