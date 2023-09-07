@@ -13,6 +13,8 @@ export default function Register() {
   const [imageSrc, setImageSrc] = useState(null);
   const [imageName, setImageName] = useState("");
   const navigate = useNavigate();
+
+  const server = "https://sakaivn.online";
   const redirect = () => {
     navigate("/login");
   };
@@ -62,10 +64,7 @@ export default function Register() {
       formData.append("password", password);
       formData.append("email", email);
       try {
-        const response = await axios.post(
-          "https://sakaivn.online/register",
-          formData
-        );
+        const response = await axios.post(`${server}/register/user`, formData);
 
         console.log(response.data.account);
         if (response.data.account) {
