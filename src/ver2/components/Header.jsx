@@ -73,8 +73,9 @@ function Header({ onSearchChange, onSearch, onClick }) {
   }
 
   return (
-    <div className="h-40 w-full mx-4 lg:py-7 py-3"
+    <div className=" h-40 w-full  lg:py-7 py-3" style={{ background: "linear-gradient(to right, #F0A3BF, #A86ED4)" }}
     >
+      {/* fixed top-0 left-0  z-20 */}
       <div className="flex items-center justify-between">
         {/* logo */}
         <div className="flex items-center">
@@ -91,7 +92,7 @@ function Header({ onSearchChange, onSearch, onClick }) {
           </p>
           <img src={img} alt="" className="lg:w-28 w-24 lg:h-24 h-20" />
         </div>
-        <div className=" flex lg:gap-1 justify-center items-center bg-[linear-gradient(165deg,#ea20b7_0%,#ee747c_50%,#d080c8_100%)] rounded-3xl">
+        <div className="hidden lg:flex gap-1 justify-center items-center bg-[linear-gradient(165deg,#ea20b7_0%,#ee747c_50%,#d080c8_100%)] rounded-3xl ">
           <div className="max-lg:w-[50px] max-lg:h-[50px] w-[80px] h-[80px] flex justify-center items-center">
             <Link
               to={
@@ -120,6 +121,7 @@ function Header({ onSearchChange, onSearch, onClick }) {
             </Link>
           </div>
         </div>
+
         {/* search */}
         <div className="lg:block hidden">
           <div className="i-search flex items-center">
@@ -137,7 +139,7 @@ function Header({ onSearchChange, onSearch, onClick }) {
 
         <div className="flex">
 
-          {idUser ? 
+          {idUser ?
             <div className="relative">
               <IoIosNotificationsOutline
                 className="lg:text-[56px] text-[38px] text-white mt-1 font-black mr-10 cursor-pointer transition-transform duration-300 hover:scale-125"
@@ -149,7 +151,7 @@ function Header({ onSearchChange, onSearch, onClick }) {
                 </span>
               )}
             </div>
-          : (<span></span>)
+            : (<span></span>)
           }
           <BsFillHeartFill
             onClick={toggleVersion}

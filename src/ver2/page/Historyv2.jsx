@@ -43,9 +43,9 @@ function Historyv2() {
       });
   };
   return (
-    <div className="Historyv2 flex flex-col min-h-screen overflow-hidden" style={{ background: "linear-gradient(to right, #F0A3BF, #A86ED4)" }}>
-      <Header onSearch={onSearch} />
-      <b className="starborn text-white lg:text-5xl text-3xl ml-12 mb-3 mt-5">Events</b>
+    <div className=" Historyv2 flex flex-col min-h-screen overflow-hidden" style={{ background: "linear-gradient(to right, #F0A3BF, #A86ED4)" }}>
+      <Header  onSearch={onSearch}  />
+      <b className="starborn text-white lg:text-5xl text-3xl ml-12 mb-3 mt-[8%]">Events</b>
        
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mx-6 sm:mx-10 lg:mx-16 justify-center">
         <div className="flex justify-center">

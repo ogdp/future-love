@@ -20,6 +20,28 @@ function Comments() {
     setSelectedImage(imageUrl);
     setIsImagePopupOpen(true);
   };
+  function getTime(time_core) {
+    const providedTime = new Date(time_core); // Lưu ý: Tháng bắt đầu từ 0 (0 - 11)
+    const currentTime = new Date();
+    // Tính khoảng thời gian (tính bằng mili giây)
+    const timeDifference = currentTime - providedTime;
+    // Chuyển đổi khoảng thời gian từ mili giây sang phút
+    const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+    // Tính số ngày, giờ và phút
+    const days = Math.floor(minutesDifference / (60 * 24));
+    const hours = Math.floor((minutesDifference % (60 * 24)) / 60);
+    const minutes = minutesDifference % 60;
+    // Tạo kết quả dựa trên số ngày, giờ và phút
+    let result = "";
+    if (days > 0) {
+      result = `${days} days`;
+    } else if (hours > 0) {
+      result = `${hours} hours`;
+    } else {
+      result = `${minutes} minutes`;
+    }
+    return result;
+  }
   function wrapText(text, maxLineLength) {
     const words = text.split(" ");
     const lines = [];
@@ -206,7 +228,7 @@ function Comments() {
               </div>
               <div className="ml-auto">
                 <div className="lg:text-base text-sm ml-auto">
-                  {data.thoi_gian_release}
+                {getTime(data.thoi_gian_release)}
                 </div>
                 <div className=" lg:text-base text-sm">
                   <p> {data.dia_chi_ip}</p>
