@@ -219,6 +219,11 @@ export default function Profile() {
         .withFaceLandmarks()
         .withFaceExpressions();
       // console.log(detections);
+      const detections2 = await faceapi
+        .detectAllFaces(netInput, new faceapi.SsdMobilenetv1Options())
+        .withFaceLandmarks()
+        .withFaceExpressions();
+      if (detections2.length == 0) return detections2;
       return detections;
     } catch (error) {
       console.log(error);

@@ -47,9 +47,10 @@ function Template2(props) {
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096950-1@2x.png";
   const view =
     "https://generation-sessions.s3.amazonaws.com/a6c87cf4275ca96f7141a113f2447e31/img/group-48096951-1@2x.png";
+    console.log(data.real_time)
 
   return (
-    <div className="mt-20 mb-10 flex flex-col items-center">
+    <div className="mt-20 mb-10 flex flex-col items-center overflow-hidden">
       <div>
         <Clock data={moment(data.real_time, "YYYY-MM-DD HH:mm:ss").add(7, "hours").toDate()} />
       </div>

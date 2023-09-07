@@ -23,6 +23,7 @@ function FirstDate() {
     try {
       const response = await axios.get(
         `http://14.225.7.221:8989/lovehistory/${id}`
+        
       );
       setData(response.data.sukien[1]);
       console.log(response.data.sukien[1]);

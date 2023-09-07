@@ -7,7 +7,7 @@ import img from "../components/image/Screenshot_1.png";
 import { BsFillHeartFill } from "react-icons/bs";
 import { SlMenu } from "react-icons/sl";
 import useEvenStore from "../../utils/store";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 function Historyv2() {
@@ -46,6 +46,7 @@ function Historyv2() {
     <div className="Historyv2 flex flex-col min-h-screen overflow-hidden" style={{ background: "linear-gradient(to right, #F0A3BF, #A86ED4)" }}>
       <Header onSearch={onSearch} />
       <b className="starborn text-white lg:text-5xl text-3xl ml-12 mb-3 mt-5">Events</b>
+       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mx-6 sm:mx-10 lg:mx-16 justify-center">
         <div className="flex justify-center">
           <div className="flex-grow">
