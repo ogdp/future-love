@@ -38,6 +38,13 @@ export default function NewHistory() {
   const params = window.location.href;
   const arrayUrl = params.split("/");
   const stt_su_kien = arrayUrl[arrayUrl.length - 1];
+  const [sk1, setSk1] = useState();
+  const [sk2, setSk2] = useState();
+  const [sk3, setSk3] = useState();
+  const [sk4, setSk4] = useState();
+  const [sk5, setSk5] = useState();
+  const [sk6, setSk6] = useState();
+
   // Show cmt
   const [showMoreStates, setShowMoreStates] = useState({});
   const showCmt = (id) => {
@@ -69,40 +76,34 @@ export default function NewHistory() {
   const pagesToHandleScroll = [1, 2, 3, 4, 5, 6];
   const isMobileDevice = window.innerWidth <= 768; // Kích thước màn hình dưới 768px coi như là điện thoại
 
-  useEffect(() => {
-    fetchDataUser();
+  // useEffect(() => {
+  //   fetchDataUser();
 
-    const handleScroll = () => {
-      const currentScrollPosition = window.scrollY;
-      setScrollPosition(currentScrollPosition);
+  //   const handleScroll = () => {
+  //     const currentScrollPosition = window.scrollY;
+  //     setScrollPosition(currentScrollPosition);
 
-      const isAtBottom =
-        currentScrollPosition >=
-        document.body.scrollHeight - window.innerHeight;
-      const isAtTop = currentScrollPosition === 0;
+  //     const isAtBottom = currentScrollPosition >= (document.body.scrollHeight - window.innerHeight);
+  //     const isAtTop = currentScrollPosition === 0;
 
-      if (
-        !isMobileDevice &&
-        isAtBottom &&
-        pagesToHandleScroll.includes(isActive)
-      ) {
-        const nextPage = isActive + 1;
-        redirect(nextPage);
-      }
+  //     if (!isMobileDevice && isAtBottom && pagesToHandleScroll.includes(isActive)) {
+  //       const nextPage = isActive + 1;
+  //       redirect(nextPage);
+  //     }
 
-      // if (!isMobileDevice && isAtTop && isActive > 1) {
-      //   const previousPage = isActive - 1;
-      //   redirect(previousPage);
-      // } else if (!isMobileDevice && isAtTop && isActive === 1) {
-      //   window.scrollTo(0, 1); // Ngăn chặn cuộn từ trang 1 thẳng đến trang 4
-      // }
-    };
+  //     // if (!isMobileDevice && isAtTop && isActive > 1) {
+  //     //   const previousPage = isActive - 1;
+  //     //   redirect(previousPage);
+  //     // } else if (!isMobileDevice && isAtTop && isActive === 1) {
+  //     //   window.scrollTo(0, 1); // Ngăn chặn cuộn từ trang 1 thẳng đến trang 4
+  //     // }
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [isActive, isMobileDevice]);
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [isActive, isMobileDevice]);
 
   useEffect(() => {
     axios
@@ -120,9 +121,15 @@ export default function NewHistory() {
       const response = await axios.get(
         `http://14.225.7.221:8989/lovehistory/${id}`
       );
+      setSk1(response.data.sukien[0].ten_su_kien);
+      setSk2(response.data.sukien[1].ten_su_kien);
+      setSk3(response.data.sukien[2].ten_su_kien);
+      setSk4(response.data.sukien[3].ten_su_kien);
+      setSk5(response.data.sukien[4].ten_su_kien);
+      setSk6(response.data.sukien[5].ten_su_kien);
       setDataUser(response.data.sukien[0]);
       setIdUser(response.data.sukien[0].user_name_tao_sk);
-      console.log(response.data);
+      console.log("hihi", response.data);
     } catch (err) {
       console.log(err);
     }
@@ -249,52 +256,52 @@ export default function NewHistory() {
               <div className=" flex justify-center">
                 <ul className="flex flex-col gap-y-8 w-full ">
                   <li
-                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
+                    className={`cursor-pointer flex  text-center justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
                       isActive === 1 ? "bg-[#782353] text-white" : ""
                     }`}
                     onClick={() => redirect(1)}
                   >
-                    First Meet
+                    {sk1}
                   </li>
                   <li
-                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
+                    className={`cursor-pointer flex text-center justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
                       isActive === 2 ? "bg-[#782353] text-white" : ""
                     }`}
                     onClick={() => redirect(2)}
                   >
-                    First date
+                    {sk2}
                   </li>
                   <li
-                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
+                    className={`cursor-pointer flex justify-center text-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
                       isActive === 3 ? "bg-[#782353] text-white" : ""
                     }`}
                     onClick={() => redirect(3)}
                   >
-                    Being in love
+                    {sk3}
                   </li>
                   <li
-                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
+                    className={`cursor-pointer flex justify-center text-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
                       isActive === 4 ? "bg-[#782353] text-white" : ""
                     }`}
                     onClick={() => redirect(4)}
                   >
-                    Breking up
+                    {sk4}
                   </li>
                   <li
-                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
+                    className={`cursor-pointer flex justify-center  text-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
                       isActive === 5 ? "bg-[#782353] text-white" : ""
                     }`}
                     onClick={() => redirect(5)}
                   >
-                    Marry
+                    {sk5}
                   </li>
                   <li
-                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
+                    className={`cursor-pointer flex justify-center text-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
                       isActive === 6 ? "bg-[#782353] text-white" : ""
                     }`}
                     onClick={() => redirect(6)}
                   >
-                    Divorce
+                    {sk6}
                   </li>
                   <li
                     className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${

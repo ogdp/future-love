@@ -6,7 +6,7 @@ import TemplateCmt2 from "./template/TemplateCmt2";
 import TemplateCmt3 from "./template/TemplateCmt3";
 import TemplateCmt4 from "./template/TemplateCmt4";
 import ImagePopup from "./ImagePopup";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import noAvatar from "../app/img/no-avatar.png";
 import { toast } from "react-toastify";
 import { saveAs } from "file-saver";
@@ -38,6 +38,28 @@ function CmtPopup(props) {
   const downloadImg = () => {
     saveAs(selectedImage, "image.png");
   };
+  function getTime(time_core) {
+    const providedTime = new Date(time_core); // Lưu ý: Tháng bắt đầu từ 0 (0 - 11)
+    const currentTime = new Date();
+    // Tính khoảng thời gian (tính bằng mili giây)
+    const timeDifference = currentTime - providedTime;
+    // Chuyển đổi khoảng thời gian từ mili giây sang phút
+    const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+    // Tính số ngày, giờ và phút
+    const days = Math.floor(minutesDifference / (60 * 24));
+    const hours = Math.floor((minutesDifference % (60 * 24)) / 60);
+    const minutes = minutesDifference % 60;
+    // Tạo kết quả dựa trên số ngày, giờ và phút
+    let result = "";
+    if (days > 0) {
+      result = `${days} days`;
+    } else if (hours > 0) {
+      result = `${hours} hours`;
+    } else {
+      result = `${minutes} minutes`;
+    }
+    return result;
+  }
 
   const [inputValue, setInputValue] = useState("");
 
@@ -302,11 +324,16 @@ function CmtPopup(props) {
                       <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
                         {cmt.avatar_user &&
                         cmt.avatar_user.startsWith("http") ? (
-                          <img
-                            src={cmt.avatar_user}
-                            alt=""
-                            className="w-[100%] h-[100%]  rounded-[50%]"
-                          />
+                          <Link
+                            className="w-full h-full"
+                            to={cmt.id_user === 0 ? "" : `/user/${cmt.id_user}`}
+                          >
+                            <img
+                              src={cmt.avatar_user}
+                              alt=""
+                              className="w-[100%] h-[100%]  rounded-[50%]"
+                            />
+                          </Link>
                         ) : (
                           <img
                             src={noAvatar}

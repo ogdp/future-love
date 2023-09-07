@@ -10,7 +10,7 @@ const ManagerAcount = (props) => {
     return <div className="text-xl text-center py-3">Loadding ...</div>;
   return (
     <>
-      <section className="fixed top-0 left-0 min-w-full h-screen z-10">
+      <section className="fixed top-0 left-0 min-w-full h-screen z-10 font-[Montserrat]">
         <div
           className="absolute top-0 left-0 bg-black opacity-25 min-w-full h-screen z-20"
           onClick={() => props.close()}
@@ -26,7 +26,7 @@ const ManagerAcount = (props) => {
               <h1 className="text-center lg:text-7xl py-6 lg:py-12 text-4xl">
                 Settings Account
               </h1>
-              <div className="absolute right-0 top-0 w-[50px] flex items-center justify-end lg:p-12 max-lg:py-2 max-lg:px-3 rounded-b">
+              <div className="absolute right-1 top-1">
                 <button
                   className="text-[#FF2C61] slab hover:bg-[#ED709D] hover:text-white font-bold uppercase px-6 py-3 rounded-xl text-2xl outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"

@@ -12,7 +12,7 @@ import vec2 from "../components/image/Vector2.png";
 import vec3 from "../components/image/hoa.png";
 import vec4 from "../components/image/tron2.png";
 import moment from "moment";
-import { useParams } from "react-router";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 function EventHistory(props) {
   const { id } = useParams();
@@ -21,14 +21,15 @@ function EventHistory(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingType, setLoadingType] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const location = useLocation();
   const history = createBrowserHistory();
+  const navigate = useNavigate();
   const [count, setCount] = useState(1);
   const seenIds = {};
   console.log(id);
   console.log(count);
 
   const resultsPerPage = 8;
-
 
   const fetchData = async () => {
     if (!id) {
@@ -77,28 +78,64 @@ function EventHistory(props) {
       }
     }
   };
-  console.log(currentPage);
+  const goToPage = (page) => {
+    navigate(`/event/${page}`);
+    setCurrentPage(page);
+  };
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    for (let i = 1; i <= 1; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          type="button"
+          className={`mx-3 text-white font-medium py-2 px-4 rounded ${
+            i === currentPage ? "bg-red-700" : "bg-[#ff9f9f]"
+          } hover:bg-[#ff9f9f8c]`}
+          onClick={() => goToPage(i)}
+        >
+          {i}
+        </button>
+      );
+    }
+    return pageNumbers;
+  };
 
   const changePageUp = () => {
-    if (count < 200) {
-      setCount(count + 1);
-      history.push(`/event/${count + 1}`);
+    if (!id) {
+      if (count < 200) {
+        const newCount = count + 1;
+        setCount(newCount);
+        navigate(`/event/${newCount}`);
+      }
+    } else {
+      const numericId = parseInt(id, 10); // Chuyển đổi id thành số nguyên
+      if (!isNaN(numericId) && numericId < 200) {
+        const newId = numericId + 1;
+        setCount(newId);
+        navigate(`/event/${newId}`);
+      }
     }
   };
-  
   const changePageDown = () => {
-    if (count > 1) {
-      setCount(count - 1);
-      history.push(`/event/${count - 1}`);
+    if (!id) {
+      if (count > 1) {
+        const newCount = count - 1;
+        setCount(newCount);
+        navigate(`/event/${newCount}`);
+      }
+    } else {
+      const numericId = parseInt(id, 10);
+      if (!isNaN(numericId) && numericId > 1) {
+        const newId = numericId - 1;
+        setCount(newId);
+        navigate(`/event/${newId}`);
+      }
     }
   };
-  
   useEffect(() => {
     fetchData();
-  }, [count]);
-  useEffect(() => {
-    fetchData();
-  }, [id]);
+  }, [count, id]);
 
   useEffect(() => {
     const loadingTypes = [
@@ -116,15 +153,6 @@ function EventHistory(props) {
     const randomType = loadingTypes[randomIndex];
     setLoadingType(randomType);
   }, []);
-
-
-  const formatDateTime = (dateTime) => {
-    return format(new Date(dateTime), "HH:mm:ss dd/MM/yyyy");
-  };
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
 
   const handleEventHistory = (idsk) => {
     history.push({
@@ -146,7 +174,6 @@ function EventHistory(props) {
     indexOfLastResult
   );
   const totalPages = Math.ceil(sortedData.length / resultsPerPage);
-  
 
   if (isLoading) {
     return (
@@ -356,7 +383,7 @@ function EventHistory(props) {
                     className="bg-no-repeat lg:bg-contain bg-center lg:w-full lg:h-full"
                   >
                     <div className="grid grid-cols-2 ">
-                      <div className="lg:w-[300px] flex flex-col justify-center lg:ml-28 ml-5 lg:mt-0 mt-20">
+                      <div className="lg:w-[300px] flex flex-col justify-center lg:ml-28 ml-5 lg:mt-0 mt-20 ">
                         {/* image love */}
                         <span
                           key={array.sukien[array.sukien.length - 1].id}
@@ -609,12 +636,13 @@ function EventHistory(props) {
               <path d="M13.293 7.293 8.586 12l4.707 4.707 1.414-1.414L11.414 12l3.293-3.293-1.414-1.414z" />
             </svg>
           </button>
-          <button
+          {renderPageNumbers()}
+          {/* <button
             type="button"
             className="mx-3 text-white font-medium py-2 px-4 rounded bg-red-700"
           >
             {id ? id : count}
-          </button>
+          </button> */}
           <button
             type="button"
             className="py-2 px-3 bg-[#ff9f9f] rounded hover:bg-[#ff9f9f8c]"
