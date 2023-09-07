@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 const RemoveAccount = (props) => {
   const [timeDelete, setTimeDelete] = useState(10);
-  const server = "http://14.225.7.221:8989";
+  const server = "https://sakaivn.online";
   const user = JSON.parse(window.localStorage.getItem("user-info"));
   useEffect(() => {
     const intervalId = setInterval(() => {

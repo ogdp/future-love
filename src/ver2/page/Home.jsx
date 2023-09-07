@@ -23,7 +23,8 @@ import { async } from "q";
 
 function Home() {
   const Api_key = "ba35005b6d728bd9197bfd95d64e4e39";
-  const server = "http://14.225.7.221:8989/getdata";
+  const server = "https://sakaivn.online";
+  const serverGenarateSK = "https://petizen.click";
   // const server = "http://103.141.140.150:8000/getdata";
   const [showModal, setShowModal] = React.useState(false);
   const [nam1, setBoy] = useState(boy);
@@ -232,7 +233,7 @@ function Home() {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `${server}?device_them_su_kien=${browser}&ip_them_su_kien=${ip}&id_user=${user.id_user}&ten_nam=${male}&ten_nu=${female}`,
+      url: `${serverGenarateSK}/getdata?device_them_su_kien=${browser}&ip_them_su_kien=${ip}&id_user=${user.id_user}&ten_nam=${male}&ten_nu=${female}`,
       headers: {
         Link1: String(linkImg.img1),
         Link2: String(linkImg.img2),

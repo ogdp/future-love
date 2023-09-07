@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 const HistoryCommentList = (props) => {
   // console.log(datas);
   const [datas, setDatas] = useState([]);
-  const server = "http://14.225.7.221:8989";
+  const server = "https://sakaivn.online";
   const [currentPage, setCurrentPage] = useState(1);
   const [actionCMT, setActionCMT] = useState({ status: false, value: 0 });
   const [count, setCount] = useState(1);
@@ -58,7 +58,7 @@ const HistoryCommentList = (props) => {
   const deleteComment = async (idComment) => {
     try {
       const response = await axios.delete(
-        `http://14.225.7.221:8989/lovehistory/page/1/${idComment}/delete`
+        `${server}/lovehistory/delete/${idComment}`
       );
       toast.success(response.data.message);
       window.location.reload();
@@ -115,7 +115,7 @@ const HistoryCommentList = (props) => {
   // const fetchDataUser = async (id_toan_bo_su_kien) => {
   //   try {
   //     const response = await axios.get(
-  //       `http://14.225.7.221:8989/lovehistory/${id_toan_bo_su_kien}`
+  //       `https://sakaivn.online/lovehistory/${id_toan_bo_su_kien}`
   //     );
 
   //     setNameUser(response.data.sukien[0].user_name_tao_sk

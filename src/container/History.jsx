@@ -15,9 +15,7 @@ function History() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        "http://14.225.7.221:8989/lovehistory/page/1"
-      );
+      const response = await fetch("https://sakaivn.online/lovehistory/page/1");
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }

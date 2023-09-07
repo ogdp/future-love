@@ -1,15 +1,9 @@
 import "./App.scss";
-import About from "./container/About";
 import "./container/tailwincss.css";
-import SideBar from "./container/SideBar";
-import { Route, Router, Routes, useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import History from "./container/History";
-import ViewResult from "./container/View";
-import useEvenStore from "./utils/store";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import Historyv2 from "./ver2/page/Historyv2";
 import Home from "./ver2/page/Home";
-import View from "./ver2/page/viewv2";
 import NewHistory from "./ver2/components/NewHistory";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -28,8 +22,6 @@ import BreakingUp from "./ver2/page/app/BreakingUp";
 import Marry from "./ver2/page/app/Marry";
 import Remarry from "./ver2/page/app/Remarry";
 import Divorce from "./ver2/page/app/Divorce";
-import EventHistory from "./ver2/components/eventHistory";
-import EventListProfile from "./ver2/components/EventListProfile";
 import axios from "axios";
 import EventResults from "./ver2/components/EventResults";
 function App() {
