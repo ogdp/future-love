@@ -134,7 +134,7 @@ function Home() {
     try {
       if (!URL.createObjectURL(file)) return setShowModal(true);
       const res = await validImage(URL.createObjectURL(file));
-      console.log(res);
+      // console.log(res);
       setIsLoading(false);
       if (validateImgage(res) == undefined) return;
       // console.log("hợp lê ::", res);
@@ -161,11 +161,13 @@ function Home() {
       const { data } = await axios.get("https://api.ipify.org/?format=json");
       // console.log(data);
       if (data.ip) {
-        const res = await axios.get(`http://ip-api.com/json/${data.ip}`);
+        // const res = await axios.get(
+        //   `http://ip-api.com/json/${data.ip}?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query`
+        // );
         const browser = window.navigator.userAgent;
         return {
           browser: browser,
-          location: res.data,
+          ip: data.ip,
         };
       }
       return false;
@@ -196,7 +198,7 @@ function Home() {
           img2: res2.success,
         },
         device.browser,
-        device.location.query,
+        device.ip,
         nameMale,
         nameFemale
       );
