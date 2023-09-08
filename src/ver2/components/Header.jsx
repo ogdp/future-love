@@ -9,7 +9,6 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import axios from "axios";
 // const userInfo = window.localStorage.getItem("user-info");
 const userInfo = JSON.parse(window.localStorage.getItem("user-info"));
-console.log(userInfo);
 const idUser = userInfo && userInfo.id_user;
 console.log(idUser);
 function reverseSortByDateTime(notifications) {
@@ -72,8 +71,8 @@ function Header({ onSearchChange, onSearch, onClick }) {
 
   return (
     <div
-      className=" h-40 w-full  lg:py-7 py-3"
-      style={{ background: "linear-gradient(to right, #F0A3BF, #A86ED4)" }}
+      className="h-40 w-full  lg:py-7 py-3"
+      
     >
       {/* fixed top-0 left-0  z-20 */}
       <div className="flex items-center justify-between">

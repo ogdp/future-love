@@ -191,6 +191,7 @@ function Home() {
       const res2 = await uploadImage(image2, setImage2);
       if (!res2) return alert("Fail API upload image");
       const device = await getMyDetailUser();
+      console.log("hihi",device)
       setRandomImages([res1.success, res2.success]);
       const res3 = await createEvent(
         {

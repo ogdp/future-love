@@ -48,7 +48,7 @@ function Historyv2() {
       style={{ background: "linear-gradient(to right, #F0A3BF, #A86ED4)" }}
     >
       <Header onSearch={onSearch} />
-      <b className="starborn text-white lg:text-5xl text-3xl ml-12 mb-3 mt-[8%]">
+      <b className="starborn text-white lg:text-5xl text-3xl ml-12 mb-3 ">
         Events
       </b>
 

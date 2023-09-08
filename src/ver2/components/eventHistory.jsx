@@ -201,7 +201,7 @@ function EventHistory(props) {
                   )
                 }
                 key={index}
-                className={`lg:w-[100vh] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
+                className={`lg:w-[47vw] h-[230px] mx-3 lg:h-[380px] mb-4 border-8 border-pink-300  bg-white rounded-[36px]`}
               >
                 {array.sukien[array.sukien.length - 1].id_template === 1 &&
                 4 ? (
