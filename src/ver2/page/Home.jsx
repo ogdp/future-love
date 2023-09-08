@@ -134,7 +134,7 @@ function Home() {
     try {
       if (!URL.createObjectURL(file)) return setShowModal(true);
       const res = await validImage(URL.createObjectURL(file));
-      console.log(res);
+      // console.log(res);
       setIsLoading(false);
       if (validateImgage(res) == undefined) return;
       // console.log("hợp lê ::", res);
