@@ -5,11 +5,12 @@ import TemplateCmt1 from "./template/TemplateCmt1";
 import TemplateCmt2 from "./template/TemplateCmt2";
 import TemplateCmt3 from "./template/TemplateCmt3";
 import TemplateCmt4 from "./template/TemplateCmt4";
-import ImagePopup from "./ImagePopup";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import noAvatar from "../app/img/no-avatar.png";
 import { toast } from "react-toastify";
 import { saveAs } from "file-saver";
+import { Modal } from "antd";
+
 const templateComponents = {
   TemplateCmt1: TemplateCmt1,
   TemplateCmt2: TemplateCmt2,
@@ -17,7 +18,7 @@ const templateComponents = {
   TemplateCmt4: TemplateCmt4,
 };
 const userInfo = JSON.parse(window.localStorage.getItem("user-info"));
-const idUser = userInfo && userInfo.id_user;
+const idUser = userInfo ? userInfo.id_user : 0;
 console.log(idUser);
 
 function CmtPopup(props) {
@@ -38,6 +39,52 @@ function CmtPopup(props) {
   const downloadImg = () => {
     saveAs(selectedImage, "image.png");
   };
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [reportContent, setReportContent] = useState("");
+  const [commentId, setCommentId] = useState(null);
+  const [commentIdUser, setCommentIdUser] = useState(null);
+  const showModal = (commentId, commentIdUser) => {
+    setOpen(true);
+    setCommentId(commentId); // Lưu id_comment vào state
+    setCommentIdUser(commentIdUser);
+  };
+
+  const handleOk = async () => {
+    try {
+      if (!reportContent.trim()) {
+        toast.warning("Please enter report content.");
+        return;
+      }
+
+      // Gửi nội dung report lên API
+      const response = await axios.post(
+        "https://sakaivn.online/report/comment",
+        {
+          report_reson: reportContent,
+          id_comment: commentId,
+          id_user_comment: commentIdUser,
+          id_user_report: idUser,
+        }
+      );
+      toast.success(response.data.message);
+      setOpen(false);
+      // setTimeout(() => {
+      // setOpen(false);
+      //   setConfirmLoading(false);
+      // }, 2000);
+    } catch (error) {
+      console.error("Error sending report:", error);
+      // Xử lý lỗi (nếu cần)
+      alert("Error sending report. Please try again later.");
+    }
+  };
+
+  const handleCancel = () => {
+    console.log("Clicked cancel button");
+    setOpen(false);
+  };
+
   function getTime(time_core) {
     const providedTime = new Date(time_core); // Lưu ý: Tháng bắt đầu từ 0 (0 - 11)
     const currentTime = new Date();
@@ -110,7 +157,7 @@ function CmtPopup(props) {
   const updateComment = async () => {
     try {
       const response = await axios.patch(
-        `https://sakaivn.online/lovehistory/page/1/${editingCommentId}`,
+        `https://sakaivn.online/lovehistory/edit/${editingCommentId}`,
         { content: editedComment }
       );
 
@@ -137,7 +184,7 @@ function CmtPopup(props) {
   const deleteComment = async (idComment) => {
     try {
       const response = await axios.delete(
-        `https://sakaivn.online/lovehistory/page/1/${idComment}/delete`
+        `https://sakaivn.online/lovehistory/delete/${idComment}`
       );
       toast.success(response.data.message);
       window.location.reload();
@@ -207,8 +254,6 @@ function CmtPopup(props) {
     setIsImageUploading(true);
     const url = "https://sakaivn.online/lovehistory/comment";
     let comment = {};
-    // if (user !== null) {
-    // }
 
     comment = {
       device_cmt: userAgent,
@@ -268,6 +313,13 @@ function CmtPopup(props) {
   const handlePopup = () => {
     setImgPopup(!isImgPopup);
   };
+  const customModalCSS = `
+    .custom-modal .ant-modal-footer .ant-btn-primary  {
+      background-color: red;
+      color: white;
+      border-color: pink;
+    }
+  `;
   return (
     <div
       style={{
@@ -282,7 +334,7 @@ function CmtPopup(props) {
         // flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        zIndex: 9990,
+        zIndex: 99,
       }}
     >
       <div className="w-[full] h-full z-[9999]" onClick={closePopup}></div>
@@ -435,7 +487,12 @@ function CmtPopup(props) {
                             : actionCMT.status &&
                               actionCMT.value == cmt.id_comment && (
                                 <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute right-12 rounded-sm bg-slate-100 text-lg text-black">
-                                  <button className="py-1 px-3 hover:bg-red-400 hover:text-white w-full">
+                                  <button
+                                    className="py-1 px-3 hover:bg-red-400 hover:text-white w-full"
+                                    onClick={() =>
+                                      showModal(cmt.id_comment, cmt.id_user)
+                                    }
+                                  >
                                     Report
                                   </button>
                                 </div>
@@ -561,7 +618,7 @@ function CmtPopup(props) {
           </div>
         </>
       )}
-      <div className=" h-full z-[9999]" onClick={closePopup}>
+      <div className=" h-full z-[100]" onClick={closePopup}>
         <button
           onClick={closePopup}
           className="mt-2 mr-2 px-2 py-1 bg-red-500 hover:bg-red-600 rounded-lg absolute top-0 right-0 text-sm text-white"
@@ -570,6 +627,28 @@ function CmtPopup(props) {
           Close
         </button>
       </div>
+      <Modal
+        title="Report Comment"
+        open={open}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+        okText="Confirm"
+        className="custom-modal"
+      >
+        <style>{customModalCSS}</style>
+
+        <div>
+          <label>Report Content:</label>
+          <textarea
+            style={{ borderColor: "black" }}
+            value={reportContent}
+            onChange={(e) => setReportContent(e.target.value)}
+            rows="4"
+            cols="50"
+          />
+        </div>
+      </Modal>
 
       {isImagePopupOpen && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-50">
