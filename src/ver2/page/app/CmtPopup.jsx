@@ -9,8 +9,12 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import noAvatar from "../app/img/no-avatar.png";
 import { toast } from "react-toastify";
 import { saveAs } from "file-saver";
+<<<<<<< HEAD
 import { Modal } from 'antd';
 
+=======
+import { Modal } from "antd";
+>>>>>>> main
 
 const templateComponents = {
   TemplateCmt1: TemplateCmt1,
@@ -19,9 +23,14 @@ const templateComponents = {
   TemplateCmt4: TemplateCmt4,
 };
 const userInfo = JSON.parse(window.localStorage.getItem("user-info"));
+<<<<<<< HEAD
   const idUser = userInfo ? userInfo.id_user : 0; 
   console.log(idUser);
 
+=======
+const idUser = userInfo ? userInfo.id_user : 0;
+console.log(idUser);
+>>>>>>> main
 
 function CmtPopup(props) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -46,6 +55,7 @@ function CmtPopup(props) {
   const [reportContent, setReportContent] = useState("");
   const [commentId, setCommentId] = useState(null);
   const [commentIdUser, setCommentIdUser] = useState(null);
+<<<<<<< HEAD
   const showModal = (commentId,commentIdUser) => {
     setOpen(true);
     setCommentId(commentId); // Lưu id_comment vào state
@@ -55,10 +65,18 @@ function CmtPopup(props) {
   
   
   
+=======
+  const showModal = (commentId, commentIdUser) => {
+    setOpen(true);
+    setCommentId(commentId); // Lưu id_comment vào state
+    setCommentIdUser(commentIdUser);
+  };
+>>>>>>> main
 
   const handleOk = async () => {
     try {
       if (!reportContent.trim()) {
+<<<<<<< HEAD
         toast.warning('Please enter report content.');
         return;
       }
@@ -71,12 +89,30 @@ function CmtPopup(props) {
         id_user_report:idUser
       });    
       toast.success(response.data.message)
+=======
+        toast.warning("Please enter report content.");
+        return;
+      }
+
+      // Gửi nội dung report lên API
+      const response = await axios.post(
+        "https://sakaivn.online/report/comment",
+        {
+          report_reson: reportContent,
+          id_comment: commentId,
+          id_user_comment: commentIdUser,
+          id_user_report: idUser,
+        }
+      );
+      toast.success(response.data.message);
+>>>>>>> main
       setOpen(false);
       // setTimeout(() => {
       // setOpen(false);
       //   setConfirmLoading(false);
       // }, 2000);
     } catch (error) {
+<<<<<<< HEAD
       console.error('Error sending report:', error);
       // Xử lý lỗi (nếu cần)
       alert('Error sending report. Please try again later.');
@@ -86,6 +122,16 @@ function CmtPopup(props) {
 
   const handleCancel = () => {
     console.log('Clicked cancel button');
+=======
+      console.error("Error sending report:", error);
+      // Xử lý lỗi (nếu cần)
+      alert("Error sending report. Please try again later.");
+    }
+  };
+
+  const handleCancel = () => {
+    console.log("Clicked cancel button");
+>>>>>>> main
     setOpen(false);
   };
 
@@ -264,7 +310,10 @@ function CmtPopup(props) {
     setIsImageUploading(true)
     const url = "https://sakaivn.online/lovehistory/comment";
     let comment = {};
+<<<<<<< HEAD
     
+=======
+>>>>>>> main
 
     comment = {
       device_cmt: userAgent,
@@ -471,6 +520,7 @@ function CmtPopup(props) {
                           </svg>
                         </button>
                         <div className="flex gap-3">
+<<<<<<< HEAD
                           {idUser === cmt.id_user ? (
                             actionCMT.status && actionCMT.value == cmt.id_comment && (
                               <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute  right-12   rounded-sm bg-slate-100 text-lg text-black">
@@ -497,6 +547,41 @@ function CmtPopup(props) {
                                 </button>
                               </div>
                             ))}
+=======
+                          {idUser === cmt.id_user
+                            ? actionCMT.status &&
+                              actionCMT.value == cmt.id_comment && (
+                                <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute  right-12   rounded-sm bg-slate-100 text-lg text-black">
+                                  <button
+                                    className=" flex gap-3 py-1 px-3 hover:bg-blue-400 hover:text-white w-full"
+                                    onClick={() => startEdit(cmt)}
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    className="py-1 px-3 flex gap-3 hover:bg-red-400 hover:text-white w-full"
+                                    onClick={() =>
+                                      deleteComment(cmt.id_comment)
+                                    }
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              )
+                            : actionCMT.status &&
+                              actionCMT.value == cmt.id_comment && (
+                                <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute right-12 rounded-sm bg-slate-100 text-lg text-black">
+                                  <button
+                                    className="py-1 px-3 hover:bg-red-400 hover:text-white w-full"
+                                    onClick={() =>
+                                      showModal(cmt.id_comment, cmt.id_user)
+                                    }
+                                  >
+                                    Report
+                                  </button>
+                                </div>
+                              )}
+>>>>>>> main
                         </div>
 
                       </div>
@@ -622,15 +707,24 @@ function CmtPopup(props) {
         onCancel={handleCancel}
         okText="Confirm"
         className="custom-modal"
+<<<<<<< HEAD
         
+=======
+>>>>>>> main
       >
         <style>{customModalCSS}</style>
 
         <div>
+<<<<<<< HEAD
           <label >Report Content:</label>
           <textarea
             
             style={{borderColor:"black"}}
+=======
+          <label>Report Content:</label>
+          <textarea
+            style={{ borderColor: "black" }}
+>>>>>>> main
             value={reportContent}
             onChange={(e) => setReportContent(e.target.value)}
             rows="4"

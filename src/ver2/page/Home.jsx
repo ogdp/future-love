@@ -43,6 +43,10 @@ function Home() {
   const [randomImages, setRandomImages] = useState(null);
   const [isModelWarning, setIsModelWarning] = useState(false);
   const [modelAlert, setModelAlert] = useState({ status: false, message: "" });
+  const [sameFace, setSameFace] = useState({
+    img1: null,
+    img2: null,
+  });
 
   //
   useEffect(() => {
@@ -134,7 +138,26 @@ function Home() {
     try {
       if (!URL.createObjectURL(file)) return setShowModal(true);
       const res = await validImage(URL.createObjectURL(file));
-      console.log(res);
+      atImg === "img1"
+        ? setSameFace({
+            img1: res[0]?.detection?._score,
+            img2: sameFace.img2,
+          })
+        : setSameFace({
+            img1: sameFace.img1,
+            img2: res[0]?.detection?._score,
+          });
+      if (
+        sameFace.img1 === res[0]?.detection?._score ||
+        sameFace.img2 === res[0]?.detection?._score
+      ) {
+        setIsLoading(false);
+        closeUploadImg();
+        return setModelAlert({
+          status: true,
+          message: "Photos cannot be the same",
+        });
+      }
       setIsLoading(false);
       if (validateImgage(res) == undefined) return;
       // console.log("hợp lê ::", res);
@@ -156,6 +179,7 @@ function Home() {
       closeUploadImg();
     }
   };
+
   const getMyDetailUser = async () => {
     try {
       const { data } = await axios.get("https://api.ipify.org/?format=json");
