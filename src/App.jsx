@@ -24,6 +24,7 @@ import Remarry from "./ver2/page/app/Remarry";
 import Divorce from "./ver2/page/app/Divorce";
 import axios from "axios";
 import EventResults from "./ver2/components/EventResults";
+import TiktokScandal from "./ver2/tiktok-scandal";
 function App() {
   const user = window.localStorage.getItem("user-info");
   useEffect(() => {
@@ -60,6 +61,7 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="user/:id" element={<ProfileGuest />} />
         </Route>
+        <Route path="tiktok/:idVideo" element={<TiktokScandal />} />
         <Route path="*" exact={true} element={<NotFound />} />
       </Routes>
     );
@@ -86,6 +88,7 @@ function App() {
         <Route path="profile" element={<Profile />} />
         <Route path="user/:id" element={<ProfileGuest />} />
       </Route>
+      <Route path="tiktok/:idVideo" element={<TiktokScandal />} />
       <Route path="*" exact={true} element={<NotFound />} />
     </Routes>
   );
