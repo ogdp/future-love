@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { HeartLeftIcon, HeartRightIcon, PolygonIcon, SearchIcon } from '../common/CustomIcon'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 const Header = () => {
     const [close, setClose] = useState(false)
@@ -14,7 +14,7 @@ const Header = () => {
                                 <div className='flex'>
                                     <HeartLeftIcon height={34} width={40} />
                                     <div className="text-white font-[Montserrat] text-3xl mx-5">
-                                        Future Love
+                                       <Link to={'/'}>Future Love</Link> 
                                     </div>
                                     <HeartRightIcon width={40} height={34} />
                                 </div>
