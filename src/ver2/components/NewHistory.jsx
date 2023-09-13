@@ -21,6 +21,7 @@ import { createBrowserHistory } from "history";
 import CmtPopup from "../page/app/CmtPopup";
 import no_avatar from "./image/no-avatar.png";
 import ImagePopup from "../page/app/ImagePopup";
+import { Link } from "react-router-dom";
 
 export default function NewHistory() {
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
@@ -206,11 +207,10 @@ export default function NewHistory() {
             />
           )}
           <div
-            className={`lg:col-span-3 z-[10] bg-menu lg:block ${
-              isOpenSidebar
+            className={`lg:col-span-3 z-[10] bg-menu lg:block ${isOpenSidebar
                 ? "col-span-8 sm:col-span-6 transition-all transform duration-300 ease-linear block opacity-100 absolute top-40 left-0 bottom-0 h-full"
                 : "transition-all transform hidden duration-300 ease-out "
-            }`}
+              }`}
           >
             <div className=" lg:h-[30%] lg:w-[100%] flex items-center justify-center mt-4">
               <div
@@ -249,64 +249,61 @@ export default function NewHistory() {
                 />
               </div>
             </div>
-            <div className=" lg:text-[26px] font-[Montserrat] mb-8 text-2xl flex justify-center font-bold text-[#FFFFFF]">
-              Event creator:{idUser}
+            <div className=" lg:text-[26px] font-[Montserrat] mb-8 text-2xl flex justify-center font-bold text-[#FFFFFF] text-center">
+            Event creator:
+              <Link to={`/user/${dataUser?.id_user}`}>
+                {idUser}
+              </Link>
+
             </div>
             <div className="slab lg:text-[26px] text-2xl font-bold text-[#FFFFFF]">
               <div className=" flex justify-center">
-                <ul className="flex flex-col gap-y-8 w-full ">
+                <ul className="flex flex-col gap-y-8 w-full overflow-y-auto">
                   <li
-                    className={`cursor-pointer flex  text-center justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                      isActive === 1 ? "bg-[#782353] text-white" : ""
-                    }`}
+                    className={`cursor-pointer flex  text-center justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 1 ? "bg-[#782353] text-white" : ""
+                      }`}
                     onClick={() => redirect(1)}
                   >
                     {sk1}
                   </li>
                   <li
-                    className={`cursor-pointer flex text-center justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                      isActive === 2 ? "bg-[#782353] text-white" : ""
-                    }`}
+                    className={`cursor-pointer flex text-center justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 2 ? "bg-[#782353] text-white" : ""
+                      }`}
                     onClick={() => redirect(2)}
                   >
                     {sk2}
                   </li>
                   <li
-                    className={`cursor-pointer flex justify-center text-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                      isActive === 3 ? "bg-[#782353] text-white" : ""
-                    }`}
+                    className={`cursor-pointer flex justify-center text-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 3 ? "bg-[#782353] text-white" : ""
+                      }`}
                     onClick={() => redirect(3)}
                   >
                     {sk3}
                   </li>
                   <li
-                    className={`cursor-pointer flex justify-center text-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                      isActive === 4 ? "bg-[#782353] text-white" : ""
-                    }`}
+                    className={`cursor-pointer flex justify-center text-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 4 ? "bg-[#782353] text-white" : ""
+                      }`}
                     onClick={() => redirect(4)}
                   >
                     {sk4}
                   </li>
                   <li
-                    className={`cursor-pointer flex justify-center  text-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                      isActive === 5 ? "bg-[#782353] text-white" : ""
-                    }`}
+                    className={`cursor-pointer flex justify-center  text-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 5 ? "bg-[#782353] text-white" : ""
+                      }`}
                     onClick={() => redirect(5)}
                   >
                     {sk5}
                   </li>
                   <li
-                    className={`cursor-pointer flex justify-center text-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                      isActive === 6 ? "bg-[#782353] text-white" : ""
-                    }`}
+                    className={`cursor-pointer flex justify-center text-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 6 ? "bg-[#782353] text-white" : ""
+                      }`}
                     onClick={() => redirect(6)}
                   >
                     {sk6}
                   </li>
                   <li
-                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                      isActive === 7 ? "bg-[#782353] text-white" : ""
-                    }`}
+                    className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 7 ? "bg-[#782353] text-white" : ""
+                      }`}
                     onClick={() => redirect(7)}
                   >
                     Remarry
@@ -380,57 +377,50 @@ export default function NewHistory() {
             </div>
             <div className="flex justify-between items-center lg:hidden">
               <div
-                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                  isActive === 1 ? "bg-[#782353] text-white" : ""
-                }`}
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 1 ? "bg-[#782353] text-white" : ""
+                  }`}
                 onClick={() => redirect(1)}
               >
                 First Meet
               </div>
               <div
-                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                  isActive === 2 ? "bg-[#782353] text-white" : ""
-                }`}
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 2 ? "bg-[#782353] text-white" : ""
+                  }`}
                 onClick={() => redirect(2)}
               >
                 First date
               </div>
               <div
-                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                  isActive === 3 ? "bg-[#782353] text-white" : ""
-                }`}
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 3 ? "bg-[#782353] text-white" : ""
+                  }`}
                 onClick={() => redirect(3)}
               >
                 Being in love
               </div>
               <div
-                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                  isActive === 4 ? "bg-[#782353] text-white" : ""
-                }`}
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 4 ? "bg-[#782353] text-white" : ""
+                  }`}
                 onClick={() => redirect(4)}
               >
                 Breking up
               </div>
               <div
-                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                  isActive === 5 ? "bg-[#782353] text-white" : ""
-                }`}
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 5 ? "bg-[#782353] text-white" : ""
+                  }`}
                 onClick={() => redirect(5)}
               >
                 Marry
               </div>
               <div
-                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                  isActive === 6 ? "bg-[#782353] text-white" : ""
-                }`}
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 6 ? "bg-[#782353] text-white" : ""
+                  }`}
                 onClick={() => redirect(6)}
               >
                 Divorce
               </div>
               <div
-                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${
-                  isActive === 7 ? "bg-[#782353] text-white" : ""
-                }`}
+                className={`cursor-pointer flex justify-center items-center hover:bg-[#782353] rounded-3xl lg:py-10 lg:px-36 py-6 px-2 ${isActive === 7 ? "bg-[#782353] text-white" : ""
+                  }`}
                 onClick={() => redirect(7)}
               >
                 Remarry
@@ -460,7 +450,7 @@ export default function NewHistory() {
                     <div className="flex flex-col gap-y-4 px-4 py-3 mx-4 border border-gray-400 rounded-md shadow-md hover:bg-gray-100">
                       <div className="flex items-center gap-x-4">
                         {item.avatar_user &&
-                        item.avatar_user.startsWith("http") ? (
+                          item.avatar_user.startsWith("http") ? (
                           <img
                             src={item.avatar_user}
                             alt=""

@@ -9,12 +9,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import noAvatar from "../app/img/no-avatar.png";
 import { toast } from "react-toastify";
 import { saveAs } from "file-saver";
-<<<<<<< HEAD
-import { Modal } from 'antd';
-
-=======
 import { Modal } from "antd";
->>>>>>> main
 
 const templateComponents = {
   TemplateCmt1: TemplateCmt1,
@@ -23,14 +18,8 @@ const templateComponents = {
   TemplateCmt4: TemplateCmt4,
 };
 const userInfo = JSON.parse(window.localStorage.getItem("user-info"));
-<<<<<<< HEAD
-  const idUser = userInfo ? userInfo.id_user : 0; 
-  console.log(idUser);
-
-=======
 const idUser = userInfo ? userInfo.id_user : 0;
 console.log(idUser);
->>>>>>> main
 
 function CmtPopup(props) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -55,41 +44,15 @@ function CmtPopup(props) {
   const [reportContent, setReportContent] = useState("");
   const [commentId, setCommentId] = useState(null);
   const [commentIdUser, setCommentIdUser] = useState(null);
-<<<<<<< HEAD
-  const showModal = (commentId,commentIdUser) => {
-    setOpen(true);
-    setCommentId(commentId); // Lưu id_comment vào state
-    setCommentIdUser(commentIdUser)
-  };
-  
-  
-  
-  
-=======
   const showModal = (commentId, commentIdUser) => {
     setOpen(true);
     setCommentId(commentId); // Lưu id_comment vào state
     setCommentIdUser(commentIdUser);
   };
->>>>>>> main
 
   const handleOk = async () => {
     try {
       if (!reportContent.trim()) {
-<<<<<<< HEAD
-        toast.warning('Please enter report content.');
-        return;
-      }
-  
-      // Gửi nội dung report lên API
-      const response = await axios.post('https://sakaivn.online/report/comment', {
-        report_reson: reportContent,
-        id_comment:commentId,
-        id_user_comment:commentIdUser,
-        id_user_report:idUser
-      });    
-      toast.success(response.data.message)
-=======
         toast.warning("Please enter report content.");
         return;
       }
@@ -105,24 +68,12 @@ function CmtPopup(props) {
         }
       );
       toast.success(response.data.message);
->>>>>>> main
       setOpen(false);
       // setTimeout(() => {
       // setOpen(false);
       //   setConfirmLoading(false);
       // }, 2000);
     } catch (error) {
-<<<<<<< HEAD
-      console.error('Error sending report:', error);
-      // Xử lý lỗi (nếu cần)
-      alert('Error sending report. Please try again later.');
-    }
-  };
-  
-
-  const handleCancel = () => {
-    console.log('Clicked cancel button');
-=======
       console.error("Error sending report:", error);
       // Xử lý lỗi (nếu cần)
       alert("Error sending report. Please try again later.");
@@ -131,7 +82,6 @@ function CmtPopup(props) {
 
   const handleCancel = () => {
     console.log("Clicked cancel button");
->>>>>>> main
     setOpen(false);
   };
 
@@ -158,7 +108,6 @@ function CmtPopup(props) {
     return result;
   }
 
-
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (event) => {
@@ -182,8 +131,6 @@ function CmtPopup(props) {
     height: `${numLines * 20}px`, // Chiều cao được tính dựa trên số dòng và độ cao mỗi dòng
   };
 
-
-
   //edit cmt
   const [isEditing, setIsEditing] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState(null);
@@ -206,14 +153,13 @@ function CmtPopup(props) {
     const newValue = event.target.value;
     setEditedComment(newValue);
   };
-  console.log(editingCommentId)
+  console.log(editingCommentId);
   const updateComment = async () => {
     try {
       const response = await axios.patch(
         `https://sakaivn.online/lovehistory/edit/${editingCommentId}`,
         { content: editedComment }
       );
-
 
       const updatedDataCmt = dataCmt.map((comment) => {
         if (comment.id_comment === editingCommentId) {
@@ -240,7 +186,7 @@ function CmtPopup(props) {
       const response = await axios.delete(
         `https://sakaivn.online/lovehistory/delete/${idComment}`
       );
-      toast.success(response.data.message)
+      toast.success(response.data.message);
       window.location.reload();
     } catch (err) {
       console.log(err);
@@ -271,7 +217,6 @@ function CmtPopup(props) {
   useEffect(() => {
     fetchDataCmt();
   }, []);
-
 
   const ne = window.navigator.userAgent;
   console.log("hii", ne);
@@ -307,13 +252,9 @@ function CmtPopup(props) {
 
 
   const HandleSendCmt = async (e) => {
-    setIsImageUploading(true)
+    setIsImageUploading(true);
     const url = "https://sakaivn.online/lovehistory/comment";
     let comment = {};
-<<<<<<< HEAD
-    
-=======
->>>>>>> main
 
     comment = {
       device_cmt: userAgent,
@@ -342,9 +283,8 @@ function CmtPopup(props) {
         console.log("====================================");
         setDataCmt((prev) => [...prev, response.data.comment]);
         setImgComment("");
-        setIsImageUploading(false)
+        setIsImageUploading(false);
         toast.success("Commented!!!");
-
       })
       .catch((error) => {
         toast.error("comment failed");
@@ -408,7 +348,6 @@ function CmtPopup(props) {
             transform: "translate(-50%, -50%)",
           }}
         >
-
           <i
             className="fas fa-circle-notch fa-spin"
             style={{ fontSize: "30px", color: "blue" }}
@@ -420,18 +359,24 @@ function CmtPopup(props) {
             <ImagePopup imgSrc={props.data.link_da_swap} closeImg={closePopup} />
           ) : ( */}
           <div className="rounded-lg rounded-t-[36px] flex flex-col h-[95%] w-max bg-white gap-y-4 overflow-y-auto">
-            <div className="w-full h-[95%] relative" onClick={() => handleOpenImagePopup(props.data.link_da_swap)}>
+            <div
+              className="w-full h-[95%] relative"
+              onClick={() => handleOpenImagePopup(props.data.link_da_swap)}
+            >
               <TemplateComponent data={props.data} onClick={handlePopup} />
             </div>
-
 
             <div className="mt-5 flex flex-col gap-y-2 max-h-[60vh] overflow-y-auto">
               {dataCmt?.length > 0 &&
                 dataCmt.map((cmt, index) => (
                   <>
-                    <div className="flex items-stretch gap-x-4 justify-between relative" key={index}>
+                    <div
+                      className="flex items-stretch gap-x-4 justify-between relative"
+                      key={index}
+                    >
                       <div className="overflow-hidden rounded-[50%] w-[40px] h-[40px] ml-[20px]">
-                        {cmt.avatar_user && cmt.avatar_user.startsWith("http") ? (
+                        {cmt.avatar_user &&
+                        cmt.avatar_user.startsWith("http") ? (
                           <Link
                             className="w-full h-full"
                             to={cmt.id_user === 0 ? "" : `/user/${cmt.id_user}`}
@@ -467,7 +412,9 @@ function CmtPopup(props) {
                               className="w-[60px] h-[50px]"
                               src={cmt.imageattach}
                               alt=""
-                              onClick={() => handleOpenImagePopup(cmt.imageattach)}
+                              onClick={() =>
+                                handleOpenImagePopup(cmt.imageattach)
+                              }
                             />
                           ) : (
                             ""
@@ -476,10 +423,7 @@ function CmtPopup(props) {
                             {cmt.device_cmt}
                           </span>
                         </>
-
                       </div>
-
-
                       <div className="lg:text-[13px] text-sm ml-auto font-[Montserrat]">
                         {cmt.thoi_gian_release}
                       </div>
@@ -520,34 +464,6 @@ function CmtPopup(props) {
                           </svg>
                         </button>
                         <div className="flex gap-3">
-<<<<<<< HEAD
-                          {idUser === cmt.id_user ? (
-                            actionCMT.status && actionCMT.value == cmt.id_comment && (
-                              <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute  right-12   rounded-sm bg-slate-100 text-lg text-black">
-                                <button
-                                  className=" flex gap-3 py-1 px-3 hover:bg-blue-400 hover:text-white w-full"
-                                  onClick={() => startEdit(cmt)}>
-                                  Edit
-                                </button>
-                                <button className="py-1 px-3 flex gap-3 hover:bg-red-400 hover:text-white w-full"
-                                  onClick={() => deleteComment(cmt.id_comment)}
-                                >
-                                  Delete
-                                </button>
-                              </div>
-                            )
-                          ) : (
-                            actionCMT.status && actionCMT.value == cmt.id_comment && (
-                              <div className="shadow-[rgba(0,0,0,0.1)_0px_1px_3px_0px,rgba(0,0,0,0.06)_0px_1px_2px_0px] absolute right-12 rounded-sm bg-slate-100 text-lg text-black">
-
-                                <button className="py-1 px-3 hover:bg-red-400 hover:text-white w-full"
-                                  onClick={() => showModal(cmt.id_comment,cmt.id_user)}
-                                >
-                                  Report
-                                </button>
-                              </div>
-                            ))}
-=======
                           {idUser === cmt.id_user
                             ? actionCMT.status &&
                               actionCMT.value == cmt.id_comment && (
@@ -581,13 +497,9 @@ function CmtPopup(props) {
                                   </button>
                                 </div>
                               )}
->>>>>>> main
                         </div>
-
                       </div>
                     </div>
-
-
                   </>
                 ))}
             </div>
@@ -601,7 +513,10 @@ function CmtPopup(props) {
               </div>
               {isEditing ? (
                 <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-full ">
-                  <form onSubmit={onSubmitComment} className="flex items-center gap-x-4">
+                  <form
+                    onSubmit={onSubmitComment}
+                    className="flex items-center gap-x-4"
+                  >
                     <textarea
                       type="text"
                       value={editedComment}
@@ -625,7 +540,10 @@ function CmtPopup(props) {
                         />
                       </label>
                     </div>
-                    <button className="w-[30px] float-right" onClick={updateComment}>
+                    <button
+                      className="w-[30px] float-right"
+                      onClick={updateComment}
+                    >
                       <img
                         src={send}
                         alt=""
@@ -635,7 +553,11 @@ function CmtPopup(props) {
                   </form>
                   {imgComment && (
                     <div className="mt-2 flex items-center gap-2">
-                      <img className="w-[80px] h-[70px]" src={imgComment} alt="Uploaded" />
+                      <img
+                        className="w-[80px] h-[70px]"
+                        src={imgComment}
+                        alt="Uploaded"
+                      />
                       <button className="mt-[-50px]" onClick={removeImgComment}>
                         <i className="fas fa-times font-bold" />
                       </button>
@@ -644,7 +566,10 @@ function CmtPopup(props) {
                 </div>
               ) : (
                 <div className="w-full py-3 px-4 border bg-white border-gray-500 rounded-2xl mb-2">
-                  <form onSubmit={onSubmitComment} className="flex items-center gap-x-4">
+                  <form
+                    onSubmit={onSubmitComment}
+                    className="flex items-center gap-x-4"
+                  >
                     <textarea
                       style={textareaStyle} // Sử dụng style để cập nhật chiều cao
                       type="text"
@@ -668,7 +593,10 @@ function CmtPopup(props) {
                         />
                       </label>
                     </div>
-                    <button className="w-[30px] float-right" onClick={HandleSendCmt}>
+                    <button
+                      className="w-[30px] float-right"
+                      onClick={HandleSendCmt}
+                    >
                       <img
                         src={send}
                         alt=""
@@ -707,24 +635,13 @@ function CmtPopup(props) {
         onCancel={handleCancel}
         okText="Confirm"
         className="custom-modal"
-<<<<<<< HEAD
-        
-=======
->>>>>>> main
       >
         <style>{customModalCSS}</style>
 
         <div>
-<<<<<<< HEAD
-          <label >Report Content:</label>
-          <textarea
-            
-            style={{borderColor:"black"}}
-=======
           <label>Report Content:</label>
           <textarea
             style={{ borderColor: "black" }}
->>>>>>> main
             value={reportContent}
             onChange={(e) => setReportContent(e.target.value)}
             rows="4"
@@ -759,8 +676,6 @@ function CmtPopup(props) {
           </div>
         </div>
       )}
-
-
     </div>
   );
 }

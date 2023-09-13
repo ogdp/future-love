@@ -29,17 +29,17 @@ export default function Login() {
           "https://sakaivn.online/login",
           formData
         );
-        if (response.data.ketqua) {
-          toast.error(response.data.ketqua);
+        if (response.data.detail) {
+          toast.error(response.data.detail);
         } else {
           navigate("/");
-          // await getIPAddress();
+          // toast.success("Login success")
           window.location.reload();
           response.data = JSON.stringify(response.data);
           localStorage.setItem("user-info", response.data);
         }
       } catch (error) {
-        console.log("sda", error);
+        return toast.error("Account or password is incorrect !!!")
       } finally {
         isLoading(false);
       }
